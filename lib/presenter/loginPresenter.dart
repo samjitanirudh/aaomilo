@@ -1,5 +1,4 @@
 import 'package:flutter_meetup_login/viewmodel/LoginModel.dart';
-import 'package:flutter_meetup_login/views/login_screen.dart';
 
 class LoginPresenter {
   LoginCallbacks _callbacks;

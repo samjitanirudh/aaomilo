@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetup_login/views/ImageListviewChecked.dart';
 
 class CreateInvite extends StatefulWidget {
   CreateInvite({Key key}) : super(key: key);
@@ -180,6 +181,13 @@ class _CreateInvite extends State<CreateInvite> {
       );
 
   categoryPictureSelectView() {
+
+    List<Product> imageList=new List<Product>();
+    imageList.add(new Product("assets/images/converge.png", 0,-1));
+    imageList.add(new Product("assets/images/flutterwithlogo.png", 1,-1));
+    imageList.add(new Product("assets/images/datepicker.png", 2,-1));
+    imageList.add(new Product("assets/images/converge.png", 3,-1));
+
     return new Container(
         margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
         child: Column(
@@ -193,10 +201,7 @@ class _CreateInvite extends State<CreateInvite> {
                 children: <Widget>[
                   new Text(
                     "Select your category picture",
-                    style: new TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
+                    style: textStyle,
                   )
                 ],
               ),
@@ -204,29 +209,11 @@ class _CreateInvite extends State<CreateInvite> {
             new Container(
               height: 150.0,
               child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  Container(
-                    width: 160.0,
-                    color: Colors.red,
-                  ),
-                  Container(
-                    width: 160.0,
-                    color: Colors.blue,
-                  ),
-                  Container(
-                    width: 160.0,
-                    color: Colors.green,
-                  ),
-                  Container(
-                    width: 160.0,
-                    color: Colors.yellow,
-                  ),
-                  Container(
-                    width: 160.0,
-                    color: Colors.orange,
-                  ),
-                ],
+                  scrollDirection: Axis.horizontal,
+//                  padding: new EdgeInsets.symmetric(vertical: 8.0),
+                  children: imageList.map((Product product) {
+                    return new ImageListViewChecked(product);
+                  }).toList(),
               ),
             )
           ],
