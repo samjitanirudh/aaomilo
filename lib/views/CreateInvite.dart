@@ -8,7 +8,7 @@ class CreateInvite extends StatefulWidget {
   _CreateInvite createState() => new _CreateInvite();
 }
 
-class _CreateInvite extends State<CreateInvite> {
+class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallbacks{
   static final TextStyle textStyle = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.blue.shade900);
   var _formKey = GlobalKey<FormState>();
@@ -21,6 +21,17 @@ class _CreateInvite extends State<CreateInvite> {
   String selectedTimeValue = "0";
   List inviteTimeRange = new List();
   var _VanueValue; // time array for invites
+  int catImageSelected=-1;
+
+  List<Product> imageList=new List<Product>();
+
+  void initState(){
+    super.initState();
+    imageList.add(new Product("assets/images/converge.png", 0,-1));
+    imageList.add(new Product("assets/images/flutterwithlogo.png", 1,-1));
+    imageList.add(new Product("assets/images/datepicker.png", 2,-1));
+    imageList.add(new Product("assets/images/converge.png", 3,-1));
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -182,12 +193,6 @@ class _CreateInvite extends State<CreateInvite> {
 
   categoryPictureSelectView() {
 
-    List<Product> imageList=new List<Product>();
-    imageList.add(new Product("assets/images/converge.png", 0,-1));
-    imageList.add(new Product("assets/images/flutterwithlogo.png", 1,-1));
-    imageList.add(new Product("assets/images/datepicker.png", 2,-1));
-    imageList.add(new Product("assets/images/converge.png", 3,-1));
-
     return new Container(
         margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
         child: Column(
@@ -206,18 +211,17 @@ class _CreateInvite extends State<CreateInvite> {
                 ],
               ),
             ),
-            new Container(
-              height: 150.0,
-              child: ListView(
-                  scrollDirection: Axis.horizontal,
-//                  padding: new EdgeInsets.symmetric(vertical: 8.0),
-                  children: imageList.map((Product product) {
-                    return new ImageListViewChecked(product);
-                  }).toList(),
-              ),
-            )
+            new ImageListViewChecked(this,imageList)
           ],
         ));
+  }
+
+
+  void imgSelected(int id){
+    setState(() {
+      catImageSelected = id;
+      print(catImageSelected.toString());
+    });
   }
 
   descriptionTextEdit() {
