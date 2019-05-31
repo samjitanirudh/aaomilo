@@ -145,13 +145,13 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
     if (_formKey.currentState.validate()) {
       setState(() => _isLoading = true);
       _formKey.currentState.save();
-//      navigationPage();
-      _loginPresenter.loginButtonOnClick(_email, _pwd);
+      navigationPage();
+//      _loginPresenter.loginButtonOnClick(_email, _pwd);
     }
   }
 
   void navigationPage() {
-    Navigator.of(context).pushReplacementNamed('/SkillSelection');
+    Navigator.of(context).pushReplacementNamed('/UpdateUserProfile');
   }
 
   void _showToast(BuildContext context, final String message) {
@@ -186,13 +186,17 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
   void loginSuccessfull() {
     // TODO: implement loginSuccessfull
     _showToast(bContext, "Login successfull");
+
     setState(() => _isLoading = false);
+    navigationPage();
   }
 
   @override
   void showLoginError() {
     // TODO: implement showLoginError
     _showToast(bContext, "Login unsuccessfull");
+
     setState(() => _isLoading = false);
+
   }
 }
