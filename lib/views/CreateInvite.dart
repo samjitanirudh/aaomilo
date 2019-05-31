@@ -512,7 +512,7 @@ class _CreateInvite extends State<CreateInvite> {
         new Material(
           elevation: 5.0,
           borderRadius: BorderRadius.circular(7.0),
-          color: Colors.red.shade700,
+          color: Colors.blue.shade900,
           child: MaterialButton(
             minWidth: MediaQuery.of(context).size.width * 0.8,
             padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),

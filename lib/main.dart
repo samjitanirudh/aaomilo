@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/skillSelection.dart';
 import 'package:flutter_meetup_login/splash_screen.dart';
-import 'package:flutter_meetup_login/views/CreateInvite.dart';
+import 'package:flutter_meetup_login/views/CutomListView.dart';
+import 'package:flutter_meetup_login/views/login_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       ),
       home: new SplashScreen(),
       routes: <String, WidgetBuilder>{
-        '/Loginscreen': (BuildContext context) => new CreateInvite(),
+        '/Loginscreen': (BuildContext context) => new loginScreen(),
         '/SkillSelection': (BuildContext context) => new SkillSelection()
       },
     );

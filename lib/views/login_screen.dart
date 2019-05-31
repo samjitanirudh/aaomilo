@@ -2,32 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/loginPresenter.dart';
 
 class loginScreen extends StatefulWidget {
-
-  loginScreen({ Key key }) : super(key: key);
+  loginScreen({Key key}) : super(key: key);
 
   @override
   _loginScreenState createState() => new _loginScreenState();
 }
 
-class _loginScreenState extends State<loginScreen> implements LoginCallbacks{
-  TextStyle style =
-      TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white,);
+class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
+  TextStyle style = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 20.0,
+    color: Colors.white,
+  );
   var _formKey = GlobalKey<FormState>();
   var _formview;
-  bool _isLoading=false;
+  bool _isLoading = false;
   String _email;
   String _pwd;
   LoginPresenter _loginPresenter;
   BuildContext bContext;
 
-  _loginScreenState(){
-    _loginPresenter= new LoginPresenter(this);
+  _loginScreenState() {
+    _loginPresenter = new LoginPresenter(this);
   }
 
   Widget loginUI(BuildContext context) {
     _formview = Container(
-        color: Colors.red,
         height: MediaQuery.of(context).size.height,
+        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        decoration: new BoxDecoration(
+//          color: Colors.blue.shade50,
+            image: new DecorationImage(
+                image: new AssetImage("assets/images/loginbg.jpg"),
+                fit: BoxFit.cover)),
         child: SingleChildScrollView(
             child: Form(
                 key: _formKey,
@@ -45,11 +52,25 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks{
                         ),
                       ),
                       SizedBox(height: 25.0),
-                      emailField(),
+                      new Theme(
+                          data: new ThemeData(
+                              hintColor: Colors.blue.shade100
+                          ),
+                          child:
+                          emailField(),
+                      ),
                       SizedBox(height: 25.0),
-                      passwordField(),
+                      new Theme(
+                          data: new ThemeData(
+                              hintColor: Colors.blue.shade100
+                          ),
+                          child:
+                            passwordField()
+                      ),
                       SizedBox(height: 25.0),
-                      _isLoading ? new CircularProgressIndicator() : loginButon(context),
+                      _isLoading
+                          ? new CircularProgressIndicator()
+                          : loginButon(context),
                     ]))));
     return _formview;
   }
@@ -65,12 +86,12 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks{
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Email",
+          hintStyle: TextStyle(color: Colors.white),
           errorStyle: TextStyle(
             color: Colors.white,
             wordSpacing: 5.0,
           ),
-          border:
-              UnderlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          border: new OutlineInputBorder(borderSide: new BorderSide(color: Colors.white))),
     );
   }
 
@@ -85,19 +106,21 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks{
         decoration: InputDecoration(
             contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
             hintText: "Password",
+            hintStyle: TextStyle(color: Colors.white),
             errorStyle: TextStyle(
               color: Colors.white,
               wordSpacing: 5.0,
             ),
-            border: UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(32.0))));
+//            border: new OutlineInputBorder(borderSide: new BorderSide(color: Colors.white))
+            border: new OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: new BorderSide(color: Colors.pink))
+        ));
   }
 
   Material loginButon(BuildContext context) {
     return new Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(7.0),
-      color: Colors.red.shade700,
+      color: Colors.blue.shade900,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width * 0.8,
         padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
@@ -114,11 +137,11 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks{
 
   @override
   Widget build(BuildContext context) {
-    bContext=context;
+    bContext = context;
     return Scaffold(body: Builder(builder: (context) => loginUI(context)));
   }
 
-  void _login(){
+  void _login() {
     if (_formKey.currentState.validate()) {
       setState(() => _isLoading = true);
       _formKey.currentState.save();
@@ -131,7 +154,7 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks{
     Navigator.of(context).pushReplacementNamed('/SkillSelection');
   }
 
-  void _showToast(BuildContext context,final String message) {
+  void _showToast(BuildContext context, final String message) {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
@@ -153,7 +176,7 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks{
   }
 
   String validatePwd(String value) {
-    if (value.length==0)
+    if (value.length == 0)
       return 'Enter passwpord';
     else
       return null;
@@ -162,15 +185,14 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks{
   @override
   void loginSuccessfull() {
     // TODO: implement loginSuccessfull
-    _showToast(bContext,"Login successfull");
+    _showToast(bContext, "Login successfull");
     setState(() => _isLoading = false);
   }
 
   @override
   void showLoginError() {
     // TODO: implement showLoginError
-    _showToast(bContext,"Login unsuccessfull");
+    _showToast(bContext, "Login unsuccessfull");
     setState(() => _isLoading = false);
   }
-
 }
