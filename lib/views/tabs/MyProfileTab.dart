@@ -10,6 +10,8 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfilePage extends State<MyProfile> {
+  TextStyle style =
+  TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white,);
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
