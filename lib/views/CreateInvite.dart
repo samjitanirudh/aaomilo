@@ -26,14 +26,30 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   int catImageSelected=-1;
   List<Product> imageList=new List<Product>();
   CreateInvitePreseter _createInvitePresenter;
+  bool categoryImageViewVisibility=false;
 
   void initState(){
     super.initState();
     _createInvitePresenter= new CreateInvitePreseter(this);
-    imageList.add(new Product("assets/images/converge.png", 0,-1));
-    imageList.add(new Product("assets/images/flutterwithlogo.png", 1,-1));
-    imageList.add(new Product("assets/images/datepicker.png", 2,-1));
-    imageList.add(new Product("assets/images/converge.png", 3,-1));
+//    imageList.add(new Product("assets/images/converge.png", 0,-1));
+//    imageList.add(new Product("assets/images/flutterwithlogo.png", 1,-1));
+//    imageList.add(new Product("assets/images/datepicker.png", 2,-1));
+//    imageList.add(new Product("assets/images/converge.png", 3,-1));
+  }
+
+  void changeCategoryImageViewVisibility(bool visible,String cat){
+    _createInvitePresenter.CreateInvite_getCategoryImages(cat);
+  }
+
+  @override
+  void updateCategoryImages(List<dynamic> images){
+    imageList.clear();
+    for(var i = 0; i < images.length; i++){
+      imageList.add(new Product(images[i]['imagepath'].toString(),int.parse(images[i]['id']),-1));
+    }
+    setState(() {
+      categoryImageViewVisibility=true;
+    });
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -92,7 +108,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
                     children: <Widget>[
                       titleTextEdit(),
                       categoryDropDownContainer(),
-                      categoryPictureSelectView(),
+                      categoryImageViewVisibility?categoryPictureSelectView():new Container(),
                       descriptionTextEdit(),
                       inviteMembersDropDownContainer(),
                       inviteDateTimeSelect(),
@@ -197,13 +213,31 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
           DropdownMenuItem<String>(
             value: "1",
             child: Text(
-              "Technology",
+              "Learning",
             ),
           ),
           DropdownMenuItem<String>(
             value: "2",
             child: Text(
-              "Music",
+              "Adventure",
+            ),
+          ),
+          DropdownMenuItem<String>(
+            value: "3",
+            child: Text(
+              "Health",
+            ),
+          ),
+          DropdownMenuItem<String>(
+            value: "4",
+            child: Text(
+              "Hobbies",
+            ),
+          ),
+          DropdownMenuItem<String>(
+            value: "5",
+            child: Text(
+              "Social",
             ),
           ),
         ],
@@ -212,6 +246,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
             state.didChange(value);
             _CategoryValue = value;
             _formdata['_CategoryValue']=_CategoryValue;
+            changeCategoryImageViewVisibility(true,value);
           });
         },
         value: _CategoryValue,

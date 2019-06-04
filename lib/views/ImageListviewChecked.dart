@@ -49,7 +49,7 @@ class ImageListViewCheckedState extends State<ImageListViewChecked> {
               width: 150,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: new AssetImage(product.categoryImage),
+                  image:  new NetworkImage("http://convergepro.xyz/meetupapi/cat_img/"+product.categoryImage),
                   fit: BoxFit.cover,
                 ),
               ),
