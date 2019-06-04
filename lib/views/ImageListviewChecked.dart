@@ -4,18 +4,19 @@ class ImageListViewChecked extends StatefulWidget {
   List<Product> imageList;
   ImageSelectedCallbacks callback;
   ImageListViewCheckedState ILC;
-  ImageListViewChecked(ImageSelectedCallbacks callback,List<Product> imageList)
-      : callback=callback,imageList=imageList,super(key: new ObjectKey(""));
+  FormFieldState<String> stateForm;
+  ImageListViewChecked(ImageSelectedCallbacks callback,List<Product> imageList,FormFieldState<String> state)
+      : callback=callback,imageList=imageList,stateForm=state,super(key: new ObjectKey(""));
 
   @override
   ImageListViewCheckedState createState() {
-    ILC =  new ImageListViewCheckedState(callback,imageList);
+    ILC =  new ImageListViewCheckedState(callback,imageList,stateForm);
     return ILC;
   }
 }
 
 abstract class ImageSelectedCallbacks {
-  void imgSelected(int id);
+  void imgSelected(int id,FormFieldState<String> state);
 }
 
 class Product {
@@ -26,15 +27,17 @@ class Product {
 }
 
 class ImageListViewCheckedState extends State<ImageListViewChecked> {
-  List<Product> imageList=new List<Product>();
+  List<Product> imageList = new List<Product>();
   ImageSelectedCallbacks callback;
   int groupChoice;
-  ImageListViewCheckedState(this.callback, this.imageList);
+  FormFieldState<String> stateForm;
+
+  ImageListViewCheckedState(this.callback, this.imageList,this.stateForm);
 
 
   @override
   Widget build(BuildContext context) {
-      return new Container(
+    return new Container(
       height: 150.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
@@ -52,17 +55,19 @@ class ImageListViewCheckedState extends State<ImageListViewChecked> {
               ),
               alignment: Alignment(1, 1),
               child:
-              new Radio(value: product.isCheck, groupValue: groupChoice,onChanged:_handleRadioValueChange1)
+              new Radio(value: product.isCheck,
+                  groupValue: groupChoice,
+                  onChanged: _handleRadioValueChange1)
           );
         }).toList(),
       ),
     );
-
   }
 
   void _handleRadioValueChange1(int value) {
 //    setState(() {
-      groupChoice=value;
-      callback.imgSelected(value);
+    groupChoice = value;
+    callback.imgSelected(value,stateForm);
 //    });
   }
+}
