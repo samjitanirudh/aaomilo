@@ -14,7 +14,7 @@ class Skill{
 
 class SkillClass{
 
-  var uri ="http://convergepro.xyz/meetupapi/work/action.php?action=venue";
+  var uri ="http://convergepro.xyz/meetupapi/work/action.php?action=skills";
   static List<Skill> skillList = new List();
 
   List<Skill> getSkillList(){
