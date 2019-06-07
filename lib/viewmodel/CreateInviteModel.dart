@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:http/http.dart' as http;
 
 class CreateInviteModel {
+
   var txtInviteTitle;
   var txtInviteCategory;
   var inviteImg;
@@ -11,23 +12,11 @@ class CreateInviteModel {
   var noInvitees;
   var txtDate, txtTime;
   var txtVanue;
-  var inviteAPI="";
 
-  getInviteTitle() => txtInviteTitle;
+  var inviteAPI         = "http://convergepro.xyz/meetupapi/work/action.php";
+  var categoryImageAPI  = "http://convergepro.xyz/meetupapi/work/action.php?cat_img=";
 
-  getInviteCategory() => txtInviteCategory;
-
-  getInviteImg() => inviteImg;
-
-  gettxtInviteDesc() => txtInviteDesc;
-
-  getNoInvitees() => noInvitees;
-
-  getDate() => txtDate;
-
-  getTime() => txtTime;
-
-  getVanue() => txtVanue;
+  Map<String, String> headers = new Map();
 
   setInviteTitle(var title) => this.txtInviteTitle = title;
 
@@ -45,8 +34,11 @@ class CreateInviteModel {
 
   setInviteVanue(var vanue) => this.txtVanue = vanue;
 
-  Future<String> invitePostRequest(CreateInviteModel cInvite) {
-    return postInvites(inviteAPI, body: getPostParams())
+
+  Future<String> invitePostRequest() {
+    headers['Content-type']="application/x-www-form-urlencoded";
+    var encoding = Encoding.getByName('utf-8');
+    return postInvites(inviteAPI,headers: headers, body: getPostParams(),encoding: encoding)
         .then((String res) {
       print(res.toString());
       if (res == null) throw new Exception("error");
@@ -59,7 +51,7 @@ class CreateInviteModel {
     return http
         .post(url, body: body, headers: headers, encoding: encoding)
         .then((http.Response response) {
-      final int statusCode = 100; //response.statusCode;
+      final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error while fetching data");
       }
@@ -68,15 +60,27 @@ class CreateInviteModel {
   }
 
   String getPostParams(){
-    String title = 'title='+this.getInviteTitle()+'&';
-    String category = 'category='+this.getInviteCategory()+'&';
-    String categoryImage = 'categoryImg='+this.getInviteImg()+'&';
-    String descr = 'descr='+this.gettxtInviteDesc()+'&';
-    String noinvite = 'max_invite='+this.getNoInvitees()+'&';
-    String date = 'invite_date='+this.getDate()+'&';
-    String time = 'invite_time='+this.getTime()+'&';
-    String vanue = 'invite_vanue='+this.getVanue();
-    return title+category+categoryImage+descr+noinvite+date+vanue;
+    String action='action=invite&';
+    String title = 'title='+txtInviteTitle+'&';
+    String category = 'category_id='+txtInviteCategory+'&';
+    String categoryImage = 'image_id='+inviteImg+'&';
+    String descr = 'description='+txtInviteDesc+'&';
+    String noinvite = 'allowed_member_count='+noInvitees+'&';
+    String date = 'created_date='+txtDate+'&';
+    String time = 'time='+txtTime+'&';
+    String vanue = 'venue_id='+txtVanue+'&';
+    String user = 'created_by=App';
+    return action+title+category+categoryImage+descr+noinvite+date+time+vanue;
   }
 
+  Future<String> getCategoryPicUrls(String category) {
+    return http.get(categoryImageAPI+category)
+        .then((http.Response response) {
+      final int statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode > 400 || json == null) {
+        throw new Exception("Error while fetching data");
+      }
+      return response.body;
+    });
+  }
 }

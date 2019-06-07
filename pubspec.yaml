@@ -53,10 +53,11 @@ flutter:
    - assets/images/loginbg.jpg
    - assets/images/profile.png
    - assets/images/photo_camera.png
-   - assets/yoga.jpg
-   - assets/group.png
-   - assets/comment.png
-   - assets/favourites.png
+   - assets/images/yoga.jpg
+   - assets/images/group.png
+   - assets/images/comment.png
+   - assets/images/favourites.png
+   - assets/images/pulse.gif
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/CreateInvitePresenter.dart';
+import 'package:flutter_meetup_login/viewmodel/Categories.dart';
+import 'package:flutter_meetup_login/viewmodel/Venue.dart';
 import 'package:flutter_meetup_login/views/ImageListviewChecked.dart';
 
 class CreateInvite extends StatefulWidget {
@@ -15,7 +17,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   var _formKey = GlobalKey<FormState>();
   var _formview;
   Map _formdata=new Map();
-  bool _isLoading = false;
+  bool _isLoading = false,_dataLoadingAPI=false;
   BuildContext bContext;
   var _CategoryValue,_description,_max_people;
   DateTime selectedDate = DateTime.now();
@@ -31,10 +33,6 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   void initState(){
     super.initState();
     _createInvitePresenter= new CreateInvitePreseter(this);
-//    imageList.add(new Product("assets/images/converge.png", 0,-1));
-//    imageList.add(new Product("assets/images/flutterwithlogo.png", 1,-1));
-//    imageList.add(new Product("assets/images/datepicker.png", 2,-1));
-//    imageList.add(new Product("assets/images/converge.png", 3,-1));
   }
 
   void changeCategoryImageViewVisibility(bool visible,String cat){
@@ -49,6 +47,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
     }
     setState(() {
       categoryImageViewVisibility=true;
+      _dataLoadingAPI=false;
     });
   }
 
@@ -78,20 +77,25 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
         appBar: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Colors.blue.shade900,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                new FlutterLogo(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: new Text(
-                    "Create new invite",
-                  ),
-                ),
-              ],
-            )),
+            title: appbarTitle()),
         body: Builder(builder: (context) => createInviteUI(context)));
+  }
+
+  Widget appbarTitle(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        new FlutterLogo(),
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: new Text(
+            "Create new invite",
+          ),
+        ),
+        _dataLoadingAPI?new CircularProgressIndicator():new Container()
+      ],
+    );
   }
 
   Widget createInviteUI(BuildContext context) {
@@ -209,43 +213,13 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   }
 
   DropdownButton _CategoryDropDown(FormFieldState<String> state) => DropdownButton<String>(
-        items: [
-          DropdownMenuItem<String>(
-            value: "1",
-            child: Text(
-              "Learning",
-            ),
-          ),
-          DropdownMenuItem<String>(
-            value: "2",
-            child: Text(
-              "Adventure",
-            ),
-          ),
-          DropdownMenuItem<String>(
-            value: "3",
-            child: Text(
-              "Health",
-            ),
-          ),
-          DropdownMenuItem<String>(
-            value: "4",
-            child: Text(
-              "Hobbies",
-            ),
-          ),
-          DropdownMenuItem<String>(
-            value: "5",
-            child: Text(
-              "Social",
-            ),
-          ),
-        ],
+        items: getCategoryList(),
         onChanged: (value) {
           setState(() {
             state.didChange(value);
             _CategoryValue = value;
             _formdata['_CategoryValue']=_CategoryValue;
+            _dataLoadingAPI=true;
             changeCategoryImageViewVisibility(true,value);
           });
         },
@@ -259,6 +233,24 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
           ),
         ),
       );
+
+  List<DropdownMenuItem<String>> getCategoryList(){
+    List<Categories> cList = new CategoryClass().getCategoryList();
+    List<DropdownMenuItem<String>> dropDownList = new List<DropdownMenuItem<String>>();
+    for(int i=0;i<cList.length;i++){
+      Categories cat = cList[i];
+      DropdownMenuItem<String> listItem = new DropdownMenuItem<String>(
+        value: cat.txtID,
+        child: Text(
+          cat.txtCategoryName,
+        ),
+      );
+      dropDownList.add(listItem);
+    }
+    return dropDownList;
+  }
+
+
 
   categoryPictureSelectView() {
 
@@ -488,7 +480,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
                         padding: const EdgeInsets.all(1.0),
                         child: FormField<String>(
                           validator: (value) {
-                            if (value == null) {
+                            if (value == null || value=="-1") {
                               return "Please select time!";
                             }else return null;
                           },
@@ -564,13 +556,13 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
     var tt = 540; // start time
     var ap = ['AM', 'PM']; // AM-PM
     List timedata = new List();
-    timedata.add("Please select time");
+//    timedata.add("Please select time");
     //loop to increment the time and push results in array
     for (var i = 0; tt < 20 * 60; i++) {
       // only allowing time slot till 7:30PM
       int hh = (tt / 60).floor(); // getting hours of day in 0-24 format
       var mm = (tt % 60); // getting minutes of the hour in 0-55 format
-      String hourvalue = "0" + (hh % 12).toString();
+      String hourvalue = "0" + (hh % 24).toString();
       String minvalue = "0" + mm.toString();
 
       String times = (hourvalue.substring(
@@ -589,6 +581,14 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   List<DropdownMenuItem<String>> getcombinedData(List timedata) {
     List<DropdownMenuItem<String>> listTime =
         new List<DropdownMenuItem<String>>();
+
+    DropdownMenuItem<String> defaultValue = new DropdownMenuItem<String>(
+      child: new Text("Please select time",style: new TextStyle(fontSize: 12),),
+      value: "-1",
+    );
+
+    listTime.add(defaultValue);
+
     for (var i = 0; i < ((timedata.length - 1)); i++) {
       var data1 = timedata[i];
       var data2 = timedata[i + 1];
@@ -645,32 +645,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   }
 
   DropdownButton _VanueDropDown(FormFieldState<String> state) => DropdownButton<String>(
-    items: [
-      DropdownMenuItem<String>(
-        value: "1",
-        child: Text(
-          "7th floor cafetaria",
-        ),
-      ),
-      DropdownMenuItem<String>(
-        value: "2",
-        child: Text(
-          "9th floor cafetaria",
-        ),
-      ),
-      DropdownMenuItem<String>(
-        value: "3",
-        child: Text(
-          "TS CCD",
-        ),
-      ),
-      DropdownMenuItem<String>(
-        value: "4",
-        child: Text(
-          "Ground floor teapost",
-        ),
-      ),
-    ],
+    items: getVenueList(),
     onChanged: (value) {
       setState(() {
         state.didChange(value);
@@ -688,6 +663,23 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
       ),
     ),
   );
+
+  List<DropdownMenuItem<String>> getVenueList(){
+    List<DropdownMenuItem<String>> vList= new List<DropdownMenuItem<String>>();
+    List<Venue> venueList = VenueClass().getVenueList();
+
+    for(int i=0;i<venueList.length;i++){
+      Venue vValue = venueList[i];
+      DropdownMenuItem<String> vItem =new DropdownMenuItem<String>(
+        value: vValue.txtID,
+        child: Text(
+            vValue.txtVenue
+        ),
+      );
+      vList.add(vItem);
+    }
+    return vList;
+  }
 
   createInviteButton(){
     return

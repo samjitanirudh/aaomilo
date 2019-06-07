@@ -1,4 +1,5 @@
 import 'package:flutter_meetup_login/viewmodel/CreateInviteModel.dart';
+import 'dart:convert';
 
 class CreateInvitePreseter{
 
@@ -12,7 +13,8 @@ class CreateInvitePreseter{
 
   CreateInviteOnClick(Map params) async {
     try{
-      String response = await _createInviteModel.invitePostRequest(setParams(params));
+      _createInviteModel = setParams(params);
+      String response = await _createInviteModel.invitePostRequest();
       if(response!=null) {
         _callbacks.createdSuccessfull();
       }
@@ -20,6 +22,21 @@ class CreateInvitePreseter{
       _callbacks.showLoginError();
     }
   }
+
+  CreateInvite_getCategoryImages(String category) async {
+    try{
+      _createInviteModel = new CreateInviteModel();
+      String response = await _createInviteModel.getCategoryPicUrls(category);
+      if(response!=null) {
+        List<dynamic> images= json.decode(Uri.decodeFull(response));
+        _callbacks.updateCategoryImages(images);
+//        print(images[0]['imagepath']);
+      }
+    }on Exception catch(error) {
+
+    }
+  }
+
 
   CreateInviteModel setParams(Map param)
   {
@@ -39,4 +56,5 @@ class CreateInvitePreseter{
 abstract class InviteCallbacks {
   void createdSuccessfull();
   void showLoginError();
+  void updateCategoryImages(List<dynamic> images);
 }

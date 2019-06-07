@@ -8,6 +8,7 @@ class ImageListViewChecked extends StatefulWidget {
   ImageListViewChecked(ImageSelectedCallbacks callback,List<Product> imageList,FormFieldState<String> state)
       : callback=callback,imageList=imageList,stateForm=state,super(key: new ObjectKey(""));
 
+
   @override
   ImageListViewCheckedState createState() {
     ILC =  new ImageListViewCheckedState(callback,imageList,stateForm);
@@ -31,6 +32,7 @@ class ImageListViewCheckedState extends State<ImageListViewChecked> {
   ImageSelectedCallbacks callback;
   int groupChoice;
   FormFieldState<String> stateForm;
+  String imageUrl = "http://convergepro.xyz/meetupapi/cat_img/";
 
   ImageListViewCheckedState(this.callback, this.imageList,this.stateForm);
 
@@ -44,12 +46,21 @@ class ImageListViewCheckedState extends State<ImageListViewChecked> {
 //                  padding: new EdgeInsets.symmetric(vertical: 8.0),
 
         children: imageList.map((Product product) {
+          bool loaded=false;
+          NetworkImage nI= new NetworkImage(imageUrl+product.categoryImage);
+          nI.resolve(new ImageConfiguration()).addListener((_,__){
+            if(mounted){
+                setState(() {
+                  loaded=true;
+                });
+            }
+          });
           return new Container(
               height: 150,
               width: 150,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image:  new NetworkImage("http://convergepro.xyz/meetupapi/cat_img/"+product.categoryImage),
+                  image:  loaded?nI:AssetImage("assets/images/pulse.gif"),
                   fit: BoxFit.cover,
                 ),
               ),
