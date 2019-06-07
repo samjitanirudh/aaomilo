@@ -33,7 +33,9 @@ class _MyProfilePage extends State<MyProfile> {
           actions: <Widget>[
             new IconButton(
               icon: new Icon(Icons.search),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed('/UpdateUserProfileScreen');
+              },
             ),
             new IconButton(
               icon: new Icon(Icons.menu),
@@ -75,7 +77,7 @@ class _MyProfilePage extends State<MyProfile> {
                           child: Padding(
                               padding: EdgeInsets.all(8),
                               child: new Text(
-                                "Monika Jain",
+                                "Samuel John",
                                 style: TextStyle(
                                     fontSize: 24,
                                     fontStyle: FontStyle.normal,
@@ -116,8 +118,8 @@ class _MyProfilePage extends State<MyProfile> {
                         child: Padding(
                             padding: EdgeInsets.all(12),
                             child: new Text(
-                              "I am an Android Developer, working with SGDBF group Point.P team. "
-                                  "I am asscoiated with the organisation since 5 years.",
+                              "I am an Software Engineer, working with Saint-Gobain Group. "
+                                  "I am asscoiated with the organisation since 10 years.",
                               style: TextStyle(
                                   fontSize: 18,
                                   fontStyle: FontStyle.normal,

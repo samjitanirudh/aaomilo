@@ -116,7 +116,7 @@ class _SkillSelectionState extends State<SkillSelection> {
         minWidth: MediaQuery.of(context).size.width * 0.8,
         padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
         onPressed: () {
-          //_login();
+          Navigator.of(context).pushReplacementNamed('/UpdateUserProfileScreen');
         },
         child: Text("SAVE",
             textAlign: TextAlign.center,

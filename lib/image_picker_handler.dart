@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 
 
+
 class ImagePickerHandler {
   ImagePickerDialog imagePicker;
   AnimationController _controller;
@@ -26,7 +27,11 @@ class ImagePickerHandler {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     cropImage(image);
   }
-
+removePicture() async {
+  imagePicker.dismissDialog();
+  var image = null;
+  cropImage(image);
+}
   void init() {
     imagePicker = new ImagePickerDialog(this, _controller);
     imagePicker.initState();

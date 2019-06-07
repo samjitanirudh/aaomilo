@@ -151,7 +151,7 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
   }
 
   void navigationPage() {
-    Navigator.of(context).pushReplacementNamed('/UpdateUserProfile');
+    Navigator.of(context).pushReplacementNamed('/UpdateUserProfileScreen');
   }
 
   void _showToast(BuildContext context, final String message) {

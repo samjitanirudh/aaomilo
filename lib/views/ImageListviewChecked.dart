@@ -26,15 +26,16 @@ class Product {
 }
 
 class ImageListViewCheckedState extends State<ImageListViewChecked> {
-  List<Product> imageList=new List<Product>();
+  List<Product> imageList = new List<Product>();
   ImageSelectedCallbacks callback;
   int groupChoice;
+
   ImageListViewCheckedState(this.callback, this.imageList);
 
 
   @override
   Widget build(BuildContext context) {
-      return new Container(
+    return new Container(
       height: 150.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
@@ -52,17 +53,19 @@ class ImageListViewCheckedState extends State<ImageListViewChecked> {
               ),
               alignment: Alignment(1, 1),
               child:
-              new Radio(value: product.isCheck, groupValue: groupChoice,onChanged:_handleRadioValueChange1)
+              new Radio(value: product.isCheck,
+                  groupValue: groupChoice,
+                  onChanged: _handleRadioValueChange1)
           );
         }).toList(),
       ),
     );
-
   }
 
   void _handleRadioValueChange1(int value) {
 //    setState(() {
-      groupChoice=value;
-      callback.imgSelected(value);
+    groupChoice = value;
+    callback.imgSelected(value);
 //    });
   }
+}
