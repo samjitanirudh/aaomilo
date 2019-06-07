@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetup_login/presenter/CreateInvitePresenter.dart';
 import 'package:flutter_meetup_login/views/ImageListviewChecked.dart';
 
 class CreateInvite extends StatefulWidget {
@@ -8,29 +9,47 @@ class CreateInvite extends StatefulWidget {
   _CreateInvite createState() => new _CreateInvite();
 }
 
-class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallbacks{
+class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallbacks,InviteCallbacks{
   static final TextStyle textStyle = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.blue.shade900);
   var _formKey = GlobalKey<FormState>();
   var _formview;
+  Map _formdata=new Map();
   bool _isLoading = false;
   BuildContext bContext;
-  var _CategoryValue;
+  var _CategoryValue,_description,_max_people;
   DateTime selectedDate = DateTime.now();
-  String selectedDateValue = "";
+  String _title,selectedDateValue = "";
   String selectedTimeValue = "0";
   List inviteTimeRange = new List();
-  var _VanueValue; // time array for invites
+  var _vanueValue; // time array for invites
   int catImageSelected=-1;
-
   List<Product> imageList=new List<Product>();
+  CreateInvitePreseter _createInvitePresenter;
+  bool categoryImageViewVisibility=false;
 
   void initState(){
     super.initState();
-    imageList.add(new Product("assets/images/converge.png", 0,-1));
-    imageList.add(new Product("assets/images/flutterwithlogo.png", 1,-1));
-    imageList.add(new Product("assets/images/datepicker.png", 2,-1));
-    imageList.add(new Product("assets/images/converge.png", 3,-1));
+    _createInvitePresenter= new CreateInvitePreseter(this);
+//    imageList.add(new Product("assets/images/converge.png", 0,-1));
+//    imageList.add(new Product("assets/images/flutterwithlogo.png", 1,-1));
+//    imageList.add(new Product("assets/images/datepicker.png", 2,-1));
+//    imageList.add(new Product("assets/images/converge.png", 3,-1));
+  }
+
+  void changeCategoryImageViewVisibility(bool visible,String cat){
+    _createInvitePresenter.CreateInvite_getCategoryImages(cat);
+  }
+
+  @override
+  void updateCategoryImages(List<dynamic> images){
+    imageList.clear();
+    for(var i = 0; i < images.length; i++){
+      imageList.add(new Product(images[i]['imagepath'].toString(),int.parse(images[i]['id']),-1));
+    }
+    setState(() {
+      categoryImageViewVisibility=true;
+    });
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -42,16 +61,18 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        selectedDateValue = selectedDate.day.toString() +
-            '/' +
+        selectedDateValue = selectedDate.year.toString() +
+            '-' +
             selectedDate.month.toString() +
-            '/' +
-            selectedDate.year.toString();
+            '-' +
+            selectedDate.day.toString();
+        _formdata['selectedDateValue']=selectedDateValue;
       });
   }
 
   @override
   Widget build(BuildContext context) {
+
     bContext = context;
     return Scaffold(
         appBar: AppBar(
@@ -87,14 +108,17 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
                     children: <Widget>[
                       titleTextEdit(),
                       categoryDropDownContainer(),
-                      categoryPictureSelectView(),
+                      categoryImageViewVisibility?categoryPictureSelectView():new Container(),
                       descriptionTextEdit(),
                       inviteMembersDropDownContainer(),
                       inviteDateTimeSelect(),
                       vanueDropDownContainer(),
                       Center(
-                        child: createInviteButton(),
-                      )
+                        child: _isLoading
+                            ? new CircularProgressIndicator()
+                            : createInviteButton(),
+                      ),
+                      SizedBox(height: 15.0)
 
                     ]))));
     return _formview;
@@ -121,14 +145,21 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
           new TextFormField(
             obscureText: false,
             style: textStyle,
+            validator:(String arg){
+              if(arg.length < 3)
+                return 'Name must be more than 2 charater';
+              else
+                return null;
+            },
             onSaved: (String val) {
-              //_email = val;
+              _title = val;
+              _formdata['_title']=_title;
             },
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                 hintText: "i.e. Explaining flutter univers",
                 errorStyle: TextStyle(
-                  color: Colors.white,
+                  color: Colors.red,
                   wordSpacing: 5.0,
                 ),
                 border: UnderlineInputBorder(
@@ -155,29 +186,67 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
                 ],
               ),
             ),
-            _CategoryDropDown()
+            FormField<String>(
+                validator: (value) {
+                  if (value == null) {
+                    return "Select category";
+                  }else return null;
+                },
+                onSaved: (value) {
+                  _formdata['_CategoryValue'] = value;
+                },
+                builder: (FormFieldState<String> state,) {
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[_CategoryDropDown(state),SizedBox(height: 5.0),
+                  Text(
+                  state.hasError ? state.errorText : '',
+                  style:
+                  TextStyle(color: Colors.redAccent.shade700, fontSize: 12.0))]);
+                })
           ],
         ));
   }
 
-  DropdownButton _CategoryDropDown() => DropdownButton<String>(
+  DropdownButton _CategoryDropDown(FormFieldState<String> state) => DropdownButton<String>(
         items: [
           DropdownMenuItem<String>(
             value: "1",
             child: Text(
-              "Technology",
+              "Learning",
             ),
           ),
           DropdownMenuItem<String>(
             value: "2",
             child: Text(
-              "Music",
+              "Adventure",
+            ),
+          ),
+          DropdownMenuItem<String>(
+            value: "3",
+            child: Text(
+              "Health",
+            ),
+          ),
+          DropdownMenuItem<String>(
+            value: "4",
+            child: Text(
+              "Hobbies",
+            ),
+          ),
+          DropdownMenuItem<String>(
+            value: "5",
+            child: Text(
+              "Social",
             ),
           ),
         ],
         onChanged: (value) {
           setState(() {
+            state.didChange(value);
             _CategoryValue = value;
+            _formdata['_CategoryValue']=_CategoryValue;
+            changeCategoryImageViewVisibility(true,value);
           });
         },
         value: _CategoryValue,
@@ -211,16 +280,37 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
                 ],
               ),
             ),
-            new ImageListViewChecked(this,imageList)
+            FormField<String>(
+                validator: (value) {
+                  if (value == null) {
+                    return "Select category image";
+                  }else return null;
+                },
+                onSaved: (value) {
+                  _formdata['catImageSelected'] = value;
+                },
+                builder: (FormFieldState<String> state,) {
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new ImageListViewChecked(this,imageList,state),
+                        SizedBox(height: 5.0),
+                      Text(
+                          state.hasError ? state.errorText : '',
+                          style:
+                          TextStyle(color: Colors.redAccent.shade700, fontSize: 12.0))]);
+                })
+            ,
           ],
         ));
   }
 
-
-  void imgSelected(int id){
+  void imgSelected(int id,FormFieldState<String> state){
     setState(() {
+      state.didChange(id.toString());
+      _formdata['catImageSelected'] = id;
       catImageSelected = id;
-      print(catImageSelected.toString());
+      //print(catImageSelected.toString());
     });
   }
 
@@ -248,20 +338,44 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
             keyboardType: TextInputType.multiline,
             maxLines: 4,
             onSaved: (String val) {
-              //_email = val;
+              _description = val;
+              _formdata['_description']=_description;
             },
+            validator: (String arg){
+              if(arg.length<10){
+                return   "Please describe invite in detail! Atleast 150 characters";
+              }else
+                return null;
+            },
+            buildCounter: counter,
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                 hintText: "i.e. Describe your invites...",
                 errorStyle: TextStyle(
-                  color: Colors.white,
-                  wordSpacing: 5.0,
+                  color: Colors.red,
+                  wordSpacing: 1.0,
+                  fontSize: 10
                 ),
                 border: UnderlineInputBorder(
                     borderRadius: BorderRadius.circular(32.0))),
           ),
         ],
       ),
+    );
+  }
+
+  Widget counter(
+      BuildContext context,
+      {
+        int currentLength,
+        int maxLength,
+        bool isFocused,
+      }
+      ) {
+    return Text(
+      '($currentLength)',
+      semanticsLabel: 'character count',
+      style: TextStyle(color: Colors.amber.shade600,fontSize: 12),
     );
   }
 
@@ -281,12 +395,30 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
                 ],
               ),
             ),
-            _inviteMembersDropDown()
+            FormField<String>(
+                validator: (value) {
+                  if (value == null) {
+                    return "Select max no. people";
+                  }else return null;
+                },
+                onSaved: (value) {
+                  _formdata['_max_people'] = value;
+                },
+                builder: (FormFieldState<String> state,) {
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[_inviteMembersDropDown(state),SizedBox(height: 5.0),
+                      Text(
+                          state.hasError ? state.errorText : '',
+                          style:
+                          TextStyle(color: Colors.redAccent.shade700, fontSize: 10.0))]);
+                })
+            ,
           ],
         ));
   }
 
-  DropdownButton _inviteMembersDropDown() => DropdownButton<String>(
+  DropdownButton _inviteMembersDropDown(FormFieldState<String> state) => DropdownButton<String>(
         items: [
           DropdownMenuItem<String>(
             value: "1",
@@ -303,14 +435,16 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
         ],
         onChanged: (value) {
           setState(() {
-            _CategoryValue = value;
+            state.didChange(value);
+            _max_people = value;
+            _formdata['_max_people']=_max_people;
           });
         },
-        value: _CategoryValue,
+        value: _max_people,
         elevation: 2,
         isDense: true,
         hint: Text(
-          "Select!",
+          "Select max no. people who can join!",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -351,12 +485,27 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
                           style: new TextStyle(fontWeight: FontWeight.bold,)),
                       SizedBox(height: 5.0),
                       new Container(
-                        padding: const EdgeInsets.all(3.0),
-                        decoration: new BoxDecoration(
-                            borderRadius:BorderRadius.all(Radius.circular(32.0)),
-                            border: new Border.all(color: Colors.black38)
-                        ),
-                        child:inviteTimePicker(),
+                        padding: const EdgeInsets.all(1.0),
+                        child: FormField<String>(
+                          validator: (value) {
+                            if (value == null) {
+                              return "Please select time!";
+                            }else return null;
+                          },
+                          onSaved: (value) {
+                            _formdata['selectedTimeValue'] = value;
+                          },
+                          builder: (FormFieldState<String> state,) {
+                            return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  inviteTimePicker(state),
+                                  SizedBox(height: 5.0),
+                                  Text(
+                                      state.hasError ? state.errorText : '',
+                                      style:
+                                      TextStyle(color: Colors.redAccent.shade700, fontSize: 10.0))]);
+                          }),
                       )
                     ]
                 )
@@ -373,30 +522,37 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
       onSaved: (String val) {
         //_email = val;
         selectedDateValue = val;
+        _formdata['selectedDateValue']=selectedDateValue;
+      },
+      validator: (String val){
+        if(val.length<5){
+          return "Select date!";
+        }
+        else{
+          return null;
+        }
       },
       controller: new TextEditingController(text: selectedDateValue),
       decoration: InputDecoration(
           hintText: "Select date",
           errorStyle: TextStyle(
-            fontSize: 12,
-            color: Colors.white,
+            fontSize: 10,
+            color: Colors.red,
             wordSpacing: 5.0,
           ),
           suffixIcon:new IconButton(icon: Image.asset("assets/images/datepicker.png",width: 24,height: 24,), onPressed: (){
             _selectDate(context);
-          }),
-
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          })),
     );
   }
 
-  DropdownButton inviteTimePicker() {
+  DropdownButton inviteTimePicker(FormFieldState<String> state) {
     return new DropdownButton(
         items: getTimeRanges(),
         value: selectedTimeValue,
         onChanged: (value) {
           setState(() {
+            state.didChange(value);
             selectedTimeValue = value;
           });
         },
@@ -408,6 +564,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
     var tt = 540; // start time
     var ap = ['AM', 'PM']; // AM-PM
     List timedata = new List();
+    timedata.add("Please select time");
     //loop to increment the time and push results in array
     for (var i = 0; tt < 20 * 60; i++) {
       // only allowing time slot till 7:30PM
@@ -463,12 +620,31 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
                 ],
               ),
             ),
-            _VanueDropDown()
+            FormField<String>(
+                validator: (value) {
+                  if (value == null) {
+                    return "Please select venue!";
+                  }else return null;
+                },
+                onSaved: (value) {
+                  _formdata['_vanueValue'] = value;
+                },
+                builder: (FormFieldState<String> state,) {
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _VanueDropDown(state),
+                        SizedBox(height: 5.0),
+                        Text(
+                            state.hasError ? state.errorText : '',
+                            style:
+                            TextStyle(color: Colors.redAccent.shade700, fontSize: 10.0))]);
+                })
           ],
         ));
   }
 
-  DropdownButton _VanueDropDown() => DropdownButton<String>(
+  DropdownButton _VanueDropDown(FormFieldState<String> state) => DropdownButton<String>(
     items: [
       DropdownMenuItem<String>(
         value: "1",
@@ -497,10 +673,12 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
     ],
     onChanged: (value) {
       setState(() {
-        _VanueValue = value;
+        state.didChange(value);
+        _vanueValue = value;
+        _formdata['_vanueValue']=_vanueValue;
       });
     },
-    value: _VanueValue,
+    value: _vanueValue,
     elevation: 2,
     isDense: true,
     hint: Text(
@@ -521,7 +699,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
             minWidth: MediaQuery.of(context).size.width * 0.8,
             padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
             onPressed: () {
-              //
+              validateParams();
             },
             child: Text("Create invite",
                 textAlign: TextAlign.center,
@@ -529,5 +707,68 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
                     color: Colors.white, fontWeight: FontWeight.bold)),
           ),
         );
+  }
+
+  @override
+  void createdSuccessfull() {
+    // TODO: implement createdSuccessfull
+     _showDialog(bContext,"Create Invite","Invite succesfully created, Check My Events screen!");
+     _formKey.currentState.reset();
+     setState(() => _isLoading = false);
+  }
+
+  @override
+  void showLoginError() {
+    // TODO: implement showLoginError
+    _showDialog(bContext,"Create Invite","Error while Creating invite, please try again!");
+    setState(() => _isLoading = false);
+  }
+
+  void validateParams(){
+
+    if(catImageSelected==-1){
+      _showDialog(bContext, "Category Image", "Please select category image!");
+      return;
+    }
+    if (_formKey.currentState.validate()) {
+      setState(() => _isLoading = true);
+      _formKey.currentState.save();
+      Map params = new Map();
+      params['title']=_formdata['_title'];
+      params['category']=_formdata['_CategoryValue'];
+      params['img']=_formdata['catImageSelected'];
+      params['desc']=_formdata['_description'];
+
+      params['date']=_formdata['selectedDateValue'];
+      params['time']=_formdata['selectedTimeValue'];
+      params['max_invite']=_formdata['_max_people'];
+      params['vanue']=_formdata['_vanueValue'];
+      print(params.toString());
+      _createInvitePresenter.CreateInviteOnClick(params);
+    }
+  }
+
+  //Dialog to notify user about invite creation result
+  void _showDialog(BuildContext context,String title, String content) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(title),
+          content: new Text(content),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

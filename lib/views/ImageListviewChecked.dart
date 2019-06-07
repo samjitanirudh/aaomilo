@@ -4,18 +4,19 @@ class ImageListViewChecked extends StatefulWidget {
   List<Product> imageList;
   ImageSelectedCallbacks callback;
   ImageListViewCheckedState ILC;
-  ImageListViewChecked(ImageSelectedCallbacks callback,List<Product> imageList)
-      : callback=callback,imageList=imageList,super(key: new ObjectKey(""));
+  FormFieldState<String> stateForm;
+  ImageListViewChecked(ImageSelectedCallbacks callback,List<Product> imageList,FormFieldState<String> state)
+      : callback=callback,imageList=imageList,stateForm=state,super(key: new ObjectKey(""));
 
   @override
   ImageListViewCheckedState createState() {
-    ILC =  new ImageListViewCheckedState(callback,imageList);
+    ILC =  new ImageListViewCheckedState(callback,imageList,stateForm);
     return ILC;
   }
 }
 
 abstract class ImageSelectedCallbacks {
-  void imgSelected(int id);
+  void imgSelected(int id,FormFieldState<String> state);
 }
 
 class Product {
@@ -29,8 +30,9 @@ class ImageListViewCheckedState extends State<ImageListViewChecked> {
   List<Product> imageList = new List<Product>();
   ImageSelectedCallbacks callback;
   int groupChoice;
+  FormFieldState<String> stateForm;
 
-  ImageListViewCheckedState(this.callback, this.imageList);
+  ImageListViewCheckedState(this.callback, this.imageList,this.stateForm);
 
 
   @override
@@ -47,7 +49,7 @@ class ImageListViewCheckedState extends State<ImageListViewChecked> {
               width: 150,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: new AssetImage(product.categoryImage),
+                  image:  new NetworkImage("http://convergepro.xyz/meetupapi/cat_img/"+product.categoryImage),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -65,7 +67,7 @@ class ImageListViewCheckedState extends State<ImageListViewChecked> {
   void _handleRadioValueChange1(int value) {
 //    setState(() {
     groupChoice = value;
-    callback.imgSelected(value);
+    callback.imgSelected(value,stateForm);
 //    });
   }
 }
