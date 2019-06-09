@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/image_picker_handler.dart';
+import 'package:flutter_meetup_login/presenter/ProfileUpdatePresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Skills.dart';
 import 'package:flutter_meetup_login/views/MultiSelectChoiceView.dart';
@@ -15,21 +16,18 @@ class UpdateUserProfileScreen extends StatefulWidget {
 }
 
 class _UpdateProfileState extends State<UpdateUserProfileScreen>
-    with TickerProviderStateMixin, ImagePickerListener {
+    with TickerProviderStateMixin, ImagePickerListener,ProfileUpdateCallbacks {
   var _formKey = GlobalKey<FormState>();
   var _formview;
   Map _formdata=new Map();
   File _image;
   AnimationController _controller;
   ImagePickerHandler imagePicker;
-  TextStyle style = TextStyle(
-    fontFamily: 'Montserrat',
-    fontSize: 20.0,
-    color: Colors.white,
-  );
+  TextStyle style = TextStyle(fontFamily: 'Montserrat',fontSize: 20.0,color: Colors.white);
 
   List<String> selectedReportList = List();
   List<String> selectCategoryList = List();
+  ProfileUpdatePresenter profileUpdatePresenter;
 
   @override
   void initState() {
@@ -41,6 +39,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
 
     imagePicker = new ImagePickerHandler(this, _controller);
     imagePicker.init();
+    profileUpdatePresenter = new ProfileUpdatePresenter(this);
   }
 
   @override
@@ -361,6 +360,8 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                       if (_formKey.currentState.validate()) {
                                         _formKey.currentState.save();
                                         print(_formdata);
+                                        profileUpdatePresenter.
+//                                        List<int> imageBytes = await _image.readAsBytes();
 //                                        Navigator.of(context)
 //                                            .pushReplacementNamed(
 //                                                '/TabViewScreen');
@@ -454,5 +455,21 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
       categorydata.add(categories[i].txtCategoryName);
     }
     return categorydata;
+  }
+
+  @override
+  Future<String> profileImageBase64(File image) {
+    // TODO: implement profileImageBase64
+    return null;
+  }
+
+  @override
+  void showLoginError() {
+    // TODO: implement showLoginError
+  }
+
+  @override
+  void updatedSuccessfull() {
+    // TODO: implement updatedSuccessfull
   }
 }

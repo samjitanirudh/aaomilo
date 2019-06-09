@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
       ),
       home: new SplashScreen(),
       routes: <String, WidgetBuilder>{
-        '/Loginscreen': (BuildContext context) => new CreateInvite(),
-        '/UpdateUserProfile': (BuildContext context) => new UpdateUserProfileScreen(),
+        '/Loginscreen': (BuildContext context) => new loginScreen(),
+        '/UpdateUserProfileScreen': (BuildContext context) => new UpdateUserProfileScreen(),
         '/TabViewScreen': (BuildContext context) => new TabViewScreen()
       },
     );

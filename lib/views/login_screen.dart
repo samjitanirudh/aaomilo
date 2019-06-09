@@ -33,7 +33,7 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
         decoration: new BoxDecoration(
 //          color: Colors.blue.shade50,
             image: new DecorationImage(
-                image: new AssetImage("assets/images/loginbg.jpg"),
+                image: new AssetImage("assets/images/loginbgs.png"),
                 fit: BoxFit.cover)),
         child: SingleChildScrollView(
             child: Form(
