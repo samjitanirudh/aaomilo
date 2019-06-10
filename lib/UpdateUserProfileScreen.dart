@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/image_picker_handler.dart';
 import 'package:flutter_meetup_login/presenter/ProfileUpdatePresenter.dart';
@@ -24,11 +24,11 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   AnimationController _controller;
   ImagePickerHandler imagePicker;
   TextStyle style = TextStyle(fontFamily: 'Montserrat',fontSize: 20.0,color: Colors.white);
-
+  bool isLoading  = false;
   List<String> selectedReportList = List();
   List<String> selectCategoryList = List();
   ProfileUpdatePresenter profileUpdatePresenter;
-
+  BuildContext bContext;
   @override
   void initState() {
     super.initState();
@@ -50,6 +50,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    bContext=context;
     return new Scaffold(
         appBar: new AppBar(
           title: new Text(
@@ -131,7 +132,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                     }
                                   },
                                   onSaved: (String val) {
-                                    _formdata['_name']=val;
+                                    _formdata['firstname']=val;
                                   },
                                   keyboardType: TextInputType.emailAddress,
                                   style: new TextStyle(
@@ -149,7 +150,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                       return null;
                                   },
                                   onSaved: (String val) {
-                                    _formdata['_aboutyou']=val;
+                                    _formdata['about']=val;
                                   },
                                   decoration: new InputDecoration(
                                     contentPadding: EdgeInsets.fromLTRB(
@@ -233,7 +234,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                               return null;
                                           },
                                           onSaved: (String val) {
-                                            _formdata['_skill']=selectedReportList.join(",");
+                                            _formdata['skill']=selectedReportList.join(",");
                                           },
                                           decoration: new InputDecoration(
                                             contentPadding: EdgeInsets.all(10),
@@ -295,7 +296,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                               return null;
                                           },
                                           onSaved: (String val) {
-                                            _formdata['_interest']=selectCategoryList.join(",");
+                                            _formdata['intereset']=selectCategoryList.join(",");
                                           },
                                           keyboardType: TextInputType.multiline,
                                           maxLines: 3,
@@ -359,8 +360,12 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                     onPressed: () {
                                       if (_formKey.currentState.validate()) {
                                         _formKey.currentState.save();
-                                        print(_formdata);
-                                        profileUpdatePresenter.
+                                        isLoading=true;
+                                        var fileExt = basename(_image.path).split(".");
+                                        var sgid="A6265111";
+                                        _formdata['sgid']=sgid;
+                                        _formdata['profilepicname']=sgid+"."+fileExt[1].toString();
+                                        profileUpdatePresenter.PostProfileData(_formdata, _image);
 //                                        List<int> imageBytes = await _image.readAsBytes();
 //                                        Navigator.of(context)
 //                                            .pushReplacementNamed(
@@ -382,7 +387,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
 
   _showSkillsDialog() {
     showDialog(
-        context: context,
+        context: bContext,
         builder: (BuildContext context) {
           //Here we will build the content of the dialog
           return AlertDialog(
@@ -408,7 +413,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
 
   _showInterestDialog() {
     showDialog(
-        context: context,
+        context: bContext,
         builder: (BuildContext context) {
           //Here we will build the content of the dialog
           return AlertDialog(
@@ -458,18 +463,14 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   }
 
   @override
-  Future<String> profileImageBase64(File image) {
-    // TODO: implement profileImageBase64
-    return null;
-  }
-
-  @override
-  void showLoginError() {
+  void showErrorDialog() {
+    print("Error");
     // TODO: implement showLoginError
   }
 
   @override
   void updatedSuccessfull() {
+//    print("success");
     // TODO: implement updatedSuccessfull
   }
 }
