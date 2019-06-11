@@ -15,24 +15,23 @@ class ProfileUpdatePresenter{
 
   PostProfileData(Map params,File _image) async {
     try {
-      List<int> imageBytes = await _image.readAsBytes();
-      String imgEncoded = Base64Encoder().convert(imageBytes);
-      params['profilepic'] = imgEncoded;
+      List<int> imageBytes = await _image.readAsBytesSync();
+      String imgEncoded =  base64Encode(imageBytes);
+      params['profilepic'] = Uri.encodeQueryComponent(imgEncoded);
       profileUpdate.setParams(params);
       String response = await profileUpdate.profilePostRequest();
       if(response!=null&& response=="insert") {
         profileCallback.updatedSuccessfull();
       }else{
-        profileCallback.showLoginError();
+        profileCallback.showErrorDialog();
       }
     } on Exception catch (error) {
-      profileCallback.showLoginError();
+      profileCallback.showErrorDialog();
     }
   }
 }
 
 abstract class ProfileUpdateCallbacks {
   void updatedSuccessfull();
-  void showLoginError();
-  Future<String> profileImageBase64(File image);
+  void showErrorDialog();
 }
