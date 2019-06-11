@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetup_login/presenter/ProfileUpdatePresenter.dart';
 
 class MyProfile extends StatefulWidget {
   @override
@@ -9,9 +10,25 @@ class MyProfile extends StatefulWidget {
   }
 }
 
-class _MyProfilePage extends State<MyProfile> {
+class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
   TextStyle style =
   TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white,);
+  Map _formdata = new Map();
+  ProfileUpdatePresenter profileUpdatePresenter;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _formdata["name"]="";
+    _formdata["designation"]="";
+    _formdata["about_me"]="";
+    _formdata["skills"]="";
+    _formdata["interest"]="";
+    profileUpdatePresenter=new ProfileUpdatePresenter(this);
+    profileUpdatePresenter.getProfileData("A6265111");
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -34,7 +51,7 @@ class _MyProfilePage extends State<MyProfile> {
             new IconButton(
               icon: new Icon(Icons.search),
               onPressed: () {
-                Navigator.of(context).pushReplacementNamed('/UpdateUserProfileScreen');
+                Navigator.of(context).pushNamed('/UpdateUserProfileScreen');
               },
             ),
             new IconButton(
@@ -77,7 +94,7 @@ class _MyProfilePage extends State<MyProfile> {
                           child: Padding(
                               padding: EdgeInsets.all(8),
                               child: new Text(
-                                "Samuel John",
+                                _formdata['name'],
                                 style: TextStyle(
                                     fontSize: 24,
                                     fontStyle: FontStyle.normal,
@@ -89,7 +106,7 @@ class _MyProfilePage extends State<MyProfile> {
                           child: Padding(
                               padding: EdgeInsets.all(2),
                               child: new Text(
-                                "Software Developer",
+                                _formdata['designation'],
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontStyle: FontStyle.normal,
@@ -114,12 +131,10 @@ class _MyProfilePage extends State<MyProfile> {
                                   color: Colors.brown),
                             ))),
                     Align(
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.centerLeft,
                         child: Padding(
                             padding: EdgeInsets.all(12),
-                            child: new Text(
-                              "I am an Software Engineer, working with Saint-Gobain Group. "
-                                  "I am asscoiated with the organisation since 10 years.",
+                            child: new Text(_formdata['about_me'],
                               style: TextStyle(
                                   fontSize: 18,
                                   fontStyle: FontStyle.normal,
@@ -141,15 +156,13 @@ class _MyProfilePage extends State<MyProfile> {
                 ),
               ),
               new Row(
-
-
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   ButtonTheme(
                       minWidth: 100.0,
                       height: 60.0,
                       child: RaisedButton(
-                        child: new Text("ANDROID",
+                        child: new Text(_formdata['skills'],
                             style: TextStyle(
                                 color: Colors.pink,
                                 fontSize: 16,
@@ -210,8 +223,7 @@ class _MyProfilePage extends State<MyProfile> {
                       alignment: Alignment.topLeft,
                       child: Padding(
                           padding: EdgeInsets.all(12),
-                          child: new Text(
-                            "SPORTS, MUSIC, NETWORKING",
+                          child: new Text(_formdata['interest'],
                             style: TextStyle(
                                 fontSize: 18,
                                 fontStyle: FontStyle.normal,
@@ -223,6 +235,28 @@ class _MyProfilePage extends State<MyProfile> {
             ],
           )),
         ));
+  }
+
+  @override
+  void showErrorDialog() {
+    // TODO: implement showErrorDialog
+  }
+
+  @override
+  void updateView(Map userdetails) {
+    // TODO: implement updateView
+    setState(() {
+      _formdata["name"]=userdetails["name"];
+      _formdata["designation"]=userdetails["designation"];
+      _formdata["about_me"]=userdetails["about_me"];
+      _formdata["skills"]=userdetails["skills"];
+      _formdata["interest"]=userdetails["interest"];
+    });
+  }
+
+  @override
+  void updatedSuccessfull(String msg) {
+    // TODO: implement updatedSuccessfull
   }
 }
 

@@ -20,8 +20,8 @@ class ProfileUpdatePresenter{
       params['profilepic'] = Uri.encodeQueryComponent(imgEncoded);
       profileUpdate.setParams(params);
       String response = await profileUpdate.profilePostRequest();
-      if(response!=null&& response=="insert") {
-        profileCallback.updatedSuccessfull();
+      if(response!=null) {
+        profileCallback.updatedSuccessfull(response);
       }else{
         profileCallback.showErrorDialog();
       }
@@ -29,9 +29,20 @@ class ProfileUpdatePresenter{
       profileCallback.showErrorDialog();
     }
   }
+
+  getProfileData(String userid) async{
+    try{
+      String webList= await profileUpdate.userGetRequest(userid);
+      profileCallback.updateView(profileUpdate.getUserDetails(json.decode(webList)));
+    }on Exception catch (error) {
+      profileCallback.showErrorDialog();
+    }
+  }
+
 }
 
 abstract class ProfileUpdateCallbacks {
-  void updatedSuccessfull();
+  void updatedSuccessfull(String msg);
   void showErrorDialog();
+  void updateView(Map userdetails);
 }

@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class ProfileDataModel {
 
   var profileAPI         = "http://convergepro.xyz/meetupapi/work/action.php";
+  var profilePicAPI         = "http://convergepro.xyz/meetupapi/profile_pics/";
+
   Map<String, String> headers = new Map();
 
   var first_name="";
@@ -29,17 +30,17 @@ class ProfileDataModel {
   setInterest(var interest) => this.interest= interest;
   setSGID(var sgID) => this.sg_id= sgID;
   setUserProfilePic(var pic) => this.profileImage= pic;
+  setDesignation(var designation) => this.designation= designation;
   setUserProfilePicName(var picName) => this.profileImageName= picName;
+  getUserPorfilePicUrl()=>this.profilePicAPI+base64Encode(utf8.encode(this.sg_id));
 
   Future<String> profilePostRequest() {
     headers['Content-type']="application/x-www-form-urlencoded";
     var encoding = Encoding.getByName('utf-8');
     return postProfile(profileAPI,headers: headers, body: getProfilePostParams(),encoding: encoding)
         .then((String res) {
-      final jsonResponse = json.decode(res);
-      print(jsonResponse);
       if (res == null) throw new Exception("error");
-      return res;
+      return jsonDecode(res);
     });
   }
 
@@ -65,6 +66,7 @@ class ProfileDataModel {
     setInterest(param['intereset']);
     setSGID(param['sgid']);
     setUserProfilePic(param['profilepic']);
+    setDesignation(param['_designation']);
     setUserProfilePicName(param['profilepicname']);
   }
 
@@ -85,11 +87,38 @@ class ProfileDataModel {
     return action+sgid+fname+lname+about+skill+intrst+desig+email+contact+proname+proimgname;
   }
 
-//  String getProfileImagePostParams(){
-//    String action='action=profile_pic&';
-//    String profile = 'profile_img='+profileImage+'&';
-//    String sg_id = 'sg_id='+this.sg_id+'&';
-//    return action+profile+sg_id;
-//  }
+
+  Future<String> userGetRequest(String sg_id) async{
+    String sgid = base64Encode(utf8.encode(sg_id));
+    return getUser(profileAPI+"?action=getuserprofile&sgid="+sgid);
+  }
+
+  Future<String> getUser(String url) {
+    return http.post(url).then((http.Response response) {
+
+      final int statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode > 400 || json == null) {
+        throw new Exception("Error while fetching data");
+      }
+      return response.body;
+    });
+  }
+
+  Map getUserDetails(List<dynamic> webList){
+    Map userdata =new Map();
+    for(int i =0;i<webList.length;i++){
+      userdata["name"]=webList[i]['first_name'];
+      userdata["designation"]=webList[i]['designation'];
+      userdata["about_me"]=webList[i]['about_me'];
+      userdata["skills"]=webList[i]['skills'];
+      userdata["interest"]=webList[i]['interest'];
+      setUserFirstName(userdata['name']);
+      setAbout(userdata['about_me']);
+      setSkills(userdata['skills']);
+      setInterest(userdata['intereset']);
+      setDesignation(userdata['designation']);
+    }
+    return userdata;
+  }
 
 }

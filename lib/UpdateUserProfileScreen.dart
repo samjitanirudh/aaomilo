@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert' show utf8, base64;
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/image_picker_handler.dart';
@@ -16,19 +17,21 @@ class UpdateUserProfileScreen extends StatefulWidget {
 }
 
 class _UpdateProfileState extends State<UpdateUserProfileScreen>
-    with TickerProviderStateMixin, ImagePickerListener,ProfileUpdateCallbacks {
+    with TickerProviderStateMixin, ImagePickerListener, ProfileUpdateCallbacks {
   var _formKey = GlobalKey<FormState>();
   var _formview;
-  Map _formdata=new Map();
+  Map _formdata = new Map();
   File _image;
   AnimationController _controller;
   ImagePickerHandler imagePicker;
-  TextStyle style = TextStyle(fontFamily: 'Montserrat',fontSize: 20.0,color: Colors.white);
-  bool isLoading  = false;
+  TextStyle style = TextStyle(
+      fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white);
+  bool isLoading = false;
   List<String> selectedReportList = List();
   List<String> selectCategoryList = List();
   ProfileUpdatePresenter profileUpdatePresenter;
   BuildContext bContext;
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +53,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    bContext=context;
+    bContext = context;
     return new Scaffold(
         appBar: new AppBar(
           title: new Text(
@@ -71,37 +74,37 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                             padding: EdgeInsets.all(10),
                             child: _image == null
                                 ? new Stack(
-                                    children: <Widget>[
-                                      Align(
-                                          alignment: Alignment.topCenter,
-                                          child: new Container(
-                                            child: new CircleAvatar(
-                                                radius: 80.0,
-                                                backgroundColor:
-                                                    const Color(0xFF778899)),
-                                          )),
-                                      new Container(
-                                          alignment: Alignment.topCenter,
-                                          padding: EdgeInsets.all(50),
-                                          child: new Image.asset(
-                                              "assets/images/photo_camera.png")),
-                                    ],
-                                  )
+                              children: <Widget>[
+                                Align(
+                                    alignment: Alignment.topCenter,
+                                    child: new Container(
+                                      child: new CircleAvatar(
+                                          radius: 80.0,
+                                          backgroundColor:
+                                          const Color(0xFF778899)),
+                                    )),
+                                new Container(
+                                    alignment: Alignment.topCenter,
+                                    padding: EdgeInsets.all(50),
+                                    child: new Image.asset(
+                                        "assets/images/photo_camera.png")),
+                              ],
+                            )
                                 : new Container(
-                                    height: 160.0,
-                                    width: 160.0,
-                                    decoration: new BoxDecoration(
-                                      color: const Color(0xff7c94b6),
-                                      image: new DecorationImage(
-                                        image: new ExactAssetImage(_image.path),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      border: Border.all(
-                                          color: Colors.black87, width: 2.0),
-                                      borderRadius: new BorderRadius.all(
-                                          const Radius.circular(80.0)),
-                                    ),
-                                  ),
+                              height: 160.0,
+                              width: 160.0,
+                              decoration: new BoxDecoration(
+                                color: const Color(0xff7c94b6),
+                                image: new DecorationImage(
+                                  image: new ExactAssetImage(_image.path),
+                                  fit: BoxFit.cover,
+                                ),
+                                border: Border.all(
+                                    color: Colors.black87, width: 2.0),
+                                borderRadius: new BorderRadius.all(
+                                    const Radius.circular(80.0)),
+                              ),
+                            ),
                           ),
                         ),
                         new Column(
@@ -119,7 +122,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                     fillColor: Colors.white,
                                     border: new OutlineInputBorder(
                                       borderRadius:
-                                          new BorderRadius.circular(5.0),
+                                      new BorderRadius.circular(5.0),
                                       borderSide: new BorderSide(),
                                     ),
                                     //fillColor: Colors.green
@@ -132,7 +135,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                     }
                                   },
                                   onSaved: (String val) {
-                                    _formdata['firstname']=val;
+                                    _formdata['firstname'] = val;
                                   },
                                   keyboardType: TextInputType.emailAddress,
                                   style: new TextStyle(
@@ -143,14 +146,14 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                               Padding(
                                 padding: EdgeInsets.all(10),
                                 child: new TextFormField(
-                                  validator:(String arg){
-                                    if(arg.length < 10)
+                                  validator: (String arg) {
+                                    if (arg.length < 10)
                                       return 'About me must be more than 10 charaters';
                                     else
                                       return null;
                                   },
                                   onSaved: (String val) {
-                                    _formdata['about']=val;
+                                    _formdata['about'] = val;
                                   },
                                   decoration: new InputDecoration(
                                     contentPadding: EdgeInsets.fromLTRB(
@@ -159,7 +162,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                     fillColor: Colors.white,
                                     border: new OutlineInputBorder(
                                       borderRadius:
-                                          new BorderRadius.circular(5.0),
+                                      new BorderRadius.circular(5.0),
                                       borderSide: new BorderSide(),
                                     ),
                                     //fillColor: Colors.green
@@ -169,15 +172,15 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                               Padding(
                                 padding: EdgeInsets.all(10),
                                 child: new TextFormField(
-                                    validator:(String arg){
-                                      if(arg.length < 10)
-                                        return 'Project information must be more than 10 charaters';
-                                      else
-                                        return null;
-                                    },
-                                    onSaved: (String val) {
-                                      _formdata['_project']=val;
-                                    },
+                                  validator: (String arg) {
+                                    if (arg.length < 10)
+                                      return 'Project information must be more than 10 charaters';
+                                    else
+                                      return null;
+                                  },
+                                  onSaved: (String val) {
+                                    _formdata['_project'] = val;
+                                  },
                                   decoration: new InputDecoration(
                                     contentPadding: EdgeInsets.fromLTRB(
                                         10.0, 20.0, 10.0, 10.0),
@@ -185,7 +188,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                     fillColor: Colors.white,
                                     border: new OutlineInputBorder(
                                       borderRadius:
-                                          new BorderRadius.circular(5.0),
+                                      new BorderRadius.circular(5.0),
                                       borderSide: new BorderSide(),
                                     ),
                                     //fillColor: Colors.green
@@ -195,15 +198,15 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                               Padding(
                                 padding: EdgeInsets.all(10),
                                 child: new TextFormField(
-                                    validator:(String arg){
-                                      if(arg.length < 10)
-                                        return 'designation/role must be more than 10 charaters';
-                                      else
-                                        return null;
-                                    },
-                                    onSaved: (String val) {
-                                      _formdata['_designation']=val;
-                                    },
+                                  validator: (String arg) {
+                                    if (arg.length < 10)
+                                      return 'designation/role must be more than 10 charaters';
+                                    else
+                                      return null;
+                                  },
+                                  onSaved: (String val) {
+                                    _formdata['_designation'] = val;
+                                  },
                                   decoration: new InputDecoration(
                                     contentPadding: EdgeInsets.fromLTRB(
                                         10.0, 20.0, 10.0, 10.0),
@@ -211,7 +214,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                     fillColor: Colors.white,
                                     border: new OutlineInputBorder(
                                       borderRadius:
-                                          new BorderRadius.circular(5.0),
+                                      new BorderRadius.circular(5.0),
                                       borderSide: new BorderSide(),
                                     ),
                                     //fillColor: Colors.green
@@ -227,24 +230,25 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                         child: new TextFormField(
                                           keyboardType: TextInputType.multiline,
                                           maxLines: 3,
-                                          validator:(String arg){
-                                            if(selectedReportList.length < 1)
+                                          validator: (String arg) {
+                                            if (selectedReportList.length < 1)
                                               return 'Select atleast one skill';
                                             else
                                               return null;
                                           },
                                           onSaved: (String val) {
-                                            _formdata['skill']=selectedReportList.join(",");
+                                            _formdata['skill'] =
+                                                selectedReportList.join(",");
                                           },
                                           decoration: new InputDecoration(
                                             contentPadding: EdgeInsets.all(10),
                                             hintText:
-                                                selectedReportList.join(" , "),
+                                            selectedReportList.join(" , "),
                                             fillColor: Colors.white,
                                             border: new OutlineInputBorder(
                                               borderRadius:
-                                                  new BorderRadius.circular(
-                                                      5.0),
+                                              new BorderRadius.circular(
+                                                  5.0),
                                               borderSide: new BorderSide(),
                                             ),
                                             //fillColor: Colors.green
@@ -259,12 +263,13 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                           child: new Material(
                                             elevation: 6.0,
                                             borderRadius:
-                                                BorderRadius.circular(7.0),
+                                            BorderRadius.circular(7.0),
                                             color: Colors.blue.shade900,
                                             child: MaterialButton(
-                                              minWidth: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
+                                              minWidth: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width /
                                                   2.9,
                                               padding: EdgeInsets.fromLTRB(
                                                   10.0, 10.0, 10.0, 10.0),
@@ -276,7 +281,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
-                                                          FontWeight.normal,
+                                                      FontWeight.normal,
                                                       fontSize: 12)),
                                             ),
                                           ))),
@@ -289,26 +294,27 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                       child: new Container(
                                         width: 180,
                                         child: new TextFormField(
-                                          validator:(String arg){
-                                            if(selectCategoryList.length < 1)
+                                          validator: (String arg) {
+                                            if (selectCategoryList.length < 1)
                                               return 'Select atleast one interest ';
                                             else
                                               return null;
                                           },
                                           onSaved: (String val) {
-                                            _formdata['intereset']=selectCategoryList.join(",");
+                                            _formdata['intereset'] =
+                                                selectCategoryList.join(",");
                                           },
                                           keyboardType: TextInputType.multiline,
                                           maxLines: 3,
                                           decoration: new InputDecoration(
                                             contentPadding: EdgeInsets.all(10),
                                             hintText:
-                                                selectCategoryList.join(" , "),
+                                            selectCategoryList.join(" , "),
                                             fillColor: Colors.white,
                                             border: new OutlineInputBorder(
                                               borderRadius:
-                                                  new BorderRadius.circular(
-                                                      5.0),
+                                              new BorderRadius.circular(
+                                                  5.0),
                                               borderSide: new BorderSide(),
                                             ),
                                             //fillColor: Colors.green
@@ -323,12 +329,13 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                           child: new Material(
                                             elevation: 6.0,
                                             borderRadius:
-                                                BorderRadius.circular(7.0),
+                                            BorderRadius.circular(7.0),
                                             color: Colors.blue.shade900,
                                             child: MaterialButton(
-                                              minWidth: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
+                                              minWidth: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width /
                                                   2.9,
                                               padding: EdgeInsets.fromLTRB(
                                                   10.0, 10.0, 10.0, 10.0),
@@ -341,7 +348,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
-                                                          FontWeight.normal,
+                                                      FontWeight.normal,
                                                       fontSize: 12)),
                                             ),
                                           ))),
@@ -355,21 +362,21 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                   color: Colors.blue.shade900,
                                   child: MaterialButton(
                                     minWidth:
-                                        MediaQuery.of(context).size.width / 3.5,
+                                    MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width / 3.5,
                                     padding: EdgeInsets.all(10),
                                     onPressed: () {
                                       if (_formKey.currentState.validate()) {
                                         _formKey.currentState.save();
-                                        isLoading=true;
+                                        isLoading = true;
                                         var fileExt = basename(_image.path).split(".");
-                                        var sgid="A6265111";
-                                        _formdata['sgid']=sgid;
-                                        _formdata['profilepicname']=sgid+"."+fileExt[1].toString();
+                                        var sgid = "A6265111";
+                                        var sgIDencode = base64.encode(utf8.encode(sgid + "." + fileExt[1].toString()));
+                                        _formdata['sgid'] = sgid;
+                                        _formdata['profilepicname'] = sgIDencode;
                                         profileUpdatePresenter.PostProfileData(_formdata, _image);
-//                                        List<int> imageBytes = await _image.readAsBytes();
-//                                        Navigator.of(context)
-//                                            .pushReplacementNamed(
-//                                                '/TabViewScreen');
                                       }
                                     },
                                     child: Text("Update Profile",
@@ -462,15 +469,54 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
     return categorydata;
   }
 
-  @override
-  void showErrorDialog() {
-    print("Error");
-    // TODO: implement showLoginError
+  //Dialog to notify user about invite creation result
+  void _showDialog(BuildContext context, String title, String content,bool isError) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(title),
+          content: new Text(content),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Ok"),
+              onPressed: () {
+                if(isError)
+                  closePopup();
+                else
+                  navigate();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  navigate() {
+    Navigator.of(bContext).pushNamedAndRemoveUntil('/TabViewScreen', (Route<dynamic> route) => false);
   }
 
   @override
-  void updatedSuccessfull() {
-//    print("success");
-    // TODO: implement updatedSuccessfull
+  void showErrorDialog() {
+    _showDialog(bContext,"Update profile", "Error! please try again",true);
   }
+
+  @override
+  void updatedSuccessfull(String msg) {
+    _showDialog(bContext,"Update profile", msg,false);
+  }
+
+  closePopup(){
+    Navigator.of(bContext).pop();
+  }
+
+  @override
+  void updateView(Map userdetails) {
+    // TODO: implement updateView
+  }
+
 }
