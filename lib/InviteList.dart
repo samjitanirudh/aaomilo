@@ -1,23 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-
-
-
-
-class InviteListScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: "Invite List",
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: Text("Invite List"),
-        ),
-        body: InviteList(),
-      ),
-    );
-  }
-}
+import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
+import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 
 class InviteList extends StatefulWidget {
   @override
@@ -26,9 +10,18 @@ class InviteList extends StatefulWidget {
   }
 }
 
-class InviteListState extends State<InviteList> {
-  final _suggestions = <WordPair>[];
+class InviteListState extends State<InviteList> implements InviteListCallBack{
+  List<Invite> _suggestions = new List<Invite>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  InviteListPresenter inviteListPresenter;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    inviteListPresenter= new InviteListPresenter(this);
+    inviteListPresenter.GetInviteList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +35,11 @@ class InviteListState extends State<InviteList> {
 //      decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
       child:Scrollbar(
         child: ListView.builder(
-        itemCount: 10,
+        itemCount: _suggestions.length,
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int i) {
-//          if (i.isOdd) return Divider();
           final index = i;
-          // If you've reached the end of the available word pairings...
-          if (index >= _suggestions.length) {
-            // ...then generate 10 more and add them to the suggestions list.
-            _suggestions.addAll(generateWordPairs().take(10));
-          }
           return new Padding(padding: EdgeInsets.only(bottom: 3,left: 2,right: 2,top: 3 ),
             child :Card(
             elevation: 8.0,
@@ -69,19 +56,34 @@ class InviteListState extends State<InviteList> {
     );
   }
 
-  Widget _buildRow(WordPair pair) {
+  Widget _buildRow(Invite invite) {
+    bool loaded=false;
+    print(invite.image);
+    NetworkImage nI= new NetworkImage("http://"+invite.image);
+    nI.resolve(new ImageConfiguration()).addListener((_,__){
+      if(mounted){
+        setState(() {
+          print("image loaded");
+          loaded=true;
+        });
+      }
+    });
     return new ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 3.0, vertical: 0.0),
       title: Column(children: <Widget>[Container(
           width: MediaQuery.of(context).size.width,
           height: 150,
-        decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/yoga.jpg"),fit: BoxFit.fill)),
+        decoration: BoxDecoration(image:
+        DecorationImage(
+            image: loaded?nI:AssetImage("assets/images/pulse.gif"),
+            fit: BoxFit.fill)
+        ),
       ),Align(
         alignment: Alignment.centerLeft,
         child: Container(
           padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
           child: Text(
-            pair.asPascalCase,
+            invite.title,
             style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold,fontSize: 18.0),
             ),
         ),
@@ -91,7 +93,7 @@ class InviteListState extends State<InviteList> {
           child:Container(
             padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
             child: Text(
-              "Date: " + "06/01/2019",
+              "Date: " + invite.created_date,
               style: TextStyle(color: Colors.black38,
                   fontWeight: FontWeight.bold,
                   fontSize: 16.0),
@@ -101,7 +103,7 @@ class InviteListState extends State<InviteList> {
           child: Container(
               padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
               child: Text(
-                "Time: " + "13.46.00",
+                "Time: " + invite.time,
                 style: TextStyle(color: Colors.black38,
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0),
@@ -112,7 +114,7 @@ class InviteListState extends State<InviteList> {
         child: Container(
           padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
           child: Text(
-            "Time Square , Ground floor common area",
+            invite.venue,
             style: TextStyle(color: Colors.black38, fontWeight: FontWeight.normal,fontSize: 16.0),
           ),
         ),
@@ -138,7 +140,7 @@ class InviteListState extends State<InviteList> {
                     Container(
                       padding: EdgeInsets.fromLTRB(3,0,3,0),
                       child: Text(
-                        "06/10",
+                        invite.joined+"/"+invite.allowed_member_count,
                         style: TextStyle(color: Colors.black38, fontWeight: FontWeight.normal,fontSize: 18.0),
                       ),
                     )
@@ -161,7 +163,7 @@ class InviteListState extends State<InviteList> {
                         Container(
                           padding: EdgeInsets.fromLTRB(3,0,3,0),
                           child: Text(
-                            "04",
+                            "-",
                             style: TextStyle(color: Colors.black38, fontWeight: FontWeight.normal,fontSize: 18.0),
                           ),
                         )
@@ -182,23 +184,23 @@ class InviteListState extends State<InviteList> {
                     ),
                   )
                  ),
-//          Expanded(
-//            flex: 4,
-//            child: Padding(
-//                padding: EdgeInsets.only(left: 10.0),
-//                child: Text(pair.asPascalCase,
-//                    style: TextStyle(color: Colors.white))),
-//          )
+
             ],
           )),
-//      trailing:
-//      Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
-//      onTap: () {
-//        Navigator.push(
-//            context,
-//            MaterialPageRoute(
-//                builder: (context) => DetailPage(lesson: lesson)));
-//      },
+
     );
+  }
+
+  @override
+  void showError() {
+    // TODO: implement showError
+  }
+
+  @override
+  void updateViews(List<Invite> invitedata) {
+    // TODO: implement updateViews
+    setState(() {
+      _suggestions=invitedata;
+    });
   }
 }
