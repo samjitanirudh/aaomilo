@@ -8,13 +8,15 @@ class Categories{
 
   var txtID;
   var txtCategoryName;
+  var imgUrl;
 
-  Categories(this.txtID,this.txtCategoryName);
+  Categories(this.txtID,this.txtCategoryName, this.imgUrl);
 }
 
 class CategoryClass{
 
   var uri ="http://convergepro.xyz/meetupapi/work/action.php?action=categories";
+  var categoryImageAPI  = "http://convergepro.xyz/meetupapi/work/action.php?cat_img=";
   static List<Categories> categoryList = new List();
 
   List<Categories> getCategoryList(){
@@ -36,18 +38,24 @@ class CategoryClass{
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error while fetching data");
       }
-      getListCategories(json.decode(response.body));
+      getListCategories(json.decode(Uri.decodeFull(response.body)));
       return response.body;
     });
   }
+
+
+
+
 
   void getListCategories(List<dynamic> webList){
     categoryList.clear();
 
     for(int i =0;i<webList.length;i++){
-      Categories c= new Categories(webList[i]["id"], webList[i]["category"]);
+      Categories c= new Categories(webList[i]["id"], webList[i]["category"], webList[i]["img"]);
+
       categoryList.add(c);
     }
   }
+
 
 }

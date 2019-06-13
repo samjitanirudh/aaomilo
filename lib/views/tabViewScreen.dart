@@ -5,6 +5,8 @@ import 'package:flutter_meetup_login/InviteList.dart';
 
 import 'package:flutter_meetup_login/views/CreateInvite.dart';
 import 'package:flutter_meetup_login/views/tabs/CategoriesTab.dart';
+
+
 import 'package:flutter_meetup_login/views/tabs/MyInvites.dart';
 import 'package:flutter_meetup_login/views/tabs/MyProfileTab.dart';
 import 'package:flutter_meetup_login/views/tabs/NotificationTab.dart';
@@ -44,7 +46,8 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
       // Set the TabBar view as the body of the Scaffold
       body: new TabBarView(
         // Add tabs as widgets
-        children: <Widget>[new InviteList(), CategoriesTab(), new MyInvites(), new CreateInvite(), new NotificationTab(), new MyProfile()],
+
+        children: <Widget>[new InviteList(), CategoriesTabs(controller), new MyInvites(), new CreateInvite(), new NotificationTab(), new MyProfile()],
         // set the controller
         controller: controller,
       ),

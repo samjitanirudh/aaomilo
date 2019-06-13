@@ -7,8 +7,11 @@ import 'package:flutter_meetup_login/views/ImageListviewChecked.dart';
 class CreateInvite extends StatefulWidget {
   CreateInvite({Key key}) : super(key: key);
 
+
   @override
   _CreateInvite createState() => new _CreateInvite();
+
+
 }
 
 class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallbacks,InviteCallbacks{
