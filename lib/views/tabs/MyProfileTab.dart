@@ -31,6 +31,19 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
 
   @override
   Widget build(BuildContext context) {
+    bool loaded=false;
+    NetworkImage nI;
+    if(null!=_formdata["profileimg"]) {
+      nI = new NetworkImage(_formdata["profileimg"]);
+      nI.resolve(new ImageConfiguration()).addListener((_, __) {
+        if (mounted) {
+          setState(() {
+            print("image loaded");
+            loaded = true;
+          });
+        }
+      });
+    }
     return new Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueAccent,
@@ -75,8 +88,8 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
             children: <Widget>[
               Container(
                   padding: EdgeInsets.all(10),
-                  color: Colors.pink,
-                  height: MediaQuery.of(context).size.height / 2.9,
+                  color: Colors.blue.shade100,
+                  height: MediaQuery.of(context).size.height / 4.0,
                   width: MediaQuery.of(context).size.width,
                   child: new Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,7 +97,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                     children: <Widget>[
                       new Container(
                         child: CircleAvatar(
-                          backgroundImage: AssetImage("assets/images/profile.png"),
+                          backgroundImage: loaded?nI:AssetImage("assets/images/profile.png"),
                           minRadius: 60.0,
                           maxRadius: 60.0,
                         ),
@@ -155,55 +168,14 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                   ],
                 ),
               ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  ButtonTheme(
-                      minWidth: 100.0,
-                      height: 60.0,
-                      child: RaisedButton(
-                        child: new Text(_formdata['skills'],
-                            style: TextStyle(
-                                color: Colors.pink,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                        padding: EdgeInsets.all(20),
-                        onPressed: null,
-                        colorBrightness: Brightness.light,
-                        disabledColor: Colors.black12,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
-                      )),
-                  ButtonTheme(
-                      minWidth: 100.0,
-                      height: 60.0,
-                      child: RaisedButton(
-                          child: new Text("JAVA",
-                              style: TextStyle(
-                                  color: Colors.pink,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold)),
-                          padding: EdgeInsets.all(20),
-                          onPressed: null,
-                          disabledColor: Colors.black12,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)))),
-                  ButtonTheme(
-                      minWidth: 100.0,
-                      height: 60.0,
-                      child: RaisedButton(
-                          child: new Text("SQL",
-                              style: TextStyle(
-                                  color: Colors.pink,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold)),
-                          padding: EdgeInsets.all(20),
-                          onPressed: null,
-                          disabledColor: Colors.black12,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0))))
-                ],
+              new Container(
+                height: 60.0,
+                child: new Scrollbar(child: new ListView(
+                    scrollDirection: Axis.horizontal,
+                    children:getUserSkillsView()
+                ))
               ),
+//              ),
           Container(
               child: new Column(
                 children: <Widget>[
@@ -237,6 +209,26 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
         ));
   }
 
+  List<ButtonTheme> getUserSkillsView(){
+    List<String> skills = _formdata["skills"].toString().split(",");
+    return new List.generate(skills.length, (int index){
+      return ButtonTheme(
+          minWidth: 100.0,
+          height: 60.0,
+          child: RaisedButton(
+              child: new Text(skills[index],
+                  style: TextStyle(
+                      color: Colors.pink,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold)),
+              padding: EdgeInsets.all(20),
+              onPressed: null,
+              disabledColor: Colors.black12,
+              shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0))));
+    });
+  }
+
   @override
   void showErrorDialog() {
     // TODO: implement showErrorDialog
@@ -251,6 +243,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
       _formdata["about_me"]=userdetails["about_me"];
       _formdata["skills"]=userdetails["skills"];
       _formdata["interest"]=userdetails["interest"];
+      _formdata["profileimg"]=userdetails["profileimg"];
     });
   }
 

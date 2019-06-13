@@ -30,6 +30,10 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   CreateInvitePreseter _createInvitePresenter;
   bool categoryImageViewVisibility=false;
 
+  TimeOfDay selectedTime;
+  ValueChanged<DateTime> selectDate;
+  ValueChanged<TimeOfDay> selectTime;
+
   void initState(){
     super.initState();
     _createInvitePresenter= new CreateInvitePreseter(this);
@@ -69,10 +73,13 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
       });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
 
     bContext = context;
+
     return Scaffold(
         appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -413,13 +420,13 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   DropdownButton _inviteMembersDropDown(FormFieldState<String> state) => DropdownButton<String>(
         items: [
           DropdownMenuItem<String>(
-            value: "1",
+            value: "5",
             child: Text(
               "5",
             ),
           ),
           DropdownMenuItem<String>(
-            value: "2",
+            value: "10",
             child: Text(
               "10",
             ),
@@ -538,70 +545,33 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
     );
   }
 
-  DropdownButton inviteTimePicker(FormFieldState<String> state) {
-    return new DropdownButton(
-        items: getTimeRanges(),
-        value: selectedTimeValue,
-        onChanged: (value) {
-          setState(() {
-            state.didChange(value);
-            selectedTimeValue = value;
-          });
-        },
-    );
+  RaisedButton inviteTimePicker(FormFieldState<String> state) {
+    TimeOfDay _toTime = const TimeOfDay(hour: 7, minute: 28);
+    selectedTime=_toTime;
+    return RaisedButton(
+        child: new Text(selectedTimeValue,
+            style: TextStyle(
+                color: Colors.pink,
+                fontSize: 16,
+                fontWeight: FontWeight.bold)),
+        padding: EdgeInsets.all(20),
+        onPressed: (){_selectTime(bContext,state);});
+
   }
 
-  List<DropdownMenuItem<String>> getTimeRanges() {
-    var x = 30; //minutes interval
-    var tt = 540; // start time
-    var ap = ['AM', 'PM']; // AM-PM
-    List timedata = new List();
-//    timedata.add("Please select time");
-    //loop to increment the time and push results in array
-    for (var i = 0; tt < 20 * 60; i++) {
-      // only allowing time slot till 7:30PM
-      int hh = (tt / 60).floor(); // getting hours of day in 0-24 format
-      var mm = (tt % 60); // getting minutes of the hour in 0-55 format
-      String hourvalue = "0" + (hh % 24).toString();
-      String minvalue = "0" + mm.toString();
-
-      String times = (hourvalue.substring(
-              hourvalue.length - 2, hourvalue.length) +
-          ':' +
-          minvalue.substring(minvalue.length - 2, minvalue.length) +
-          ap[(hh / 12.floor())
-              .toInt()]); // pushing data in array in [00:00 - 12:00 AM/PM format]
-
-      tt = tt + x;
-      timedata.add(times);
-    }
-    return getcombinedData(timedata);
-  }
-
-  List<DropdownMenuItem<String>> getcombinedData(List timedata) {
-    List<DropdownMenuItem<String>> listTime =
-        new List<DropdownMenuItem<String>>();
-
-    DropdownMenuItem<String> defaultValue = new DropdownMenuItem<String>(
-      child: new Text("Please select time",style: new TextStyle(fontSize: 12),),
-      value: "-1",
+  Future<void> _selectTime(BuildContext context,FormFieldState<String> state) async {
+    final TimeOfDay picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
     );
+    if (picked != null && picked != selectedTime) {
+      //selectTime(picked);
+      setState(() {
+        selectedTimeValue=picked.format(context);
+        state.didChange(selectedTimeValue);
+      });
 
-    listTime.add(defaultValue);
-
-    for (var i = 0; i < ((timedata.length - 1)); i++) {
-      var data1 = timedata[i];
-      var data2 = timedata[i + 1];
-      var tRange = data1 + "-" + data2;
-      inviteTimeRange.add(tRange);
-      DropdownMenuItem<String> tTime = new DropdownMenuItem<String>(
-        child: new Text(tRange,style: new TextStyle(fontSize: 12),),
-        value: i.toString(),
-      );
-      listTime.add(tTime);
     }
-
-    return listTime;
   }
 
   Container vanueDropDownContainer() {

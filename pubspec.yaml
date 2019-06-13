@@ -28,10 +28,10 @@ dependencies:
   image_cropper: ^0.0.4
   english_words: ^3.1.0
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
 
 # For information on the generic Dart part of this file, see the
@@ -59,7 +59,7 @@ flutter:
    - assets/images/favourites.png
    - assets/images/pulse.gif
    - assets/images/loginbgs.png
-  #  - images/a_dot_ham.jpeg
+   - assets/images/timepicker.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
