@@ -47,7 +47,7 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
       body: new TabBarView(
         // Add tabs as widgets
 
-        children: <Widget>[new InviteList(), CategoriesTab(), new MyInvites(), new CreateInvite(), new NotificationTab(), new MyProfile()],
+        children: <Widget>[new InviteList(), CategoriesTabs(controller), new MyInvites(), new CreateInvite(), new NotificationTab(), new MyProfile()],
         // set the controller
         controller: controller,
       ),
