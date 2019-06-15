@@ -89,44 +89,63 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
               Container(
                   padding: EdgeInsets.all(10),
                   color: Colors.blue.shade100,
-                  height: MediaQuery.of(context).size.height / 4.0,
                   width: MediaQuery.of(context).size.width,
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  child:
+                  new Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      new Container(
-                        child: CircleAvatar(
-                          backgroundImage: loaded?nI:AssetImage("assets/images/profile.png"),
-                          minRadius: 60.0,
-                          maxRadius: 60.0,
-                        ),
+                      new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          new Container(
+                              width: 120.0,
+                              height: 120.0,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: loaded ? nI : AssetImage(
+                                        "assets/images/profile.png")
+                                ),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0)),
+                                color: Colors.redAccent,
+                              )),
+                        ],
                       ),
-                      Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                              padding: EdgeInsets.all(8),
-                              child: new Text(
-                                _formdata['name'],
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ))),
-                      Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                              padding: EdgeInsets.all(2),
-                              child: new Text(
-                                _formdata['designation'],
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontStyle: FontStyle.normal,
-                                    color: Colors.black),
-                              ))),
-                    ],
-                  )),
+                      new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: new Text(
+                                    _formdata['name'],
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ))),
+                          Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: new Text(
+                                    _formdata['designation'],
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontStyle: FontStyle.normal,
+                                        color: Colors.black),
+                                  )))
+                        ],
+                      )
+                      ],
+                  )
+              ),
               Container(
                 child: new Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
