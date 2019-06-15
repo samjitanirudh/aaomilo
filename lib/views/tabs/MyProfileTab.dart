@@ -102,36 +102,38 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                               )),
                         ],
                       ),
-                      new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Align(
-                              alignment: Alignment.topLeft,
-                              child: Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: new Text(
-                                    _formdata['name'],
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black),
-                                  ))),
-                          Align(
-                              alignment: Alignment.topLeft,
-                              child: Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: new Text(
-                                    _formdata['designation'],
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontStyle: FontStyle.normal,
-                                        color: Colors.black),
-                                  )))
-                        ],
-                      )
-                      ],
+                      Expanded(
+                          child:
+                          new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Padding(padding: EdgeInsets.all(8.0),
+                                    child: new Text(
+                                      _formdata['name'],
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black),
+                                    )),
+                              ),
+                              SizedBox(height: 10,),
+                              Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(padding: EdgeInsets.all(8.0),
+                                      child: new Text(
+                                        _formdata['designation'],
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontStyle: FontStyle.normal,
+                                            color: Colors.black),
+                                      )))
+                            ],
+                          )
+                      )],
                   )
               ),
               Container(
