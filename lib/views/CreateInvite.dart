@@ -85,24 +85,21 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
 
     return Scaffold(
         appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.blue.shade900,
-            title: appbarTitle()),
+            backgroundColor: Colors.blueAccent,
+            title: appbarTitle(),
+            textTheme: TextTheme(
+                title: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0))
+        ),
         body: Builder(builder: (context) => createInviteUI(context)));
   }
 
   Widget appbarTitle(){
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
-      children: [
-        new FlutterLogo(),
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: new Text(
-            "Create new invite",
-          ),
-        ),
+      children: [new Text("Create new invite"),
         _dataLoadingAPI?new CircularProgressIndicator():new Container()
       ],
     );

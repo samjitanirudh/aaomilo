@@ -60,7 +60,13 @@ class _MyHomePageState extends State<CategoriesTabs> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
         title: Text("Categories"),
+        textTheme: TextTheme(
+            title: TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+            )),
         actions: _buttons,
       ),
       body: _createBody(),

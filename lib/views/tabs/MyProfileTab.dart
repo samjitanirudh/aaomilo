@@ -47,19 +47,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     return new Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueAccent,
-          title: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new Text(
-                  "My Profile",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ],
-            ),
-          ),
+          title: Text("My Profile"),
           actions: <Widget>[
             new IconButton(
               icon: new Icon(Icons.search),
