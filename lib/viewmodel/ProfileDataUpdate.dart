@@ -112,6 +112,7 @@ class ProfileDataModel {
       userdata["about_me"]=webList[i]['about_me'];
       userdata["skills"]=webList[i]['skills'];
       userdata["interest"]=webList[i]['interest'];
+      userdata["profileimg"]=this.profilePicAPI+base64Encode(utf8.encode("A6265111.jpg"));
       setUserFirstName(userdata['name']);
       setAbout(userdata['about_me']);
       setSkills(userdata['skills']);

@@ -55,11 +55,14 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   Widget build(BuildContext context) {
     bContext = context;
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text(
-            "Update Profile",
-            style: new TextStyle(color: Colors.white),
-          ),
+        appBar: AppBar(
+          backgroundColor: Colors.blueAccent,
+          title: Text("Update Profile"),
+          textTheme: TextTheme(
+              title: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+              )),
         ),
         body: _formview = SafeArea(
             child: SingleChildScrollView(

@@ -31,22 +31,23 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
 
   @override
   Widget build(BuildContext context) {
+    bool loaded=false;
+    NetworkImage nI;
+    if(null!=_formdata["profileimg"]) {
+      nI = new NetworkImage(_formdata["profileimg"]);
+      nI.resolve(new ImageConfiguration()).addListener((_, __) {
+        if (mounted) {
+          setState(() {
+            print("image loaded");
+            loaded = true;
+          });
+        }
+      });
+    }
     return new Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueAccent,
-          title: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new Text(
-                  "My Profile",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ],
-            ),
-          ),
+          title: Text("My Profile"),
           actions: <Widget>[
             new IconButton(
               icon: new Icon(Icons.search),
@@ -75,45 +76,66 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
             children: <Widget>[
               Container(
                   padding: EdgeInsets.all(10),
-                  color: Colors.pink,
-                  height: MediaQuery.of(context).size.height / 2.9,
+                  color: Colors.blue.shade100,
                   width: MediaQuery.of(context).size.width,
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  child:
+                  new Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      new Container(
-                        child: CircleAvatar(
-                          backgroundImage: AssetImage("assets/images/profile.png"),
-                          minRadius: 60.0,
-                          maxRadius: 60.0,
-                        ),
+                      new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          new Container(
+                              width: 120.0,
+                              height: 120.0,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: loaded ? nI : AssetImage(
+                                        "assets/images/profile.png")
+                                ),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0)),
+                                color: Colors.redAccent,
+                              )),
+                        ],
                       ),
-                      Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                              padding: EdgeInsets.all(8),
-                              child: new Text(
-                                _formdata['name'],
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ))),
-                      Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                              padding: EdgeInsets.all(2),
-                              child: new Text(
-                                _formdata['designation'],
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontStyle: FontStyle.normal,
-                                    color: Colors.black),
-                              ))),
-                    ],
-                  )),
+                      Expanded(
+                          child:
+                          new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Padding(padding: EdgeInsets.all(8.0),
+                                    child: new Text(
+                                      _formdata['name'],
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black),
+                                    )),
+                              ),
+                              SizedBox(height: 10,),
+                              Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(padding: EdgeInsets.all(8.0),
+                                      child: new Text(
+                                        _formdata['designation'],
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontStyle: FontStyle.normal,
+                                            color: Colors.black),
+                                      )))
+                            ],
+                          )
+                      )],
+                  )
+              ),
               Container(
                 child: new Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -155,55 +177,14 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                   ],
                 ),
               ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  ButtonTheme(
-                      minWidth: 100.0,
-                      height: 60.0,
-                      child: RaisedButton(
-                        child: new Text(_formdata['skills'],
-                            style: TextStyle(
-                                color: Colors.pink,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                        padding: EdgeInsets.all(20),
-                        onPressed: null,
-                        colorBrightness: Brightness.light,
-                        disabledColor: Colors.black12,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
-                      )),
-                  ButtonTheme(
-                      minWidth: 100.0,
-                      height: 60.0,
-                      child: RaisedButton(
-                          child: new Text("JAVA",
-                              style: TextStyle(
-                                  color: Colors.pink,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold)),
-                          padding: EdgeInsets.all(20),
-                          onPressed: null,
-                          disabledColor: Colors.black12,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)))),
-                  ButtonTheme(
-                      minWidth: 100.0,
-                      height: 60.0,
-                      child: RaisedButton(
-                          child: new Text("SQL",
-                              style: TextStyle(
-                                  color: Colors.pink,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold)),
-                          padding: EdgeInsets.all(20),
-                          onPressed: null,
-                          disabledColor: Colors.black12,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0))))
-                ],
+              new Container(
+                height: 60.0,
+                child: new Scrollbar(child: new ListView(
+                    scrollDirection: Axis.horizontal,
+                    children:getUserSkillsView()
+                ))
               ),
+//              ),
           Container(
               child: new Column(
                 children: <Widget>[
@@ -237,6 +218,26 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
         ));
   }
 
+  List<ButtonTheme> getUserSkillsView(){
+    List<String> skills = _formdata["skills"].toString().split(",");
+    return new List.generate(skills.length, (int index){
+      return ButtonTheme(
+          minWidth: 100.0,
+          height: 60.0,
+          child: RaisedButton(
+              child: new Text(skills[index],
+                  style: TextStyle(
+                      color: Colors.pink,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold)),
+              padding: EdgeInsets.all(20),
+              onPressed: null,
+              disabledColor: Colors.black12,
+              shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0))));
+    });
+  }
+
   @override
   void showErrorDialog() {
     // TODO: implement showErrorDialog
@@ -251,6 +252,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
       _formdata["about_me"]=userdetails["about_me"];
       _formdata["skills"]=userdetails["skills"];
       _formdata["interest"]=userdetails["interest"];
+      _formdata["profileimg"]=userdetails["profileimg"];
     });
   }
 

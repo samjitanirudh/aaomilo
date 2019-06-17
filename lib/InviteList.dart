@@ -26,12 +26,15 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          appBar: new AppBar(
-            title: new Text(
-              "Invites",
-              style: new TextStyle(color: Colors.white),
-            ),
-          ),
+      appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
+        title: Text("Invites"),
+        textTheme: TextTheme(
+            title: TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+            )),
+      ),
       body: _buildSuggestions(),
     );
   }
@@ -64,7 +67,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
 
   Widget _buildRow(Invite invite) {
     bool loaded=false;
-    print(invite.image);
+    //print(invite.image);
     NetworkImage nI= new NetworkImage("http://"+invite.image);
     nI.resolve(new ImageConfiguration()).addListener((_,__){
       if(mounted){

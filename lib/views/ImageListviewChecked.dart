@@ -43,8 +43,6 @@ class ImageListViewCheckedState extends State<ImageListViewChecked> {
       height: 150.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
-//                  padding: new EdgeInsets.symmetric(vertical: 8.0),
-
         children: imageList.map((Product product) {
           bool loaded=false;
           NetworkImage nI= new NetworkImage(imageUrl+product.categoryImage);
