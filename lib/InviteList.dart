@@ -26,6 +26,12 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+          appBar: new AppBar(
+            title: new Text(
+              "Invites",
+              style: new TextStyle(color: Colors.white),
+            ),
+          ),
       body: _buildSuggestions(),
     );
   }

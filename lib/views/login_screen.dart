@@ -33,7 +33,7 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
         decoration: new BoxDecoration(
 //          color: Colors.blue.shade50,
             image: new DecorationImage(
-                image: new AssetImage("assets/images/loginbgs.png"),
+                image: new AssetImage("assets/images/loginbgb.jpg"),
                 fit: BoxFit.cover)),
         child: SingleChildScrollView(
             child: Form(
@@ -43,11 +43,12 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      SizedBox(height: 50.0),
+                      SizedBox(height: 50.0, width: 50.0,),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.2,
+                        width:  MediaQuery.of(context).size.width,
                         child: Image.asset(
-                          "assets/images/converge.png",
+                          "assets/images/logoConverge.png",
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -120,7 +121,7 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
     return new Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(7.0),
-      color: Colors.blue.shade900,
+      color: Colors.blue.shade600,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width * 0.8,
         padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),

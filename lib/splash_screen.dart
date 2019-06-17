@@ -10,7 +10,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   startTime() async {
-    var _duration = new Duration(seconds: 2);
+    var _duration = new Duration(seconds: 4);
     return new Timer(_duration, navigationPage);
   }
 
@@ -27,9 +27,22 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: new Center(
-        child: new Image.asset('assets/images/flutterwithlogo.png'),
-      ),
+
+      body:  _splashScreen()
+
     );
   }
 }
+
+Widget _splashScreen() {
+
+ return new Container(
+
+      decoration: new BoxDecoration(
+          color: const Color(0xff7c94b6),
+          image: new DecorationImage(
+            image: new ExactAssetImage('assets/images/splash_screen.png'),
+            fit: BoxFit.cover,
+          ),
+      ));
+ }
