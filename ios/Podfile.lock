@@ -5,12 +5,15 @@ PODS:
     - TOCropViewController (~> 2.3.8)
   - image_picker (0.0.1):
     - Flutter
+  - shared_preferences (0.0.1):
+    - Flutter
   - TOCropViewController (2.3.8)
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -23,11 +26,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_cropper/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
 
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
   image_cropper: 189eec25d148f56694f670438e9458323ba2880a
   image_picker: a211f28b95a560433c00f5cd3773f4710a20404d
+  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
   TOCropViewController: 0a075f02c253e88095143bbac7b013fc6fba5090
 
 PODFILE CHECKSUM: ebd43b443038e611b86ede96e613bd6033c49497

@@ -67,12 +67,10 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
 
   Widget _buildRow(Invite invite) {
     bool loaded=false;
-    //print(invite.image);
-    NetworkImage nI= new NetworkImage("http://"+invite.image);
+    NetworkImage nI= new NetworkImage(invite.image);
     nI.resolve(new ImageConfiguration()).addListener((_,__){
       if(mounted){
         setState(() {
-          print("image loaded");
           loaded=true;
         });
       }
@@ -208,8 +206,10 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
   @override
   void updateViews(List<Invite> invitedata) {
     // TODO: implement updateViews
-    setState(() {
-      _suggestions=invitedata;
-    });
+    if(mounted) {
+      setState(() {
+        _suggestions = invitedata;
+      });
+    }
   }
 }

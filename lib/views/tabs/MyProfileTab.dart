@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/ProfileUpdatePresenter.dart';
+import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 
 class MyProfile extends StatefulWidget {
   @override
@@ -25,8 +26,11 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     _formdata["about_me"]="";
     _formdata["skills"]="";
     _formdata["interest"]="";
+    _formdata["email"]="";
+    _formdata["contact_no"]="";
     profileUpdatePresenter=new ProfileUpdatePresenter(this);
-    profileUpdatePresenter.getProfileData("A6265111");
+    profileUpdatePresenter.getProfileData();
+
   }
 
   @override
@@ -34,11 +38,11 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     bool loaded=false;
     NetworkImage nI;
     if(null!=_formdata["profileimg"]) {
+      print(_formdata["profileimg"]);
       nI = new NetworkImage(_formdata["profileimg"]);
       nI.resolve(new ImageConfiguration()).addListener((_, __) {
         if (mounted) {
           setState(() {
-            print("image loaded");
             loaded = true;
           });
         }
@@ -120,7 +124,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                                           color: Colors.black),
                                     )),
                               ),
-                              SizedBox(height: 10,),
+                              SizedBox(height: 5,),
                               Align(
                                   alignment: Alignment.topLeft,
                                   child: Padding(padding: EdgeInsets.all(8.0),
@@ -128,6 +132,28 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                                         _formdata['designation'],
                                         style: TextStyle(
                                             fontSize: 14,
+                                            fontStyle: FontStyle.normal,
+                                            color: Colors.black),
+                                      ))),
+                              SizedBox(height: 5,),
+                              Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(padding: EdgeInsets.all(8.0),
+                                      child: new Text(
+                                        _formdata['email'],
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontStyle: FontStyle.normal,
+                                            color: Colors.black),
+                                      ))),
+                              SizedBox(height: 5,),
+                              Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(padding: EdgeInsets.all(8.0),
+                                      child: new Text(
+                                        _formdata['contact_no'],
+                                        style: TextStyle(
+                                            fontSize: 12,
                                             fontStyle: FontStyle.normal,
                                             color: Colors.black),
                                       )))
@@ -246,14 +272,19 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
   @override
   void updateView(Map userdetails) {
     // TODO: implement updateView
-    setState(() {
-      _formdata["name"]=userdetails["name"];
-      _formdata["designation"]=userdetails["designation"];
-      _formdata["about_me"]=userdetails["about_me"];
-      _formdata["skills"]=userdetails["skills"];
-      _formdata["interest"]=userdetails["interest"];
-      _formdata["profileimg"]=userdetails["profileimg"];
-    });
+    if(mounted) {
+      setState(() {
+        _formdata["name"] = userdetails["name"];
+        _formdata["designation"] = userdetails["designation"];
+        _formdata["about_me"] = userdetails["about_me"];
+        _formdata["skills"] = userdetails["skills"];
+        _formdata["interest"] = userdetails["interest"];
+        _formdata["profileimg"] = userdetails["profileimg"]+"?"+new DateTime.now().millisecondsSinceEpoch.toString();
+        _formdata["email"]= userdetails["email"];
+        _formdata["contact_no"]= userdetails["contact_no"];
+        _formdata["project"]= userdetails["project"];
+      });
+    }
   }
 
   @override

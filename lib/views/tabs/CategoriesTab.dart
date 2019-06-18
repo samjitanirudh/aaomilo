@@ -119,7 +119,7 @@ class _MyHomePageState extends State<CategoriesTabs> {
         ),
         child: GestureDetector( child: Container(
 
-            decoration: BoxDecoration(color: Colors.blue[50],shape: BoxShape.rectangle),
+            decoration: BoxDecoration(color: Colors.blue.shade50,shape: BoxShape.rectangle),
             child: Column(mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
