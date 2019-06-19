@@ -1,0 +1,23 @@
+{
+  "valid_Json": {
+    "access_token": "49da32ce-4dc2-442d-ae5a-cf0aba15029f",
+    "refresh_token": "17f4eb40-9ec2-42b8-8468-0850e8a77cd0",
+    "scope": "stGoSGI",
+    "token_type": "Bearer",
+    "expires_in": 599
+  },
+  "invalid_Json": {
+    "access_token": "49da32ce-4dc2-442d-ae5a-cf0aba15029f",
+    "scope": "stGoSGI",
+    "token_type": "Bearer",
+    "expires_in": 599
+  },
+  "expected_Input": {
+    "expected_clientId": "Indec_QB",
+    "expected_clientSecret": "272sqToLimhvjkzFNFpA",
+    "expected_username": "K1478713",
+    "expected_password": "******",
+    "expected_refreshToken":"272sqToLimhvjkzFNFpA",
+    "expected_URL":"https://cloudsso.saint-gobain.com/openam/oauth2/access_token"
+  }
+}

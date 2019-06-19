@@ -12,16 +12,21 @@ class LoginPresenter {
   loginButtonOnClick(String uName, String pwd) async {
     try{
       String response = await _loginModel.checkLogin(uName, pwd);
-      if(response!=null) {
-        _callbacks.loginSuccessfull();
+      print("SSOResponse: "+ response);
+      if(response!=null && !response.contains("Error : ")) {
+        _callbacks.loginSuccessfull(response);
+      }
+      else{
+        _callbacks.showLoginError(response);
       }
     }on Exception catch(error) {
-      _callbacks.showLoginError();
+      _callbacks.showLoginError(error.toString());
     }
   }
+
 }
 
 abstract class LoginCallbacks {
-  void loginSuccessfull();
-  void showLoginError();
+  void loginSuccessfull(String response);
+  void showLoginError(String error_response);
 }

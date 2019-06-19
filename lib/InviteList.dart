@@ -141,7 +141,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
                         width: 30,
                         height: 30,
                         decoration: BoxDecoration(image: DecorationImage(
-                            image: AssetImage("assets/group.png"),
+                            image: AssetImage("assets/images/group.png"),
                             fit: BoxFit.fill))
                     ),
                     Container(
@@ -164,7 +164,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
                             width: 30,
                             height: 30,
                             decoration: BoxDecoration(image: DecorationImage(
-                                image: AssetImage("assets/comment.png"),
+                                image: AssetImage("assets/images/comment.png"),
                                 fit: BoxFit.fill))
                         ),
                         Container(
@@ -186,7 +186,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
                         width: 30,
                         height: 30,
                         decoration: BoxDecoration(image: DecorationImage(
-                            image: AssetImage("assets/favourites.png"),
+                            image: AssetImage("assets/images/favourites.png"),
                             fit: BoxFit.fill))
                     ),
                   )

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -9,14 +10,30 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  static const platform = const MethodChannel('samples.flutter.dev/ssoanywhere');
   startTime() async {
     var _duration = new Duration(seconds: 4);
     return new Timer(_duration, navigationPage);
   }
+  Future<bool> _isLoggedIn() async {
+    bool isLoggedIn=false;
+    try {
+      isLoggedIn = await platform.invokeMethod('isLoggedIn');
 
-  void navigationPage() {
-    Navigator.of(context).pushReplacementNamed('/Loginscreen');
+    } on PlatformException catch (e) {
+      isLoggedIn =false;
+    }
+    return isLoggedIn;
   }
+
+  Future navigationPage() async {
+    bool response = await _isLoggedIn() as bool;
+    if (response)
+      Navigator.of(context).pushReplacementNamed('/TabViewScreen');
+    else
+      Navigator.of(context).pushReplacementNamed('/Loginscreen');
+  }
+
 
   @override
   void initState() {
