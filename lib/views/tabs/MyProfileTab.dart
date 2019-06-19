@@ -38,8 +38,8 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     bool loaded=false;
     NetworkImage nI;
     if(null!=_formdata["profileimg"]) {
-      print(_formdata["profileimg"]);
-      nI = new NetworkImage(_formdata["profileimg"]);
+      print("Berear "+UserProfile().getInstance().sg_id);
+      nI = new NetworkImage(_formdata["profileimg"],headers: {"Authorization": "Berear "+UserProfile().getInstance().sg_id});
       nI.resolve(new ImageConfiguration()).addListener((_, __) {
         if (mounted) {
           setState(() {
@@ -279,7 +279,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
         _formdata["about_me"] = userdetails["about_me"];
         _formdata["skills"] = userdetails["skills"];
         _formdata["interest"] = userdetails["interest"];
-        _formdata["profileimg"] = userdetails["profileimg"]+"?"+new DateTime.now().millisecondsSinceEpoch.toString();
+        _formdata["profileimg"] = userdetails["profileimg"]+"&"+new DateTime.now().millisecondsSinceEpoch.toString();
         _formdata["email"]= userdetails["email"];
         _formdata["contact_no"]= userdetails["contact_no"];
         _formdata["project"]= userdetails["project"];

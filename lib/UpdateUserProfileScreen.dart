@@ -504,8 +504,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
 
                         if(null!=_image){
                           var fileExt = basename(_image.path).split(".");
-                          var sgIdEncode = base64.encode(utf8.encode(UserProfile().getInstance().sg_id + "." + fileExt[1].toString()));
-                          _formdata['profilepicname'] = sgIdEncode;
+                          _formdata['profilepicname'] = fileExt[1].toString();
                         }
 
                         profileUpdatePresenter.PostProfileData(_formdata, _image);
@@ -663,7 +662,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
         projectController.text= userdetails["project"];
         selectCategoryList= userdetails["interest"].split(",");
         _formdata["profileimg"] = userdetails["profileimg"];
-        nI = new NetworkImage(_formdata["profileimg"]+"?"+new DateTime.now().millisecondsSinceEpoch.toString());
+        nI = new NetworkImage(_formdata["profileimg"]+"&"+new DateTime.now().millisecondsSinceEpoch.toString(),headers: {"Authorization": "Berear "+UserProfile().getInstance().sg_id});
         nI.resolve(new ImageConfiguration()).addListener((_, __) {
           if (mounted) {
             setState(() {

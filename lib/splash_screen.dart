@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'viewmodel/ProfileDataUpdate.dart';
+
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => new _SplashScreenState();
@@ -28,8 +30,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future navigationPage() async {
     bool response = await _isLoggedIn() as bool;
-    if (response)
+    if (response) {
+      String user = await UserProfile().getInstance().getLoggedInUser();
+      UserProfile().getInstance().setSGID(user);
       Navigator.of(context).pushReplacementNamed('/TabViewScreen');
+    }
     else
       Navigator.of(context).pushReplacementNamed('/Loginscreen');
   }

@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'dart:core';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'ProfileDataUpdate.dart';
 class ProfileDataModel {
 
   var profileAPI         = "http://convergepro.xyz/meetupapi/work/action.php";
-  var profilePicAPI         = "http://convergepro.xyz/meetupapi/profile_pics/";
+  var profilePicAPI         = "http://convergepro.xyz/meetupapi/work/action.php?action=profilepic";
 
   Map<String, String> headers = new Map();
 
@@ -77,12 +79,14 @@ class ProfileDataModel {
 
 
   Future<String> userGetRequest(String sg_id) async{
-    String sgid = base64Encode(utf8.encode(sg_id));
-    return getUser(profileAPI+"?action=getuserprofile&sgid="+sgid);
+    String user = await UserProfile().getInstance().getLoggedInUser();
+    return getUser(profileAPI+"?action=getuserprofile",user);
   }
 
-  Future<String> getUser(String url) {
-    return http.post(url).then((http.Response response) {
+  Future<String> getUser(String url,String token) {
+    print(token);
+    headers['Authorization']="Berear "+token;
+    return http.post(url,headers: headers).then((http.Response response) {
 
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400 || json == null) {
@@ -103,7 +107,7 @@ class ProfileDataModel {
       userdata["about_me"]=webList[i]['about_me'];
       userdata["skills"]=webList[i]['skills'];
       userdata["interest"]=webList[i]['interest'];
-      userdata["profileimg"]=this.profilePicAPI+userProfile.getUserPorfilePicUrl();
+      userdata["profileimg"]=this.profilePicAPI;
       userProfile.setUserFirstName(userdata['name']);
       userProfile.setUserEmail(userdata['email']);
       userProfile.setUserContact(userdata['contact_no']);

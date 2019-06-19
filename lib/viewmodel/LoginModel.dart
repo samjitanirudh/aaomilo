@@ -30,7 +30,7 @@ class LoginModel {
       parameters['password'] = pass;
       final String result = await platform.invokeMethod('getAccessToken',{'credentials': parameters});
 
-      accessToken = 'AccessToken $result % .';
+      accessToken = result;
     } on PlatformException catch (e) {
       accessToken = "Error : '${e.code}'.";
     }

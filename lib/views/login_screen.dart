@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/loginPresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/services.dart';
+import 'dart:convert';
 
 class loginScreen extends StatefulWidget {
   loginScreen({Key key}) : super(key: key);
@@ -183,8 +181,8 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
   }
 
 
-  void navigationPage() {
-    UserProfile().getInstance().saveLoggedInUser("A6265111");   //replace SGID with logged in user
+  void navigationPage(String user) {
+    UserProfile().getInstance().saveLoggedInUser(user);   //replace SGID with logged in user
     Navigator.of(context).pushReplacementNamed('/TabViewScreen');
   }
 
@@ -209,10 +207,11 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
   @override
   void loginSuccessfull(String response) {
     // TODO: implement loginSuccessfull
-//    _showToast(bContext, "Login successfull");
-if(response!=null || response.compareTo("")!=0)
-    setState(() => _isLoading = false);
-    navigationPage();
+    // _showToast(bContext, "Login successfull");
+    if(response!=null || response.compareTo("")!=0)
+        setState(() => _isLoading = false);
+        Map sessionList=json.decode(response);
+        navigationPage(sessionList["access_token"].toString());
   }
 
   @override
