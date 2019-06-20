@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetup_login/InviteList.dart';
 import 'package:flutter_meetup_login/UpdateUserProfileScreen.dart';
 import 'package:flutter_meetup_login/splash_screen.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
@@ -31,7 +32,8 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/Loginscreen': (BuildContext context) => new loginScreen(),
         '/UpdateUserProfileScreen': (BuildContext context) => new UpdateUserProfileScreen(),
-        '/TabViewScreen': (BuildContext context) => new TabViewScreen()
+        '/TabViewScreen': (BuildContext context) => new TabViewScreen(),
+        '/InviteList':(BuildContext context) => new InviteList()
       },
     );
   }
