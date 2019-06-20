@@ -26,14 +26,14 @@ class ProfileUpdatePresenter{
       profileUpdate.setParams(params);
       String response = await profileUpdate.profilePostRequest();
 
-      if(response!=null) {
+      if(response!=null && response!="sessionExpired") {
         profileCallback.updatedSuccessfull(response);
       }else{
-        profileCallback.showErrorDialog();
+        profileCallback.showErrorDialog(response);
       }
 
     } on Exception catch (error) {
-      profileCallback.showErrorDialog();
+      profileCallback.showErrorDialog(error.toString());
     }
 
   }
@@ -42,9 +42,12 @@ class ProfileUpdatePresenter{
     try{
       loggedInUser=await userProfile.getLoggedInUser();
       String webList= await profileUpdate.userGetRequest(loggedInUser);
-      profileCallback.updateView(profileUpdate.getUserDetails(json.decode(webList)));
+      if(webList!="sessionExpired")
+        profileCallback.updateView(profileUpdate.getUserDetails(json.decode(webList)));
+      else
+        profileCallback.showErrorDialog(webList);
     }on Exception catch (error) {
-      profileCallback.showErrorDialog();
+      profileCallback.showErrorDialog(error.toString());
     }
   }
 
@@ -52,6 +55,6 @@ class ProfileUpdatePresenter{
 
 abstract class ProfileUpdateCallbacks {
   void updatedSuccessfull(String msg);
-  void showErrorDialog();
+  void showErrorDialog(String error);
   void updateView(Map userdetails);
 }

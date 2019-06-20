@@ -265,8 +265,13 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
   }
 
   @override
-  void showErrorDialog() {
-    // TODO: implement showErrorDialog
+  void showErrorDialog(String errorMesage) {
+    if(errorMesage=="sessionExpired") {
+      UserProfile().getInstance().resetUserProfile(); //
+      Navigator.of(context).pushReplacementNamed('/Loginscreen');
+    }
+    else
+      ;//_showDialog(bContext,"View profile", errorMesage,true);
   }
 
   @override
