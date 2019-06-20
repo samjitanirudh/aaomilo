@@ -42,6 +42,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   var contactController = new TextEditingController();
   var emailController = new TextEditingController();
   bool loaded=false;
+  bool _isLoading=false;
   _UpdateProfileState(){
     _formdata["firstname"]="";
     _formdata["about"]="";
@@ -62,6 +63,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
     imagePicker = new ImagePickerHandler(this, _controller);
     imagePicker.init();
     profileUpdatePresenter = new ProfileUpdatePresenter(this);
+    _isLoading=true;
     profileUpdatePresenter.getProfileData();
   }
 
@@ -85,18 +87,29 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                 fontSize: 20.0,
               )),
         ),
-        body: _formview = SafeArea(
-            child: SingleChildScrollView(
-                child: Form(
-                    key: _formKey,
-                    child: new Stack(
-                      children: <Widget>[
-                        updateProfileView(context),
+        body:
+          new Stack(
+            children: <Widget>[
+              updateProfileView(context),
+              _isLoading?loaderOnViewUpdate():new Container()
+            ],
+          )
+     );
+  }
 
-                      ],
-
-                    ),
-                ))));
+  Widget loaderOnViewUpdate() {
+      var modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.3,
+            child: const ModalBarrier(dismissible: false, color: Colors.blue),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(),
+          ),
+        ],
+      );
+    return modal;
   }
 
   updateProfileImage(){
@@ -166,7 +179,13 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   }
 
   updateProfileView(BuildContext context){
-    return new Column(
+    return
+      _formview = SafeArea(
+        child: SingleChildScrollView(
+        child: Form(
+        key: _formKey,
+        child:
+            new Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         new GestureDetector(
@@ -520,7 +539,10 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
               ),
             ]),
       ],
-    );
+    )
+          )
+        )
+      );
   }
 
   _showSkillsDialog() {
@@ -680,7 +702,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   void updateView(Map userdetails) {
     if(mounted) {
       setState(() {
-
+        _isLoading=false;
         firstNameController.text= userdetails["name"];
         emailController.text= userdetails["email"];
         contactController.text= userdetails["contact_no"];
@@ -696,6 +718,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
         nI.resolve(new ImageConfiguration()).addListener((_, __) {
           if (mounted) {
             setState(() {
+
               loaded = true;
             });
           }

@@ -89,7 +89,6 @@ class ProfileDataModel {
   }
 
   Future<String> getUser(String url,String token) {
-    print(token);
     headers['Authorization']="Berear "+token;
     return http.post(url,headers: headers).then((http.Response response) {
 

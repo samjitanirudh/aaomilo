@@ -35,12 +35,12 @@ class CreateInviteModel {
   setInviteVanue(var vanue) => this.txtVanue = vanue;
 
 
-  Future<String> invitePostRequest() {
+  Future<String> invitePostRequest(String token) {
     headers['Content-type']="application/x-www-form-urlencoded";
+    headers['Authorization']="Berear "+token;
     var encoding = Encoding.getByName('utf-8');
     return postInvites(inviteAPI,headers: headers, body: getPostParams(),encoding: encoding)
         .then((String res) {
-      print(res.toString());
       if (res == null) throw new Exception("error");
       return res;
     });

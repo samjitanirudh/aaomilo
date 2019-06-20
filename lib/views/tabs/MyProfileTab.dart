@@ -16,6 +16,8 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
   TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white,);
   Map _formdata = new Map();
   ProfileUpdatePresenter profileUpdatePresenter;
+  var _formview;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -29,6 +31,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     _formdata["email"]="";
     _formdata["contact_no"]="";
     profileUpdatePresenter=new ProfileUpdatePresenter(this);
+    _isLoading=true;
     profileUpdatePresenter.getProfileData();
 
   }
@@ -43,6 +46,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
       nI.resolve(new ImageConfiguration()).addListener((_, __) {
         if (mounted) {
           setState(() {
+            _isLoading=false;
             loaded = true;
           });
         }
@@ -73,10 +77,17 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
             fontSize: 20.0,
           )),
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        body: new Stack(
+        children: getProfileView(loaded,nI)
+      ));
+
+  }
+
+  List<Widget> getProfileView(bool loaded,NetworkImage nI){
+    _formview=SafeArea(
+      child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
                   padding: EdgeInsets.all(10),
@@ -88,7 +99,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           new Container(
@@ -204,44 +215,61 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                 ),
               ),
               new Container(
-                height: 60.0,
-                child: new Scrollbar(child: new ListView(
-                    scrollDirection: Axis.horizontal,
-                    children:getUserSkillsView()
-                ))
+                  height: 60.0,
+                  child: new Scrollbar(child: new ListView(
+                      scrollDirection: Axis.horizontal,
+                      children:getUserSkillsView()
+                  ))
               ),
 //              ),
-          Container(
-              child: new Column(
-                children: <Widget>[
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                          padding: EdgeInsets.all(12),
-                          child: new Text(
-                            "My Interests",
-                            style: TextStyle(
-                                fontSize: 22,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.brown),
-                          ))),
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                          padding: EdgeInsets.all(12),
-                          child: new Text(_formdata['interest'],
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontStyle: FontStyle.normal,
-                                color: Colors.black),
-                          ))),
-                  ]
-              ),
-          )
+              Container(
+                child: new Column(
+                    children: <Widget>[
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                              padding: EdgeInsets.all(12),
+                              child: new Text(
+                                "My Interests",
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown),
+                              ))),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                              padding: EdgeInsets.all(12),
+                              child: new Text(_formdata['interest'],
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontStyle: FontStyle.normal,
+                                    color: Colors.black),
+                              ))),
+                    ]
+                ),
+              )
             ],
           )),
-        ));
+    );
+    var view =new List<Widget> () ;
+    view.add(_formview);
+    if (_isLoading) {
+      var modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.3,
+            child: const ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(),
+          ),
+        ],
+      );
+      view.add(modal);
+    }
+    return view;
   }
 
   List<ButtonTheme> getUserSkillsView(){
@@ -288,6 +316,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
         _formdata["email"]= userdetails["email"];
         _formdata["contact_no"]= userdetails["contact_no"];
         _formdata["project"]= userdetails["project"];
+
       });
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/CreateInvitePresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
+import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/viewmodel/Venue.dart';
 import 'package:flutter_meetup_login/views/ImageListviewChecked.dart';
 
@@ -680,9 +681,15 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   }
 
   @override
-  void showLoginError() {
+  void showLoginError(String error) {
     // TODO: implement showLoginError
-    _showDialog(bContext,"Create Invite","Error while Creating invite, please try again!");
+    if (error == "Session Expired") {
+      UserProfile().getInstance().resetUserProfile(); //
+      Navigator.of(context).pushReplacementNamed('/Loginscreen');
+    } else{
+      _showDialog(bContext, "Create Invite",
+          "Error while Creating invite, please try again!");
+    }
     setState(() => _isLoading = false);
   }
 

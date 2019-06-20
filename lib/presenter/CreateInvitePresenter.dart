@@ -1,6 +1,8 @@
 import 'package:flutter_meetup_login/viewmodel/CreateInviteModel.dart';
 import 'dart:convert';
 
+import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
+
 class CreateInvitePreseter{
 
   InviteCallbacks _callbacks;
@@ -14,12 +16,15 @@ class CreateInvitePreseter{
   CreateInviteOnClick(Map params) async {
     try{
       _createInviteModel = setParams(params);
-      String response = await _createInviteModel.invitePostRequest();
-      if(response!=null) {
+      String user = await UserProfile().getInstance().getLoggedInUser();
+      String response = await _createInviteModel.invitePostRequest(user);
+      if(response!=null && response!="token expired") {
         _callbacks.createdSuccessfull();
+      }else if(response=="token expired"){
+        _callbacks.showLoginError("Session Expired");
       }
     }on Exception catch(error) {
-      _callbacks.showLoginError();
+      _callbacks.showLoginError(error.toString());
     }
   }
 
@@ -55,6 +60,6 @@ class CreateInvitePreseter{
 
 abstract class InviteCallbacks {
   void createdSuccessfull();
-  void showLoginError();
+  void showLoginError(String error);
   void updateCategoryImages(List<dynamic> images);
 }
