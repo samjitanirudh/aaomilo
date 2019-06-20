@@ -28,7 +28,7 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
     super.initState();
 
     // Initialize the Tab Controller
-    controller = new TabController(length: 6, vsync: this);
+    controller = new TabController(length: 5, vsync: this);
   }
 
   @override
@@ -47,7 +47,7 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
       body: new TabBarView(
         // Add tabs as widgets
 
-        children: <Widget>[new InviteList(), CategoriesTabs(controller), new MyInvites(), new CreateInvite(), new NotificationTab(), new MyProfile()],
+        children: <Widget>[new InviteList(), CategoriesTabs(controller),  new CreateInvite(),new MyInvites(), new MyProfile()],
         // set the controller
         controller: controller,
       ),
@@ -65,15 +65,14 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
               // set icon to the tab
               icon: new Icon(Icons.category),
             ),
-            new Tab(
-              icon: new Icon(Icons.event_available),
-            ),
+
             new Tab(
               icon: new Icon(Icons.add_circle),
             ),
             new Tab(
-              icon: new Icon(Icons.notifications),
+              icon: new Icon(Icons.event_available),
             ),
+
             new Tab(
               icon: new Icon(Icons.account_circle),
             ),
