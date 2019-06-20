@@ -628,13 +628,43 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
     );
   }
 
+  void _showDialogNavigation(BuildContext context, String title, String content,Function fun) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(title),
+          content: new Text(content),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text(""),
+              onPressed: fun,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   navigate() {
     Navigator.of(bContext).pushNamedAndRemoveUntil('/TabViewScreen', (Route<dynamic> route) => false);
   }
 
   @override
-  void showErrorDialog() {
-    _showDialog(bContext,"Update profile", "Error! please try again",true);
+  void showErrorDialog(String errorMesage) {
+    if(errorMesage=="sessionExpired") {
+      _showDialogNavigation(bContext,"Update profile", errorMesage,tokenExpired());
+    }
+    else
+      _showDialog(bContext,"Update profile", errorMesage,true);
+  }
+
+  tokenExpired(){
+    UserProfile().getInstance().resetUserProfile();
+    Navigator.of(bContext).pushReplacementNamed('/Loginscreen');
   }
 
   @override

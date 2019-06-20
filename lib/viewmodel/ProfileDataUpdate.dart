@@ -22,6 +22,9 @@ class ProfileDataModel {
     return postProfile(profileAPI,headers: headers, body: getProfilePostParams(),encoding: encoding)
         .then((String res) {
       if (res == null) throw new Exception("error");
+      else if(res=="sessionExpired")
+        return res;
+      else
       return jsonDecode(res);
     });
   }
@@ -34,6 +37,8 @@ class ProfileDataModel {
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error while fetching data");
+      }else if(response.body=="token expired"){
+        return "sessionExpired";
       }
       return response.body;
     });
@@ -91,6 +96,8 @@ class ProfileDataModel {
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error while fetching data");
+      }else if(response.body=="token expired"){
+       return "sessionExpired";
       }
       return response.body;
     });
@@ -138,7 +145,20 @@ class UserProfile{
   var profileImageName="";
   static UserProfile userProfile=new UserProfile();
 
-  UserProfile();
+  resetUserProfile(){
+    this.first_name="";
+    this.last_name="";
+    this.about_me="";
+    this.skills="";
+    this.interest="";
+    this.sg_id="";
+    this.email_id="";
+    this.contact_no="";
+    this.project_name="";
+    this.designation="";
+    this.profileImage="";
+    this.profileImageName="";
+  }
 
   UserProfile getInstance(){
     if(null!=userProfile)
