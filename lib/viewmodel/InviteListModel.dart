@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'Invite.dart';
 
 class InviteListModel{
-
+  static const platform = const MethodChannel('samples.flutter.dev/ssoanywhere');
   static final InviteListModel inviteListModel=new InviteListModel();
 
 
@@ -22,11 +23,18 @@ class InviteListModel{
     return inviteList;
   }
 
+  Future<String> checkRefreshToken() {
+    return _getRefreshToken(); // ignore: argument_type_not_assignable
+  }
   Future<String> inviteGetRequest() {
     return getInvite(uri)
         .then((String res) {
+          print(res);
       if (res == null) throw new Exception("error");
-      return res;
+      else if(res=="sessionExpired")
+        return res;
+      else
+        return res;
     });
   }
 
@@ -36,8 +44,9 @@ class InviteListModel{
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error while fetching data");
+      }else if(response.body == "token expired"){
+        return "sessionExpired";
       }
-      getListInvites(json.decode(response.body));
       return response.body;
     });
   }
@@ -61,5 +70,19 @@ class InviteListModel{
       inv.setJoined(webList[i]["joined"]);
       inviteList.add(inv);
     }
+  }
+  Future<String> _getRefreshToken() async {
+    String refreshToken;
+    try {
+      final String result = await platform.invokeMethod('getRefreshToken');
+      refreshToken = result;
+    } on PlatformException catch (e) {
+      refreshToken = "Error : '${e.code}'.";
+    }
+    return refreshToken;
+  }
+
+  void clearInviteList() {
+    return (inviteList!=null && inviteList.length>0) ? inviteList.clear() : new List();
   }
 }

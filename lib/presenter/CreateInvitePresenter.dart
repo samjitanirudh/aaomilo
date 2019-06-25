@@ -41,6 +41,20 @@ class CreateInvitePreseter{
 
     }
   }
+  refreshToken() async {
+    try{
+      String response = await _createInviteModel.checkRefreshToken();
+      print("SSOResponse: "+ response);
+      if(response!=null && !response.contains("Error : ")) {
+        _callbacks.createdSuccessfull();
+      }
+      else{
+        _callbacks.showLoginError("Session Expired");
+      }
+    }on Exception catch(error) {
+      _callbacks.showLoginError("Session Expired");
+    }
+  }
 
 
   CreateInviteModel setParams(Map param)

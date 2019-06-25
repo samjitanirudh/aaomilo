@@ -37,7 +37,9 @@ public class MainActivity extends FlutterActivity {
                   final Map map = call.argument("credentials");
                   if (call.method.equals("getAccessToken")) {
                       getAccessToken(map.get("username").toString(), map.get("password").toString(), result);
-                  } else if (call.method.equals("isLoggedIn")) {
+                  } else if (call.method.equals("getRefreshToken")) {
+                      getRefreshToken(result);
+                  }else if (call.method.equals("isLoggedIn")) {
                       isLoggedIn(result);
                   } else {
                       result.notImplemented();
@@ -67,6 +69,21 @@ public class MainActivity extends FlutterActivity {
         else
             result.error("Error ", "null object", ssoAnywhere.isLoggedIn());
 
+    }
+
+    private  void getRefreshToken(MethodChannel.Result result){
+        ssoAnywhere = SSOAnywhere.getInstance(this,"Indec_QB","272sqToLimhvjkzFNFpA", new AutherizedResponseInterface() {
+            @Override
+            public void getResponse(String jsonresult, boolean fromRefreshAPI) {
+                result.success(jsonresult);
+            }
+
+            @Override
+            public void getErrorResponse(int responseCode) {
+                result.error(String.valueOf(responseCode), "Resource owner authentication failed", null);
+            }
+        });
+        ssoAnywhere.callingRefreshTokenAPI();
     }
 //  private fun getAccessToken(result):Unit{
 //    var jsonResponse : String = "";

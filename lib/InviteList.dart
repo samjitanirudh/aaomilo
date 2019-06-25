@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
+import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
+
+import 'viewmodel/InviteListModel.dart';
 
 class InviteList extends StatefulWidget {
   @override
@@ -14,6 +18,8 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
   List<Invite> _suggestions = new List<Invite>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
   InviteListPresenter inviteListPresenter;
+  static const platform = const MethodChannel('samples.flutter.dev/ssoanywhere');
+  BuildContext bContext;
 
   @override
   void initState() {
@@ -21,10 +27,12 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
     super.initState();
     inviteListPresenter= new InviteListPresenter(this);
     inviteListPresenter.GetInviteList();
+
   }
 
   @override
   Widget build(BuildContext context) {
+    bContext = context;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
@@ -42,6 +50,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
   Widget _buildSuggestions() {
     return new Container(
 //      decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
+        child: new RefreshIndicator(
       child:Scrollbar(
         child: ListView.builder(
         itemCount: _suggestions.length,
@@ -61,10 +70,15 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
             ),
           ));
         },
-      )),
+      )), onRefresh: _refreshStockPrices),
     );
   }
-
+  Future<void> _refreshStockPrices() async
+  {
+    print('refreshing stocks...');
+    inviteListPresenter.clearInviteList();
+    inviteListPresenter.GetInviteList();
+  }
   Widget _buildRow(Invite invite) {
     bool loaded=false;
     NetworkImage nI= new NetworkImage(invite.image);
@@ -211,5 +225,65 @@ class InviteListState extends State<InviteList> implements InviteListCallBack{
         _suggestions = invitedata;
       });
     }
+  }
+
+  @override
+  void showErrorDialog(String errorMesage) {
+    if(errorMesage=="sessionExpired") {
+      _showDialogNavigation(bContext,"Fetching Invite List", errorMesage,tokenExpired());
+    }
+    else
+      _showDialog(bContext,"Fetching Invite List", errorMesage,true);
+  }
+  tokenExpired(){
+    UserProfile().getInstance().resetUserProfile();
+    Navigator.of(bContext).pushReplacementNamed('/Loginscreen');
+  }
+  void _showDialogNavigation(BuildContext context, String title, String content,Function fun) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(title),
+          content: new Text(content),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text(""),
+              onPressed: fun,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //Dialog to notify user about invite creation result
+  void _showDialog(BuildContext context, String title, String content,bool isError) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(title),
+          content: new Text(content),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Ok"),
+              onPressed: () {
+                if(isError)
+                  inviteListPresenter.refreshToken();
+                else
+                  updateViews(InviteListModel().getInstance().getInviteList());
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
