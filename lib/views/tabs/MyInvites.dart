@@ -297,6 +297,11 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack{
 
     );
   }
+
+  @override
+  void showErrorDialog(String error) {
+    // TODO: implement showErrorDialog
+  }
 }
 
 

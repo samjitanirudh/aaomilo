@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 class CreateInviteModel {
-
+  static const platform = const MethodChannel('samples.flutter.dev/ssoanywhere');
   var txtInviteTitle;
   var txtInviteCategory;
   var inviteImg;
@@ -34,6 +35,9 @@ class CreateInviteModel {
 
   setInviteVanue(var vanue) => this.txtVanue = vanue;
 
+  Future<String> checkRefreshToken() {
+    return _getRefreshToken(); // ignore: argument_type_not_assignable
+  }
 
   Future<String> invitePostRequest(String token) {
     headers['Content-type']="application/x-www-form-urlencoded";
@@ -42,7 +46,10 @@ class CreateInviteModel {
     return postInvites(inviteAPI,headers: headers, body: getPostParams(),encoding: encoding)
         .then((String res) {
       if (res == null) throw new Exception("error");
-      return res;
+      else if(res=="sessionExpired")
+        return res;
+      else
+        return res;
     });
   }
 
@@ -54,6 +61,8 @@ class CreateInviteModel {
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error while fetching data");
+      }else if(response.body == "token expired"){
+        return "sessionExpired";
       }
       return response.body;
     });
@@ -80,7 +89,22 @@ class CreateInviteModel {
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error while fetching data");
       }
+//      else if(response.body == "token expired"){
+//        return "sessionExpired";
+//      }
       return response.body;
     });
   }
+
+  Future<String> _getRefreshToken() async {
+    String refreshToken;
+    try {
+      final String result = await platform.invokeMethod('getRefreshToken');
+      refreshToken = result;
+    } on PlatformException catch (e) {
+      refreshToken = "Error : '${e.code}'.";
+    }
+    return refreshToken;
+  }
+
 }

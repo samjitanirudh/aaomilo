@@ -675,7 +675,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   @override
   void createdSuccessfull() {
     // TODO: implement createdSuccessfull
-     _showDialog(bContext,"Create Invite","Invite succesfully created, Check My Events screen!");
+     _showDialog(bContext,"Create Invite","Invite succesfully created, Check My Events screen!",false);
      _formKey.currentState.reset();
      setState(() => _isLoading = false);
   }
@@ -687,16 +687,16 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
       UserProfile().getInstance().resetUserProfile(); //
       Navigator.of(context).pushReplacementNamed('/Loginscreen');
     } else{
-      _showDialog(bContext, "Create Invite",
-          "Error while Creating invite, please try again!");
+      _showDialog(bContext,"Create Invite","Error while Creating invite, please try again!",false);
     }
+
     setState(() => _isLoading = false);
   }
 
   void validateParams(){
 
     if(catImageSelected==-1){
-      _showDialog(bContext, "Category Image", "Please select category image!");
+      _showDialog(bContext, "Category Image", "Please select category image!",false);
       return;
     }
     if (_formKey.currentState.validate()) {
@@ -718,7 +718,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   }
 
   //Dialog to notify user about invite creation result
-  void _showDialog(BuildContext context,String title, String content) {
+  void _showDialog(BuildContext context,String title, String content,bool isRefresh) {
     // flutter defined function
     showDialog(
       context: context,
@@ -732,7 +732,10 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
             new FlatButton(
               child: new Text("Close"),
               onPressed: () {
-                Navigator.of(context).pop();
+                if (isRefresh)
+                  _createInvitePresenter.refreshToken();
+                else
+                  Navigator.of(context).pop();
               },
             ),
           ],
@@ -740,4 +743,39 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
       },
     );
   }
+
+
+//  @override
+//  void showErrorDialog(String errorMesage) {
+//    if(errorMesage=="sessionExpired") {
+//      _showDialogNavigation(bContext,"Fetching Invite List", errorMesage,tokenExpired());
+//    }
+//    else
+//      _showDialog(bContext,"Fetching Invite List", errorMesage,true);
+//  }
+  tokenExpired(){
+    UserProfile().getInstance().resetUserProfile();
+    Navigator.of(bContext).pushReplacementNamed('/Loginscreen');
+  }
+  void _showDialogNavigation(BuildContext context, String title, String content,Function fun) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(title),
+          content: new Text(content),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text(""),
+              onPressed: fun,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
