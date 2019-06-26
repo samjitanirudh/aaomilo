@@ -65,6 +65,7 @@ flutter:
    - assets/images/splash_screen.png
    - assets/images/loginbgb.jpg
    - assets/images/logoConverge.png
+   - assets/images/joined.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
