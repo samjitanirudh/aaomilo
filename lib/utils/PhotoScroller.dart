@@ -7,7 +7,7 @@ class PhotoScroller extends StatelessWidget {
 
   Widget _buildPhoto(BuildContext context, int index) {
     print(photoUrls[index]);
-    var photo = photoUrls[index];
+    var photo = photoUrls[index]+"?"+new DateTime.now().millisecondsSinceEpoch.toString();
 
     return Padding(
       padding: const EdgeInsets.only(right: 16.0),
@@ -21,15 +21,6 @@ class PhotoScroller extends StatelessWidget {
       ),
     );
 
-//    return Padding(
-//      padding: const EdgeInsets.only(right: 16.0),
-//      child: ClipRRect(
-//        borderRadius: BorderRadius.circular(4.0),
-//        child: Image(
-//          image: NetworkImage(photo),width: 80,height: 80,
-//        ),
-//      ),
-//    );
   }
 
   @override

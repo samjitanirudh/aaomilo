@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/utils/PhotoScroller.dart';
+import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 
 class InviteDetailScreen extends StatefulWidget {
+  final Invite invite;
+
+  InviteDetailScreen({Key key,@required this.invite}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new InviteDetailScreenState();
+    return new InviteDetailScreenState(this.invite);
   }
 }
 
@@ -15,15 +20,22 @@ class InviteDetailScreenState extends State<StatefulWidget> {
   bool _isLoading = false;
   BuildContext bContext;
   List<String> photoUrls= new List();
+  Invite invite;
+  InviteDetailScreenState(this.invite);
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    photoUrls.add("https://i.pinimg.com/564x/1d/d9/c1/1dd9c1044a74ba33e840456b7c705192.jpg");
-    photoUrls.add("https://i.pinimg.com/564x/1d/d9/c1/1dd9c1044a74ba33e840456b7c705192.jpg");
-    photoUrls.add("https://i.pinimg.com/564x/1d/d9/c1/1dd9c1044a74ba33e840456b7c705192.jpg");
-    photoUrls.add("https://i.pinimg.com/564x/1d/d9/c1/1dd9c1044a74ba33e840456b7c705192.jpg");
+    updateJoinedUserPhotos();
+  }
+
+  updateJoinedUserPhotos(){
+    List<InviteJoinees> iJoined=invite.getJoinees();
+    for(int i=0;i<iJoined.length;i++){
+      print(iJoined[i].profile_img);
+      photoUrls.add(iJoined[i].profile_img);
+    }
   }
 
   @override
@@ -42,6 +54,7 @@ class InviteDetailScreenState extends State<StatefulWidget> {
             padding: EdgeInsets.all(5),
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 inviteDetailHeader(),
@@ -52,6 +65,29 @@ class InviteDetailScreenState extends State<StatefulWidget> {
                 Divider(color: Colors.grey,),
                 inviteJoinedList(),
                 Divider(color: Colors.grey,),
+                SizedBox(height: 5,),
+                new Text("Description",style: TextStyle(fontSize: 24),),
+                new Text(invite.description.toString(),style: TextStyle(fontSize: 20,fontStyle:FontStyle.italic ),),
+                SizedBox(height: 5,),
+                new Container(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      new FlatButton(
+                        child: Text('Join'),
+                        onPressed: () {
+
+                        },
+                        color: Colors.blue,
+                        colorBrightness: Brightness.dark,
+                        disabledColor: Colors.blueGrey,
+                        highlightColor: Colors.red,
+                        padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),
@@ -66,7 +102,7 @@ class InviteDetailScreenState extends State<StatefulWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Text(
-            "Invitation for Flutter UI",
+            invite.title.toString(),
             style: new TextStyle(fontSize: 20),
           ),
           SizedBox(
@@ -79,7 +115,7 @@ class InviteDetailScreenState extends State<StatefulWidget> {
                 width: 10,
               ),
               new Text(
-                "28 June 2019 06pm onwards",
+                invite.created_date.toString()+" "+invite.time.toString()+" onwards",
                 style: new TextStyle(fontSize: 12),
               )
             ],
@@ -91,7 +127,7 @@ class InviteDetailScreenState extends State<StatefulWidget> {
                 width: 10,
               ),
               new Text(
-                "Time square, ground floor, common area",
+                invite.venue.toString(),
                 style: new TextStyle(fontSize: 12),
               )
             ],
@@ -103,7 +139,7 @@ class InviteDetailScreenState extends State<StatefulWidget> {
                 width: 10,
               ),
               new Text(
-                "Hosted by Monika J",
+                "Hosted by "+invite.first_name.toString(),
                 style: new TextStyle(fontSize: 12),
               )
             ],
@@ -119,7 +155,7 @@ class InviteDetailScreenState extends State<StatefulWidget> {
           height: MediaQuery.of(bContext).size.height * 0.25,
           width: MediaQuery.of(bContext).size.width,
           child: Image(
-            image: new AssetImage('assets/images/splash_screen.png'),
+            image: NetworkImage(invite.image.toString()),
             fit: BoxFit.fill,
           )),
       new Container(
@@ -153,13 +189,12 @@ class InviteDetailScreenState extends State<StatefulWidget> {
         children: <Widget>[
           Image(image: AssetImage("assets/images/joined.png"),fit: BoxFit.contain,width: 32,height: 32,),
            SizedBox(width: 10,),
-          new Text("0/5",style: TextStyle(fontSize: 18),),
+          new Text(invite.joined.toString()+"/"+invite.allowed_member_count.toString(),style: TextStyle(fontSize: 18),),
           SizedBox(width: 5,),
           new Container(
             width: MediaQuery.of(bContext).size.width*0.7,
             height: 80,
             child: PhotoScroller(photoUrls),)
-
         ],
       ),
     );
