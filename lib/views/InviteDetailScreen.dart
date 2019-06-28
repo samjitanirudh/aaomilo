@@ -22,12 +22,19 @@ class InviteDetailScreenState extends State<StatefulWidget> {
   List<String> photoUrls= new List();
   Invite invite;
   InviteDetailScreenState(this.invite);
+  var joinButtonText="Join Invite";
+  var leaveButtonText="Leave Invite";
+  bool isLeave=false;
+
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     updateJoinedUserPhotos();
+    print("flag"+invite.getisJoined().toString());
+    isLeave=invite.getisJoined();
   }
 
   updateJoinedUserPhotos(){
@@ -69,25 +76,7 @@ class InviteDetailScreenState extends State<StatefulWidget> {
                 new Text("Description",style: TextStyle(fontSize: 24),),
                 new Text(invite.description.toString(),style: TextStyle(fontSize: 20,fontStyle:FontStyle.italic ),),
                 SizedBox(height: 5,),
-                new Container(
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      new FlatButton(
-                        child: Text('Join'),
-                        onPressed: () {
-
-                        },
-                        color: Colors.blue,
-                        colorBrightness: Brightness.dark,
-                        disabledColor: Colors.blueGrey,
-                        highlightColor: Colors.red,
-                        padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
-                      )
-                    ],
-                  ),
-                )
+                joinOrLeaveInvteButton()
               ],
             ),
           ),
@@ -195,6 +184,28 @@ class InviteDetailScreenState extends State<StatefulWidget> {
             width: MediaQuery.of(bContext).size.width*0.7,
             height: 80,
             child: PhotoScroller(photoUrls),)
+        ],
+      ),
+    );
+  }
+
+  joinOrLeaveInvteButton(){
+    return new Container(
+      child: new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          new FlatButton(
+            child: Text(isLeave?leaveButtonText:joinButtonText),
+            onPressed: () {
+
+            },
+            color: Colors.blue,
+            colorBrightness: Brightness.dark,
+            disabledColor: Colors.blueGrey,
+            highlightColor: Colors.red,
+            padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
+          )
         ],
       ),
     );

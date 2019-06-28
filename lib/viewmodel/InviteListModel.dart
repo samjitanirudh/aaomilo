@@ -28,6 +28,7 @@ class InviteListModel{
   Future<String> inviteGetRequest() {
     return getInvite(uri)
         .then((String res) {
+
       if (res == null) throw new Exception("error");
       else if(res=="sessionExpired")
         return res;
@@ -55,6 +56,7 @@ class InviteListModel{
       Invite inv=new Invite();
       inv.sid(webList[i]["id"]);
       inv.setTitle(webList[i]["title"]);
+      print(webList[i]["title"]);
       inv.setDescription(webList[i]["description"]);
       inv.setCategory_id(webList[i]["category_id"]);
       inv.setTime(webList[i]["time"]);
@@ -65,24 +67,25 @@ class InviteListModel{
       inv.setCreated_date(webList[i]["created_date"]);
       inv.setFirst_name(webList[i]["first_name"]);
       inv.setJoined(webList[i]["joined"]);
+      inv.setisJoined(bool.fromEnvironment(webList[i]["isjoined"]));
       inv.setJoineList(getInviteJoinees(webList[i]["joinees"]));
       inviteList.add(inv);
     }
   }
 
   List<InviteJoinees> getInviteJoinees(List<dynamic> jList){
-//    List<dynamic> jList = json.decode(jsonList);
     List<InviteJoinees> iJoined=new List<InviteJoinees>();
-    for(int i =0;i<jList.length;i++){
-      InviteJoinees inviteJoinees=new InviteJoinees();
-      inviteJoinees.setsg_id(jList[i]["sg_id"]);
-      inviteJoinees.setName(jList[i]["first_name"]);
-      inviteJoinees.setDesignation(jList[i]["designation"]);
-      inviteJoinees.setProfile_img(jList[i]["profile_img"]);
-      iJoined.add(inviteJoinees);
+    if(null!=jList) {
+      for (int i = 0; i < jList.length; i++) {
+        InviteJoinees inviteJoinees = new InviteJoinees();
+        inviteJoinees.setsg_id(jList[i]["sg_id"]);
+        inviteJoinees.setName(jList[i]["first_name"]);
+        inviteJoinees.setDesignation(jList[i]["designation"]);
+        inviteJoinees.setProfile_img(jList[i]["profile_img"]);
+        iJoined.add(inviteJoinees);
+      }
+      return iJoined;
     }
-    return iJoined;
-
   }
 
   Future<String> _getRefreshToken() async {

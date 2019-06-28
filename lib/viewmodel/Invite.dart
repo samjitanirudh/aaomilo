@@ -13,6 +13,14 @@ class Invite{
   var _first_name;
   var _joined;
   var _joinees;
+  bool _isJoined;
+
+  get joinees => _joinees;
+
+  set joinees(value) {
+    _joinees = value;
+  }
+
   List<InviteJoinees> _joineList;
 
   Invite();
@@ -102,7 +110,14 @@ class Invite{
     void setJoineList(List<InviteJoinees> jList){
       _joineList=jList;
     }
+
+  getisJoined() { return _isJoined;}
+
+  setisJoined(value) {
+    _isJoined = value;
   }
+
+}
 
 
 
