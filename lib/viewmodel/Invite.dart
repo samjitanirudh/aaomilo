@@ -13,7 +13,7 @@ class Invite{
   var _first_name;
   var _joined;
   var _joinees;
-  bool _isJoined;
+  var _isJoined;
 
   get joinees => _joinees;
 

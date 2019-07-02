@@ -79,7 +79,6 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   }
 
   Future<void> _refreshStockPrices() async {
-    print('refreshing stocks...');
     inviteListPresenter.clearInviteList();
     inviteListPresenter.GetInviteList();
   }

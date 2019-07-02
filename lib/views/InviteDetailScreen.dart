@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
 import 'package:flutter_meetup_login/utils/PhotoScroller.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 
@@ -14,7 +15,8 @@ class InviteDetailScreen extends StatefulWidget {
   }
 }
 
-class InviteDetailScreenState extends State<StatefulWidget> {
+class InviteDetailScreenState extends State<StatefulWidget> implements InviteDetailCallBack{
+
   var _formKey = GlobalKey<FormState>();
   var _formView;
   bool _isLoading = false;
@@ -22,25 +24,25 @@ class InviteDetailScreenState extends State<StatefulWidget> {
   List<String> photoUrls= new List();
   Invite invite;
   InviteDetailScreenState(this.invite);
-  var joinButtonText="Join Invite";
-  var leaveButtonText="Leave Invite";
+  var joinButtonText="Attende";
+  var leaveButtonText="Leave";
   bool isLeave=false;
-
-
+  InviteListPresenter inviteListPresenter;
 
   @override
   void initState() {
-    // TODO: implement initState
+    // `TODO: implement initState
     super.initState();
+    inviteListPresenter=new InviteListPresenter(null);
+    inviteListPresenter.setInviteDetailCallBack(this);
     updateJoinedUserPhotos();
-    print("flag"+invite.getisJoined().toString());
-    isLeave=invite.getisJoined();
+    if(invite.getisJoined()=="1")
+      isLeave=true;
   }
 
   updateJoinedUserPhotos(){
     List<InviteJoinees> iJoined=invite.getJoinees();
     for(int i=0;i<iJoined.length;i++){
-      print(iJoined[i].profile_img);
       photoUrls.add(iJoined[i].profile_img);
     }
   }
@@ -48,7 +50,6 @@ class InviteDetailScreenState extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     bContext = context;
-
 
     return new Scaffold(
         appBar: new AppBar(
@@ -198,9 +199,9 @@ class InviteDetailScreenState extends State<StatefulWidget> {
           new FlatButton(
             child: Text(isLeave?leaveButtonText:joinButtonText),
             onPressed: () {
-
+              joinOrLeaveInvite();
             },
-            color: Colors.blue,
+            color: isLeave?Colors.red:Colors.blue,
             colorBrightness: Brightness.dark,
             disabledColor: Colors.blueGrey,
             highlightColor: Colors.red,
@@ -209,5 +210,33 @@ class InviteDetailScreenState extends State<StatefulWidget> {
         ],
       ),
     );
+  }
+
+  joinOrLeaveInvite(){
+    String doLeave="join";
+    if(isLeave){
+      doLeave="leave";
+    }
+    inviteListPresenter.joinOrLeave(doLeave, invite.id);
+  }
+
+  @override
+  void showError() {
+    // TODO: implement showError
+  }
+
+  @override
+  void showErrorDialog(String error) {
+    // TODO: implement showErrorDialog
+  }
+
+  @override
+  void updateViews(String status) {
+    // TODO: implement updateViews
+    if(status=="true"){
+      isLeave=!isLeave;
+    }else{
+
+    }
   }
 }

@@ -7,15 +7,23 @@ class InviteListPresenter{
 
   InviteListCallBack inviteListCallBack;
 
+  InviteDetailCallBack inviteDetailCallBack;
+
   InviteListModel inviteListModel=InviteListModel().getInstance();
 
   InviteListPresenter(InviteListCallBack inviteListCallBack){
     this.inviteListCallBack=inviteListCallBack;
   }
 
+  setInviteDetailCallBack(InviteDetailCallBack invcallback){
+    inviteDetailCallBack=invcallback;
+  }
+
   GetInviteList() async{
     try{
-      if(inviteListModel.getInviteList().length<1) {
+      if(inviteListModel.getInviteList() != null && inviteListModel.getInviteList().length>1) {
+        inviteListCallBack.updateViews(inviteListModel.getInviteList());
+      }else{
         String res = await inviteListModel.inviteGetRequest();
         if (res != null) {
           inviteListModel.getListInvites(json.decode(res));
@@ -23,8 +31,6 @@ class InviteListPresenter{
         }else{
           inviteListCallBack.showErrorDialog(res);
         }
-      }else{
-        inviteListCallBack.updateViews(inviteListModel.getInviteList());
       }
     }on Exception catch(error) {
       inviteListCallBack.showError();
@@ -51,10 +57,31 @@ class InviteListPresenter{
       inviteListCallBack.showErrorDialog("sessionExpired");
     }
   }
+
+  joinOrLeave(String doLeave,String invid) async{
+    try{
+      String response = await inviteListModel.joinOrLeave(doLeave,invid);
+      if(response!=null && !response.contains("Error : ")) {
+        inviteDetailCallBack.updateViews(response);
+      }
+      else{
+        inviteDetailCallBack.showErrorDialog("sessionExpired");
+      }
+    }on Exception catch(error) {
+      inviteDetailCallBack.showErrorDialog("sessionExpired");
+    }
+  }
+
 }
 
 abstract class InviteListCallBack{
    void updateViews(List<Invite> invitedata);
    void showError();
    void showErrorDialog(String error);
+}
+
+abstract class InviteDetailCallBack{
+  void updateViews(String status);
+  void showError();
+  void showErrorDialog(String error);
 }
