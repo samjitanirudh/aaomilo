@@ -46,7 +46,6 @@ class InviteListPresenter{
   refreshToken() async {
     try{
       String response = await inviteListModel.checkRefreshToken();
-      print("SSOResponse: "+ response);
       if(response!=null && !response.contains("Error : ")) {
         inviteListCallBack.updateViews(inviteListModel.getInviteList());
       }
@@ -61,7 +60,7 @@ class InviteListPresenter{
   joinOrLeave(String doLeave,String invid) async{
     try{
       String response = await inviteListModel.joinOrLeave(doLeave,invid);
-      if(response!=null && !response.contains("Error : ")) {
+      if(response!=null && !response.contains("sessionExpired")) {
         inviteDetailCallBack.updateViews(response);
       }
       else{

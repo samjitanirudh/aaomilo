@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
 import 'package:flutter_meetup_login/utils/PhotoScroller.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
+import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 
 class InviteDetailScreen extends StatefulWidget {
   final Invite invite;
@@ -36,15 +37,16 @@ class InviteDetailScreenState extends State<StatefulWidget> implements InviteDet
     inviteListPresenter=new InviteListPresenter(null);
     inviteListPresenter.setInviteDetailCallBack(this);
     updateJoinedUserPhotos();
-    print("HELP!!!!"+invite.getisJoined());
     if(invite.getisJoined()=="1")
       isLeave=true;
   }
 
   updateJoinedUserPhotos(){
     List<InviteJoinees> iJoined=invite.getJoinees();
-    for(int i=0;i<iJoined.length;i++){
-      photoUrls.add(iJoined[i].profile_img);
+    if(iJoined!=null && iJoined.length>0) {
+      for (int i = 0; i < iJoined.length; i++) {
+        photoUrls.add(iJoined[i].profile_img);
+      }
     }
   }
 
@@ -228,16 +230,21 @@ class InviteDetailScreenState extends State<StatefulWidget> implements InviteDet
 
   @override
   void showErrorDialog(String error) {
+    tokenExpired();
     // TODO: implement showErrorDialog
+  }
+
+  tokenExpired() {
+    UserProfile().getInstance().resetUserProfile();
+    Navigator.of(bContext).pushReplacementNamed('/Loginscreen');
   }
 
   @override
   void updateViews(String status) {
     // TODO: implement updateViews
-    if(status=="true"){
-      isLeave=!isLeave;
-    }else{
-
-    }
+    navigate();
+  }
+  navigate() {
+    Navigator.of(bContext).pushNamedAndRemoveUntil('/TabViewScreen', (Route<dynamic> route) => false);
   }
 }
