@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "209556896243",
+    "firebase_url": "https://converge-415ed.firebaseio.com",
+    "project_id": "converge-415ed",
+    "storage_bucket": "converge-415ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209556896243:android:163c6d9fd91be0d4",
+        "android_client_info": {
+          "package_name": "indec.meetup.flutter_meetup_login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "209556896243-9sl0psidoedca77j75lmugn3pfial7m2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCdJqdCP7EL90FA8uBN-kT0tG4Mykg0R8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "209556896243-9sl0psidoedca77j75lmugn3pfial7m2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

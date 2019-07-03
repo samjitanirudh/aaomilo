@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'firebase_notification_handler.dart';
 import 'viewmodel/ProfileDataUpdate.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
     var _duration = new Duration(seconds: 4);
     return new Timer(_duration, navigationPage);
   }
+
   Future<bool> _isLoggedIn() async {
     bool isLoggedIn=false;
     try {
@@ -43,6 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    new FirebaseNotifications().setUpFirebase();
     startTime();
   }
 
