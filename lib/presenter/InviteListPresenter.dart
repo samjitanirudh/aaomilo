@@ -25,7 +25,7 @@ class InviteListPresenter{
         inviteListCallBack.updateViews(inviteListModel.getInviteList());
       }else{
         String res = await inviteListModel.inviteGetRequest();
-        if (res != null) {
+        if (res != null && res!="sessionExpired") {
           inviteListModel.getListInvites(json.decode(res));
           inviteListCallBack.updateViews(inviteListModel.getInviteList());
         }else{

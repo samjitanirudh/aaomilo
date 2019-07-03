@@ -36,6 +36,7 @@ class InviteDetailScreenState extends State<StatefulWidget> implements InviteDet
     inviteListPresenter=new InviteListPresenter(null);
     inviteListPresenter.setInviteDetailCallBack(this);
     updateJoinedUserPhotos();
+    print("HELP!!!!"+invite.getisJoined());
     if(invite.getisJoined()=="1")
       isLeave=true;
   }
