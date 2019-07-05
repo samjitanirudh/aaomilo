@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         '/Loginscreen': (BuildContext context) => new loginScreen(),
         '/UpdateUserProfileScreen': (BuildContext context) => new UpdateUserProfileScreen(),
         '/TabViewScreen': (BuildContext context) => new TabViewScreen(),
-        '/InviteList':(BuildContext context) => new InviteList()
+        '/InviteList':(BuildContext context) => new InviteList(null)
       },
     );
   }

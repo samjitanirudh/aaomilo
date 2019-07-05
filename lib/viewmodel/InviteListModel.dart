@@ -13,6 +13,11 @@ class InviteListModel{
 
   var uri ="http://convergepro.xyz/meetupapi/work/action.php?action=getinvites";
   var joinLeaveuri ="http://convergepro.xyz/meetupapi/work/action.php?action=joinleave";
+
+  var uriSelectedCategories = "http://convergepro.xyz/meetupapi/work/action.php?action=getinvites&category_id=";
+  var uriFutureInvites = "http://www.convergepro.xyz/meetupapi/work/action.php?action=myinvites&futr=futr";
+  var uriPastInvites = "http://www.convergepro.xyz/meetupapi/work/action.php?action=myinvites&past=past";
+
   static List<Invite> inviteList = new List();
 
   InviteListModel();
@@ -32,6 +37,41 @@ class InviteListModel{
   Future<String> inviteGetRequest() async{
     String user = await UserProfile().getInstance().getLoggedInUser();
     return getInvite(uri,user)
+        .then((String res) {
+
+      if (res == null) throw new Exception("error");
+      else if(res=="sessionExpired")
+        return res;
+      else
+        return res;
+    });
+  }
+
+  Future<String> SelectedinviteGetRequest(String categories) async {
+    String user = await UserProfile().getInstance().getLoggedInUser();
+    return getInvite(uriSelectedCategories+categories, user)
+        .then((String res) {
+      if (res == null) throw new Exception("error");
+      return res;
+    });
+  }
+
+
+  Future<String> upcomingInviteRequest() async{
+    String user = await UserProfile().getInstance().getLoggedInUser();
+    return getInvite(uriFutureInvites,user)
+        .then((String res) {
+
+      if (res == null) throw new Exception("error");
+      else if(res=="sessionExpired")
+        return res;
+      else
+        return res;
+    });
+  }
+  Future<String> pastInviteRequest() async{
+    String user = await UserProfile().getInstance().getLoggedInUser();
+    return getInvite(uriFutureInvites,user)
         .then((String res) {
 
       if (res == null) throw new Exception("error");

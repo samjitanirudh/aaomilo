@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/InviteListModel.dart';
+import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 
 class InviteListPresenter{
 
@@ -19,18 +20,30 @@ class InviteListPresenter{
     inviteDetailCallBack=invcallback;
   }
 
-  GetInviteList() async{
+  GetInviteList(selectedCategoryList, String inviteType ) async{
     try{
-      if(inviteListModel.getInviteList() != null && inviteListModel.getInviteList().length>1) {
-        inviteListCallBack.updateViews(inviteListModel.getInviteList());
-      }else{
-        String res = await inviteListModel.inviteGetRequest();
-        if (res != null && res!="sessionExpired") {
+      if(inviteListModel.getInviteList().length<1) {
+        String res;
+       res = await inviteListModel.inviteGetRequest();
+
+        if (res != null) {
           inviteListModel.getListInvites(json.decode(res));
           inviteListCallBack.updateViews(inviteListModel.getInviteList());
         }else{
           inviteListCallBack.showErrorDialog(res);
         }
+      }else{
+        if(selectedCategoryList!= null) {
+          String res = await inviteListModel.SelectedinviteGetRequest(selectedCategoryList);
+          if (res != null) {
+            inviteListModel.getListInvites(json.decode(res));
+            inviteListCallBack.updateViews(inviteListModel.getInviteList());
+          }else{
+            inviteListCallBack.showErrorDialog(res);
+          }
+        }
+
+        inviteListCallBack.updateViews(inviteListModel.getInviteList());
       }
     }on Exception catch(error) {
       inviteListCallBack.showError();
@@ -60,6 +73,35 @@ class InviteListPresenter{
   joinOrLeave(String doLeave,String invid) async{
     try{
       String response = await inviteListModel.joinOrLeave(doLeave,invid);
+      if(response!=null && !response.contains("sessionExpired")) {
+        inviteDetailCallBack.updateViews(response);
+      }
+      else{
+        inviteDetailCallBack.showErrorDialog("sessionExpired");
+      }
+    }on Exception catch(error) {
+      inviteDetailCallBack.showErrorDialog("sessionExpired");
+    }
+  }
+
+  upComingEvents() async {
+    try{
+      String response = await inviteListModel.upcomingInviteRequest();
+      if(response!=null && !response.contains("sessionExpired")) {
+        inviteListModel.getListInvites(json.decode(response));
+        inviteListCallBack.updateViews(inviteListModel.getInviteList());
+      }
+      else{
+        inviteDetailCallBack.showErrorDialog("sessionExpired");
+      }
+    }on Exception catch(error) {
+      inviteDetailCallBack.showErrorDialog("sessionExpired");
+    }
+  }
+
+  pastEvents() async {
+    try{
+      String response = await inviteListModel.pastInviteRequest();
       if(response!=null && !response.contains("sessionExpired")) {
         inviteDetailCallBack.updateViews(response);
       }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
+import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/views/InviteDetailScreen.dart';
@@ -9,9 +10,13 @@ import 'package:flutter_meetup_login/views/InviteDetailScreen.dart';
 import 'viewmodel/InviteListModel.dart';
 
 class InviteList extends StatefulWidget {
+
+  String selectedCategoryList;
+  InviteList(String selectedIndexList): selectedCategoryList=selectedIndexList,super(key: new ObjectKey(""));
+
   @override
-  State<StatefulWidget> createState() {
-    return new InviteListState();
+    State<StatefulWidget> createState() {
+    return new InviteListState(selectedCategoriesId: selectedCategoryList);
   }
 }
 
@@ -23,12 +28,23 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
       const MethodChannel('samples.flutter.dev/ssoanywhere');
   BuildContext bContext;
 
+  String selectedCatList;
+
+  String selectedCategoriesId;
+  int index = 0;
+  List<Categories> cList = new List();
+  var categoryImageAPI = "http://convergepro.xyz/meetupapi/cat_img/";
+
+  InviteListState({this.selectedCategoriesId});
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    inviteListPresenter = new InviteListPresenter(this);
-    inviteListPresenter.GetInviteList();
+    inviteListPresenter= new InviteListPresenter(this);
+    inviteListPresenter.GetInviteList(selectedCategoriesId, null);
+    cList = new CategoryClass().getCategoryList();
+
   }
 
   @override
@@ -40,13 +56,138 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
         title: Text("Invites"),
         textTheme: TextTheme(
             title: TextStyle(
-          color: Colors.white,
-          fontSize: 20.0,
-        )),
+              color: Colors.white,
+              fontSize: 20.0,
+            )),
+          actions: <Widget>[
+      new IconButton(
+      icon: new Icon(Icons.filter_list), color: Colors.white,padding: EdgeInsets.all(20),
+      onPressed: () {
+
+//        Navigator.push(
+//          context,
+//          MaterialPageRoute(
+//              builder: (context) =>
+//                  CategoriesTabs(categoryCallbacks: this)),
+//        );
+
+        _categoryListView();
+
+
+//        Navigator.of(context).pushNamed('/CategoriesTab');
+      },
+    ),
+    ]
+
       ),
       body: _buildSuggestions(),
     );
   }
+
+
+
+
+  Future<Null> _categoryListView() async {
+    return showDialog<Null>(
+      context: context,
+      // user must tap button!
+      child: new AlertDialog(
+        contentPadding: const EdgeInsets.all(50.0),
+        title: new Text(
+          'SAVED !!!',
+          style:
+          new TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+        content: new Container(
+          // Specify some width
+          width: MediaQuery.of(context).size.width ,
+          height: 100,
+          child: new GridView.count(
+              crossAxisCount: 2,
+              childAspectRatio: 1.0,
+              padding: const EdgeInsets.all(7.0),
+              mainAxisSpacing: 10,
+              crossAxisSpacing:5.0,
+              children: getOption()),
+        ),
+        actions: <Widget>[
+          new IconButton(
+              splashColor: Colors.green,
+              icon: new Icon(
+                Icons.done,
+                color: Colors.blue,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              })
+        ],
+      ),
+    );
+  }
+
+  List<Widget> getOption() {
+    List<Widget> options = new List();
+    for (int i = 0; i < cList.length; i++)
+      options.add(
+//          new SimpleDialogOption(
+//        onPressed: () {
+//          Navigator.pop(context, i);//here passing the index to be return on item selection
+//        },
+//        child: new Text(cList[i].txtCategoryName),// /item value
+//      )
+      new Container(width:MediaQuery.of(context).size.width,height: 200, child: new GridView.count(crossAxisCount: 2,
+      shrinkWrap: true,
+      children: new List<Widget>.generate(1, (index) {
+        return new GridTile(
+
+            child: GestureDetector( child: Container(
+
+                decoration: BoxDecoration(color: Colors.blue.shade50,shape: BoxShape.rectangle),
+                child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 120,
+                      height: 120,
+                      alignment: Alignment.bottomCenter,
+                      padding: EdgeInsets.all(50),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(categoryImageAPI + cList[i].imgUrl),
+                              fit: BoxFit.cover)),
+
+                    ),
+                    Text(
+                      cList[index].txtCategoryName,
+                      textAlign: TextAlign.center,style: TextStyle(fontSize:15,),
+                    ),
+                  ],
+                )
+            ),
+              onLongPress: () {
+                setState(() {
+//                  _changeSelection(enable: false, index: -1);
+                });
+              },
+              onTap: () {
+                setState(() {
+//                  if (_selectedIndexList.contains(index)) {
+//                    _selectedIndexList.remove(index);
+//                  } else {
+//                    _selectedIndexList.add(index);
+//                  }
+                });
+              },
+
+            )
+        );
+      }
+      )
+      ),)
+      );
+
+    return options;
+  }
+
 
   Widget _buildSuggestions() {
     return new Container(
@@ -80,7 +221,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
 
   Future<void> _refreshStockPrices() async {
     inviteListPresenter.clearInviteList();
-    inviteListPresenter.GetInviteList();
+    inviteListPresenter.GetInviteList(null, null);
   }
 
   Widget _buildRow(Invite invite) {

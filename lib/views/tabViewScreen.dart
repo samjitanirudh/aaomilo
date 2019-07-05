@@ -22,21 +22,24 @@ class TabViewScreen extends StatefulWidget {
 class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin {
   // Create a tab controller
   TabController controller;
+  int _selectedPage = 0;
+  final pageOptions = [InviteList(null),  CreateInvite(), MyInvites(), MyProfile()
+  ];
 
   @override
   void initState() {
     super.initState();
 
     // Initialize the Tab Controller
-    controller = new TabController(length: 5, vsync: this);
+    controller = new TabController(length: 4, vsync: this);
   }
 
-  @override
-  void dispose() {
-    // Dispose of the Tab Controller
-    controller.dispose();
-    super.dispose();
-  }
+//  @override
+//  void dispose() {
+//    // Dispose of the Tab Controller
+////    controller.dispose();
+//    super.dispose();
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,43 +47,25 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
       // Appbar
 
       // Set the TabBar view as the body of the Scaffold
-      body: new TabBarView(
-        // Add tabs as widgets
+      body: pageOptions[_selectedPage],
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black45,currentIndex: _selectedPage, onTap: (int index) {
+        setState(() {
+          _selectedPage = index;
+        });
+      },
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.list), title: Text("Invite List"), backgroundColor: Colors.blue),
+          BottomNavigationBarItem(icon: Icon(Icons.add_circle), title: Text("Create Invite"),backgroundColor: Colors.blue),
+          BottomNavigationBarItem(icon: Icon(Icons.event_available), title: Text("My Events"),backgroundColor: Colors.blue),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), title: Text("My Profile"),backgroundColor: Colors.blue),
 
-        children: <Widget>[new InviteList(), CategoriesTabs(controller),  new CreateInvite(),new MyInvites(), new MyProfile()],
-        // set the controller
-        controller: controller,
+        ],
       ),
-      // Set the bottom navigation bar
-      bottomNavigationBar: new Material(
-        // set the color of the bottom navigation bar
-        color: Colors.grey,
-        // set the tab bar as the child of bottom navigation bar
-        child: new TabBar(
-          tabs: <Tab>[
-            new Tab(
-              icon: new Icon(Icons.list),
-            ),
-            new Tab(
-              // set icon to the tab
-              icon: new Icon(Icons.category),
-            ),
 
-            new Tab(
-              icon: new Icon(Icons.add_circle),
-            ),
-            new Tab(
-              icon: new Icon(Icons.event_available),
-            ),
+      // Add tabs as widgets
 
-            new Tab(
-              icon: new Icon(Icons.account_circle),
-            ),
-          ],
-          // setup the controller
-          controller: controller,
-        ),
-      ),
+
     );
   }
 }
