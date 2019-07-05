@@ -13,6 +13,8 @@ class InviteListModel{
 
   var uri ="http://convergepro.xyz/meetupapi/work/action.php?action=getinvites";
   var joinLeaveuri ="http://convergepro.xyz/meetupapi/work/action.php?action=joinleave";
+  var startInviteuri ="http://convergepro.xyz/meetupapi/work/action.php?action=startinvite";
+
   static List<Invite> inviteList = new List();
 
   InviteListModel();
@@ -72,6 +74,7 @@ class InviteListModel{
       inv.setCreated_by(webList[i]["created_by"]);
       inv.setCreated_date(webList[i]["created_date"]);
       inv.setFirst_name(webList[i]["first_name"]);
+      inv.setinviteStarted(webList[i]["start_invite"]);
       inv.setJoined(webList[i]["joined"]);
       inv.setisJoined(webList[i]["is_joined"]);
       inv.setJoineList(getInviteJoinees(webList[i]["joinees"]));
@@ -120,10 +123,25 @@ class InviteListModel{
       }else if(response.body == "token expired"){
         return "sessionExpired";
       }
-      print(response.body);
       return response.body;
     });
   }
+
+  Future<String> startInvite(String inv_id) async{
+    String user = await UserProfile().getInstance().getLoggedInUser();
+    headers['Content-type']="application/x-www-form-urlencoded";
+    headers['Authorization']="Berear "+user;
+    return http.post(startInviteuri,body: 'invite_id='+inv_id,headers: headers).then((http.Response response) {
+      final int statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode > 400 || json == null) {
+        throw new Exception("Error while fetching data");
+      }else if(response.body == "token expired"){
+        return "sessionExpired";
+      }
+      return response.body;
+    });
+  }
+
 
   String getJoinLeavePostParams(String doLeave,String inv_id){
     String action='action='+doLeave+'&';  //action = join to attend invite or leave to exit invite

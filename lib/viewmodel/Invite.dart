@@ -11,6 +11,7 @@ class Invite{
   var _created_by;
   var _created_date;
   var _first_name;
+  var _invite_started;
   var _joined;
   var _joinees;
   var _isJoined;
@@ -111,11 +112,17 @@ class Invite{
       _joineList=jList;
     }
 
-  getisJoined() { return _isJoined;}
+    get inviteStarted => _invite_started;
 
-  setisJoined(value) {
-    _isJoined = value;
-  }
+    void setinviteStarted(var started){
+      _invite_started=started;
+    }
+
+    getisJoined() { return _isJoined;}
+
+    setisJoined(value) {
+      _isJoined = value;
+    }
 
 }
 

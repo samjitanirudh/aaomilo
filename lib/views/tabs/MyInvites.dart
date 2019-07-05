@@ -19,7 +19,7 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack{
     // TODO: implement initState
     super.initState();
     inviteListPresenter= new InviteListPresenter(this);
-    inviteListPresenter.GetInviteList();
+    inviteListPresenter.GetInviteList(true);
   }
   @override
   Widget build(BuildContext context) {
