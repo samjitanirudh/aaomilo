@@ -18,6 +18,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
   ProfileUpdatePresenter profileUpdatePresenter;
   var _formview;
   bool _isLoading = false;
+  BuildContext bContext;
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
 
   @override
   Widget build(BuildContext context) {
+    bContext=context;
     bool loaded=false;
     NetworkImage nI;
     if(null!=_formdata["profileimg"]) {
@@ -65,7 +67,9 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
             ),
             new IconButton(
               icon: new Icon(Icons.menu),
-              onPressed: () {},
+              onPressed: () {
+                tokenExpired();
+              },
             ),
           ],
           iconTheme: IconThemeData(
@@ -81,6 +85,11 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
         children: getProfileView(loaded,nI)
       ));
 
+  }
+
+  tokenExpired() {
+    UserProfile().getInstance().resetUserProfile();
+    Navigator.of(bContext).pushReplacementNamed('/Loginscreen');
   }
 
   List<Widget> getProfileView(bool loaded,NetworkImage nI){

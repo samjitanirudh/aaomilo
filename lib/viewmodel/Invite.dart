@@ -15,11 +15,19 @@ class Invite{
   var _joined;
   var _joinees;
   var _isJoined;
+  var _hostlog;
+
 
   get joinees => _joinees;
 
   set joinees(value) {
     _joinees = value;
+  }
+
+  get hostlog => _hostlog;
+
+  setHostlog(value) {
+    _hostlog = value;
   }
 
   List<InviteJoinees> _joineList;
@@ -134,11 +142,23 @@ class InviteJoinees{
   var _name;
   var _designation;
   var _profile_img;
+  var _comment;
+  var _rate;
 
   get sg_id => _sg_id;
   get name => _name;
   get designation => _designation;
   get profile_img => _profile_img;
+  get comment => _comment;
+  get rate => _rate;
+
+  setComment(value) {
+    _comment = value;
+  }
+
+  setRate(value) {
+    _rate = value;
+  }
 
   setsg_id(value) {
     _sg_id = value;
