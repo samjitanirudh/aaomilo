@@ -566,12 +566,10 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
       initialTime: selectedTime,
     );
     if (picked != null && picked != selectedTime) {
-      //selectTime(picked);
       setState(() {
         selectedTimeValue=picked.format(context);
         state.didChange(selectedTimeValue);
       });
-
     }
   }
 

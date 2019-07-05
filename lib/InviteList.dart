@@ -27,6 +27,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   static const platform =
       const MethodChannel('samples.flutter.dev/ssoanywhere');
   BuildContext bContext;
+  bool _isLoading=false;
 
   String selectedCatList;
 
@@ -45,6 +46,9 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     inviteListPresenter.GetInviteList(selectedCategoriesId, null);
     cList = new CategoryClass().getCategoryList();
 
+    inviteListPresenter = new InviteListPresenter(this);
+    _isLoading=true;
+    inviteListPresenter.GetInviteList(false);
   }
 
   @override
@@ -80,7 +84,11 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     ]
 
       ),
-      body: _buildSuggestions(),
+      body:new Stack(
+        children: <Widget>[
+          _isLoading?loaderOnViewUpdate():_buildSuggestions()
+        ],
+      )
     );
   }
 
@@ -220,8 +228,14 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   }
 
   Future<void> _refreshStockPrices() async {
+    if (mounted) {
+      setState(() {
+        _isLoading=true;
+      });
+    }
     inviteListPresenter.clearInviteList();
     inviteListPresenter.GetInviteList(null, null);
+    inviteListPresenter.GetInviteList(false);
   }
 
   Widget _buildRow(Invite invite) {
@@ -378,8 +392,21 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
       MaterialPageRoute(
         builder: (context) => InviteDetailScreen(invite: inv),
       ),
-    );
-    Navigator.of(bContext).pushNamed('/InviteDetailsScreen');
+    ).then((dynamic value){
+      returnedFromInviteDetailsScreen(value);
+    });
+  }
+
+  returnedFromInviteDetailsScreen(dynamic value){
+    if(null!=value && value){
+      if (mounted) {
+        setState(() {
+          _isLoading=true;
+        });
+      }
+      inviteListPresenter.clearInviteList();
+      inviteListPresenter.GetInviteList(false);
+    }
   }
 
 
@@ -393,6 +420,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     // TODO: implement updateViews
     if (mounted) {
       setState(() {
+        _isLoading=false;
         _suggestions = invitedata;
       });
     }
@@ -461,4 +489,21 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
       },
     );
   }
+
+  Widget loaderOnViewUpdate() {
+    var modal = new Stack(
+      children: [
+        new Opacity(
+          opacity: 0.3,
+          child: const ModalBarrier(dismissible: false, color: Colors.blue),
+        ),
+        new Center(
+          child: new CircularProgressIndicator(),
+        ),
+      ],
+    );
+    return modal;
+  }
 }
+
+

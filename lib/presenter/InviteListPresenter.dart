@@ -20,30 +20,18 @@ class InviteListPresenter{
     inviteDetailCallBack=invcallback;
   }
 
-  GetInviteList(selectedCategoryList, String inviteType ) async{
+  GetInviteList(bool fetchNew) async{
     try{
-      if(inviteListModel.getInviteList().length<1) {
-        String res;
-       res = await inviteListModel.inviteGetRequest();
-
-        if (res != null) {
+      if(inviteListModel.getInviteList() != null && inviteListModel.getInviteList().length>1 && !fetchNew) {
+        inviteListCallBack.updateViews(inviteListModel.getInviteList());
+      }else{
+        String res = await inviteListModel.inviteGetRequest();
+        if (res != null && res!="sessionExpired") {
           inviteListModel.getListInvites(json.decode(res));
           inviteListCallBack.updateViews(inviteListModel.getInviteList());
         }else{
           inviteListCallBack.showErrorDialog(res);
         }
-      }else{
-        if(selectedCategoryList!= null) {
-          String res = await inviteListModel.SelectedinviteGetRequest(selectedCategoryList);
-          if (res != null) {
-            inviteListModel.getListInvites(json.decode(res));
-            inviteListCallBack.updateViews(inviteListModel.getInviteList());
-          }else{
-            inviteListCallBack.showErrorDialog(res);
-          }
-        }
-
-        inviteListCallBack.updateViews(inviteListModel.getInviteList());
       }
     }on Exception catch(error) {
       inviteListCallBack.showError();
@@ -74,7 +62,21 @@ class InviteListPresenter{
     try{
       String response = await inviteListModel.joinOrLeave(doLeave,invid);
       if(response!=null && !response.contains("sessionExpired")) {
-        inviteDetailCallBack.updateViews(response);
+        inviteDetailCallBack.updateViewsJoinLeave(response);
+      }
+      else{
+        inviteDetailCallBack.showErrorDialog("sessionExpired");
+      }
+    }on Exception catch(error) {
+      inviteDetailCallBack.showErrorDialog("sessionExpired");
+    }
+  }
+
+  startInvite(String invid) async{
+    try{
+      String response = await inviteListModel.startInvite(invid);
+      if(response!=null && !response.contains("sessionExpired")) {
+        inviteDetailCallBack.updateViewsStartInvite(response);
       }
       else{
         inviteDetailCallBack.showErrorDialog("sessionExpired");
@@ -122,7 +124,8 @@ abstract class InviteListCallBack{
 }
 
 abstract class InviteDetailCallBack{
-  void updateViews(String status);
+  void updateViewsJoinLeave(String status);
+  void updateViewsStartInvite(String status);
   void showError();
   void showErrorDialog(String error);
 }
