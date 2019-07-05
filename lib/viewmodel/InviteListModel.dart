@@ -73,7 +73,7 @@ class InviteListModel{
   }
   Future<String> pastInviteRequest() async{
     String user = await UserProfile().getInstance().getLoggedInUser();
-    return getInvite(uriFutureInvites,user)
+    return getInvite(uriPastInvites,user)
         .then((String res) {
 
       if (res == null) throw new Exception("error");
@@ -95,12 +95,14 @@ class InviteListModel{
       }else if(response.body == "token expired"){
         return "sessionExpired";
       }
+      print("response" +response.body);
       return response.body;
     });
   }
 
   void getListInvites(List<dynamic> webList){
     inviteList.clear();
+    print(webList.length);
     for(int i =0;i<webList.length;i++){
       Invite inv=new Invite();
       inv.sid(webList[i]["id"]);

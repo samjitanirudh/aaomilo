@@ -42,8 +42,8 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   void initState() {
     // TODO: implement initState
     super.initState();
-    inviteListPresenter= new InviteListPresenter(this);
-    inviteListPresenter.GetInviteList(selectedCategoriesId, null);
+//    inviteListPresenter= new InviteListPresenter(this);
+//    inviteListPresenter.GetInviteList(false);
     cList = new CategoryClass().getCategoryList();
 
     inviteListPresenter = new InviteListPresenter(this);
@@ -234,7 +234,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
       });
     }
     inviteListPresenter.clearInviteList();
-    inviteListPresenter.GetInviteList(null, null);
+//    inviteListPresenter.GetInviteList(null, null);
     inviteListPresenter.GetInviteList(false);
   }
 

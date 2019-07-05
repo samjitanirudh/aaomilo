@@ -89,15 +89,16 @@ class InviteListPresenter{
   upComingEvents() async {
     try{
       String response = await inviteListModel.upcomingInviteRequest();
+      print(response);
       if(response!=null && !response.contains("sessionExpired")) {
         inviteListModel.getListInvites(json.decode(response));
         inviteListCallBack.updateViews(inviteListModel.getInviteList());
       }
       else{
-        inviteDetailCallBack.showErrorDialog("sessionExpired");
+        inviteListCallBack.showErrorDialog("sessionExpired");
       }
     }on Exception catch(error) {
-      inviteDetailCallBack.showErrorDialog("sessionExpired");
+      inviteListCallBack.showErrorDialog("sessionExpired");
     }
   }
 
@@ -105,13 +106,13 @@ class InviteListPresenter{
     try{
       String response = await inviteListModel.pastInviteRequest();
       if(response!=null && !response.contains("sessionExpired")) {
-        inviteDetailCallBack.updateViews(response);
+        inviteListCallBack.updateViews(inviteListModel.getInviteList());
       }
       else{
-        inviteDetailCallBack.showErrorDialog("sessionExpired");
+        inviteListCallBack.showErrorDialog("sessionExpired");
       }
     }on Exception catch(error) {
-      inviteDetailCallBack.showErrorDialog("sessionExpired");
+      inviteListCallBack.showErrorDialog("sessionExpired");
     }
   }
 
