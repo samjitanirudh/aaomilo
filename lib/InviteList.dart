@@ -504,6 +504,11 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     );
     return modal;
   }
+
+  @override
+  void updateViewsPastInvites(List<Invite> invitedata) {
+    // TODO: implement updateViewsPastInvites
+  }
 }
 
 

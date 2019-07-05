@@ -105,8 +105,10 @@ class InviteListPresenter{
   pastEvents() async {
     try{
       String response = await inviteListModel.pastInviteRequest();
+      print("past" + response);
       if(response!=null && !response.contains("sessionExpired")) {
-        inviteListCallBack.updateViews(inviteListModel.getInviteList());
+        inviteListModel.getListInvites(json.decode(response));
+        inviteListCallBack.updateViewsPastInvites(inviteListModel.getInviteList());
       }
       else{
         inviteListCallBack.showErrorDialog("sessionExpired");
@@ -120,6 +122,7 @@ class InviteListPresenter{
 
 abstract class InviteListCallBack{
    void updateViews(List<Invite> invitedata);
+   void updateViewsPastInvites(List<Invite> invitedata);
    void showError();
    void showErrorDialog(String error);
 }
