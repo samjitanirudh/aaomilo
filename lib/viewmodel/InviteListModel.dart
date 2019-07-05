@@ -19,6 +19,8 @@ class InviteListModel{
   var uriPastInvites = "http://www.convergepro.xyz/meetupapi/work/action.php?action=myinvites&past=past";
 
   var startInviteuri ="http://convergepro.xyz/meetupapi/work/action.php?action=startinvite";
+  var hostlogUri = "http://www.convergepro.xyz/meetupapi/work/action.php?action=invitelog";
+  var commentRateUri = "http://www.convergepro.xyz/meetupapi/work/action.php?action=comments";
 
   static List<Invite> inviteList = new List();
 
@@ -102,7 +104,6 @@ class InviteListModel{
 
   void getListInvites(List<dynamic> webList){
     inviteList.clear();
-    print(webList.length);
     for(int i =0;i<webList.length;i++){
       Invite inv=new Invite();
       inv.sid(webList[i]["id"]);
@@ -117,6 +118,7 @@ class InviteListModel{
       inv.setCreated_date(webList[i]["created_date"]);
       inv.setFirst_name(webList[i]["first_name"]);
       inv.setinviteStarted(webList[i]["start_invite"]);
+      inv.setHostlog(webList[i]["hostlog"]);
       inv.setJoined(webList[i]["joined"]);
       inv.setisJoined(webList[i]["is_joined"]);
       inv.setJoineList(getInviteJoinees(webList[i]["joinees"]));
@@ -174,6 +176,36 @@ class InviteListModel{
     headers['Content-type']="application/x-www-form-urlencoded";
     headers['Authorization']="Berear "+user;
     return http.post(startInviteuri,body: 'invite_id='+inv_id,headers: headers).then((http.Response response) {
+      final int statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode > 400 || json == null) {
+        throw new Exception("Error while fetching data");
+      }else if(response.body == "token expired"){
+        return "sessionExpired";
+      }
+      return response.body;
+    });
+  }
+
+  Future<String> postHostLog(String inv_id,String hostlog) async{
+    String user = await UserProfile().getInstance().getLoggedInUser();
+    headers['Content-type']="application/x-www-form-urlencoded";
+    headers['Authorization']="Berear "+user;
+    return http.post(hostlogUri,body: 'invite_id='+inv_id+'&comment='+hostlog,headers: headers).then((http.Response response) {
+      final int statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode > 400 || json == null) {
+        throw new Exception("Error while fetching data");
+      }else if(response.body == "token expired"){
+        return "sessionExpired";
+      }
+      return response.body;
+    });
+  }
+
+  Future<String> rateAndComment(String inv_id,String comment,String rate) async{
+    String user = await UserProfile().getInstance().getLoggedInUser();
+    headers['Content-type']="application/x-www-form-urlencoded";
+    headers['Authorization']="Berear "+user;
+    return http.post(startInviteuri,body: 'invite_id='+inv_id+'&comment='+comment+'&rating='+rate,headers: headers).then((http.Response response) {
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error while fetching data");

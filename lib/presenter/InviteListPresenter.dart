@@ -116,6 +116,34 @@ class InviteListPresenter{
     }
   }
 
+  hostLog(String invid,String hostlog) async{
+    try{
+      String response = await inviteListModel.postHostLog(invid,"");
+      if(response!=null && !response.contains("sessionExpired")) {
+        inviteDetailCallBack.updateViewsStartInvite(response);
+      }
+      else{
+        inviteDetailCallBack.showErrorDialog("sessionExpired");
+      }
+    }on Exception catch(error) {
+      inviteDetailCallBack.showErrorDialog("sessionExpired");
+    }
+  }
+
+  commentAndRate(String invid,String comment, String rate) async{
+    try{
+      String response = await inviteListModel.rateAndComment(invid,"","");
+      if(response!=null && !response.contains("sessionExpired")) {
+        inviteDetailCallBack.updateViewsStartInvite(response);
+      }
+      else{
+        inviteDetailCallBack.showErrorDialog("sessionExpired");
+      }
+    }on Exception catch(error) {
+      inviteDetailCallBack.showErrorDialog("sessionExpired");
+    }
+  }
+
 }
 
 abstract class InviteListCallBack{
