@@ -16,6 +16,10 @@ class Invite{
   var _joinees;
   var _isJoined;
   var _hostlog;
+  var _hostlogDate;
+
+  var _isLogeged;
+  var _isCommented;
 
 
   get joinees => _joinees;
@@ -24,10 +28,28 @@ class Invite{
     _joinees = value;
   }
 
+  get isLogged => _isLogeged;
+
+  setisLogged(value) {
+    _isLogeged = value;
+  }
+
+  get isCommented => _isCommented;
+
+  setisCommented(value) {
+    _isCommented = value;
+  }
+
   get hostlog => _hostlog;
 
   setHostlog(value) {
     _hostlog = value;
+  }
+
+  get hostlogdate => _hostlogDate;
+
+  setHostlogDate(value) {
+    _hostlogDate = value;
   }
 
   List<InviteJoinees> _joineList;
@@ -134,8 +156,6 @@ class Invite{
 
 }
 
-
-
 class InviteJoinees{
 
   var _sg_id;
@@ -144,13 +164,15 @@ class InviteJoinees{
   var _profile_img;
   var _comment;
   var _rate;
+  var _commented_date;
 
   get sg_id => _sg_id;
   get name => _name;
   get designation => _designation;
   get profile_img => _profile_img;
-  get comment => _comment;
-  get rate => _rate;
+  getComment(){return _comment;}
+  getRate(){return _rate;}
+  getComment_date(){return _commented_date;}
 
   setComment(value) {
     _comment = value;
@@ -158,6 +180,10 @@ class InviteJoinees{
 
   setRate(value) {
     _rate = value;
+  }
+
+  setcomment_date(value) {
+    _commented_date = value;
   }
 
   setsg_id(value) {
@@ -175,6 +201,5 @@ class InviteJoinees{
   setProfile_img(value) {
     _profile_img = value;
   }
-
 
 }

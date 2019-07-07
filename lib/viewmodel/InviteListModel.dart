@@ -118,15 +118,18 @@ class InviteListModel{
       inv.setCreated_date(webList[i]["created_date"]);
       inv.setFirst_name(webList[i]["first_name"]);
       inv.setinviteStarted(webList[i]["start_invite"]);
-      inv.setHostlog(webList[i]["hostlog"]);
+      if(null!=webList[i]["hostlog"] && webList[i]["hostlog"]!="")
+        inv.setHostlog(webList[i]["hostlog"]);
       inv.setJoined(webList[i]["joined"]);
       inv.setisJoined(webList[i]["is_joined"]);
-      inv.setJoineList(getInviteJoinees(webList[i]["joinees"]));
+      inv.setisLogged(webList[i]["isLoged"]);
+      inv.setisCommented(webList[i]["is_commented"]);
+      inv.setJoineList(getInviteJoinees(webList[i]["joinees"],webList[i]["user_comments"]));
       inviteList.add(inv);
     }
   }
 
-  List<InviteJoinees> getInviteJoinees(List<dynamic> jList){
+  List<InviteJoinees> getInviteJoinees(List<dynamic> jList,Map jCommentsList){
     List<InviteJoinees> iJoined=new List<InviteJoinees>();
     if(null!=jList) {
       for (int i = 0; i < jList.length; i++) {
@@ -135,6 +138,17 @@ class InviteListModel{
         inviteJoinees.setName(jList[i]["first_name"]);
         inviteJoinees.setDesignation(jList[i]["designation"]);
         inviteJoinees.setProfile_img(jList[i]["profile_img"]);
+        if(null!=jCommentsList) {
+          List<dynamic> jComments = jCommentsList[jList[i]["sg_id"]];
+          if (null != jComments && jComments.length > 0){
+            if (null != jComments[0]["comment"] && jComments[0]["comment"] != ""){
+              inviteJoinees.setComment(jComments[0]["comment"]);}
+            if (null != jComments[0]["rating"] && jComments[0]["rating"] != "")
+              inviteJoinees.setRate(jComments[0]["rating"]);
+            if (null != jComments[0]["commented_date"] && jComments[0]["commented_date"] != "")
+              inviteJoinees.setcomment_date(jComments[0]["commented_date"]);
+          }
+        }
         iJoined.add(inviteJoinees);
       }
       return iJoined;

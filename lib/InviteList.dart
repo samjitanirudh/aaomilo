@@ -387,6 +387,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   }
 
   navigateToDetails(Invite inv){
+    print(inv.getJoinees()[0].getComment().toString());
     Navigator.push(
       context,
       MaterialPageRoute(

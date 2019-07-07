@@ -3,6 +3,7 @@ import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
 import 'package:flutter_meetup_login/utils/PhotoScroller.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class InviteDetailScreen extends StatefulWidget {
   final Invite invite;
@@ -20,18 +21,22 @@ class InviteDetailScreenState extends State<StatefulWidget>
     implements InviteDetailCallBack {
   var _formKey = GlobalKey<FormState>();
   var _formView;
+  Map _formdata=new Map();
   bool _isLoading = false;
   BuildContext bContext;
   List<String> photoUrls = new List();
   Invite invite;
-
+  String _logentry="",_comment;
+  double rating=0.0;
   InviteDetailScreenState(this.invite);
 
   var joinButtonText = "Attende";
   var leaveButtonText = "Leave";
   bool isLeave = false,hideJoinLeaveButton=false,displayStartInviteButton=false;
+  bool displayHostLog=false,displayHostLogView=false;
+  bool displayCommentRate=false,displayCommentRateView=false;
   InviteListPresenter inviteListPresenter;
-
+  List<Widget> comments;
 
   @override
   void initState() {
@@ -39,26 +44,54 @@ class InviteDetailScreenState extends State<StatefulWidget>
     super.initState();
     inviteListPresenter = new InviteListPresenter(null);
     inviteListPresenter.setInviteDetailCallBack(this);
+    comments = userComments();
     updateJoinedUserPhotos();
-    print(invite.getisJoined());
-
-    if (invite.getisJoined() == "1" && invite.inviteStarted=="0") isLeave = true;
-    if (invite.getisJoined() == "0" && invite.inviteStarted=="0") isLeave = false;
-    if (invite.getisJoined() == "2" && invite.inviteStarted=="0") {
-      hideJoinLeaveButton = true;
-      dispplayStartButton();
-    }else if (invite.inviteStarted=="1") {
-      hideJoinLeaveButton = true;
-    }
+    displayJoinLeaveButton();
+    displayHostLogEditor();
+    displayCommentRateEditor();
+    displayCommentRateViews();
   }
 
-
-  dispplayStartButton(){
+  int timeRemainingInvite(){
     var now = new DateTime.now();
     var inviteDate = DateTime.parse(invite.created_date+" "+getTimeFormated(invite.time));
     int timeRemaining = inviteDate.difference(now).inMinutes;
-    if(timeRemaining>-15 && timeRemaining<30){
-      displayStartInviteButton= true;
+    return timeRemaining;
+  }
+
+  displayJoinLeaveButton(){
+    //user has joined the invite , invite is yet not started, enable leave button
+    if (invite.getisJoined() == "1" && invite.inviteStarted=="0") isLeave = true;
+    //user has not joined the invite , invite is yet not started, enable join button
+    if (invite.getisJoined() == "0" && invite.inviteStarted=="0") isLeave = false;
+    if(invite.getisJoined()== "2")
+      hideJoinLeaveButton=true;
+  }
+
+  displayHostLogEditor(){
+    var now = new DateTime.now();
+    var inviteDate = DateTime.parse(invite.created_date+" "+getTimeFormated(invite.time));
+    int timeRemaining = inviteDate.difference(now).inMinutes;
+    if(timeRemaining<-60 && invite.getisJoined() == "2" && invite.isLogged=="0"){
+      displayHostLog= true;
+    }
+  }
+
+  displayCommentRateEditor(){
+    var now = new DateTime.now();
+    var inviteDate = DateTime.parse(invite.created_date+" "+getTimeFormated(invite.time));
+    int timeRemaining = inviteDate.difference(now).inMinutes;
+    if(timeRemaining<-60 && invite.getisJoined() == "1" && invite.isCommented=="0"){
+      displayCommentRate= true;
+    }
+  }
+
+  displayCommentRateViews(){
+    var now = new DateTime.now();
+    var inviteDate = DateTime.parse(invite.created_date+" "+getTimeFormated(invite.time));
+    int timeRemaining = inviteDate.difference(now).inMinutes;
+    if(timeRemaining<-60  && comments.length>0){
+      displayCommentRateView= true;
     }
   }
 
@@ -132,6 +165,12 @@ class InviteDetailScreenState extends State<StatefulWidget>
                       style:
                           TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
                     ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    displayHostLog?hostLogEditor():hostLogView(),
+                    displayCommentRateView?commentRateView(comments):new Container(),
+                    displayCommentRate?commentRateEditor():new Container(),
                     SizedBox(
                       height: 5,
                     ),
@@ -327,13 +366,187 @@ class InviteDetailScreenState extends State<StatefulWidget>
     inviteListPresenter.joinOrLeave(doLeave, invite.id);
   }
 
-
   startInvite() {
     setState(() {
       _isLoading=true;
     });
     inviteListPresenter.startInvite(invite.id);
   }
+
+  hostLogEditor(){
+    return new Container(
+      child: new Column(
+        mainAxisAlignment:MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Text("Log entry",style: TextStyle(fontSize: 20)),
+          new TextFormField(
+            obscureText: false,
+            keyboardType: TextInputType.multiline,
+            maxLines: 4,
+            onSaved: (String val) {
+              _logentry = val;
+              _formdata['_logentry']=_logentry;
+            },
+            validator: (String arg){
+              if(arg.length<10){
+                return   "Please log invite in detail! Atleast 150 characters";
+              }else
+                return null;
+            },
+            decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                hintText: "i.e. Describe this invite's experiance...",
+                errorStyle: TextStyle(
+                    color: Colors.red,
+                    wordSpacing: 1.0,
+                    fontSize: 10
+                ),
+                border: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(32.0))),
+          ),
+          new Center(
+            child: new FlatButton(
+              child: Text("Submit"),
+              onPressed: () {
+
+              },
+              color: isLeave ? Colors.red : Colors.blue,
+              colorBrightness: Brightness.dark,
+              disabledColor: Colors.blueGrey,
+              highlightColor: Colors.red,
+              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  hostLogView(){
+    if(null!= invite.hostlog && invite.hostlog.toString()!=""){
+      return new Container(
+        child: new Column(
+          mainAxisAlignment:MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new Text("Log entry",style: TextStyle(fontSize: 20)),
+            new Text(invite.hostlog.toString(),style: TextStyle(fontSize: 14)),
+          ],
+        ),
+      );
+    }else{
+      return new Container();
+    }
+
+  }
+
+  commentRateView(List<Widget> comments){
+    return new Container(
+      child: new Column(
+        mainAxisAlignment:MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          comments.length>0?new Text("Comments!",style: TextStyle(fontSize: 20)):new Container(),
+          new Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: comments,
+          )
+        ],
+
+      ),
+    );
+  }
+
+  List<Widget> userComments(){
+    List<Widget> usercomments=new List();
+    List<InviteJoinees> inviteJoinees =invite.getJoinees();
+    for(int i=0;i<inviteJoinees.length;i++)
+      {
+        InviteJoinees iJ = inviteJoinees[i];
+        if(null!=iJ.getComment() && iJ.getComment().toString()!=""){
+          Container uComment = new Container(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(iJ.name.toString()),
+                new Text(iJ.getRate().toString()),
+                new Text(iJ.getComment().toString()),
+              ],
+            ),
+          );
+          usercomments.add(uComment);
+        }
+      }
+    return usercomments;
+  }
+
+  commentRateEditor(){
+    return new Container(
+      child: new Column(
+        mainAxisAlignment:MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Text("Your Comment!",style: TextStyle(fontSize: 20)),
+          new TextFormField(
+            obscureText: false,
+            keyboardType: TextInputType.multiline,
+            maxLines: 4,
+            onSaved: (String val) {
+              _comment = val;
+              _formdata['_comment']=_comment;
+            },
+            validator: (String arg){
+              if(arg.length<10){
+                return   "Please enter your comment!";
+              }else
+                return null;
+            },
+            decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                hintText: "i.e. How was your experiance in this invite",
+                errorStyle: TextStyle(
+                    color: Colors.red,
+                    wordSpacing: 1.0,
+                    fontSize: 10
+                ),
+                border: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(32.0))),
+          ),
+          new SmoothStarRating(
+              allowHalfRating: true,
+              onRatingChanged: (v) {
+                rating = v;
+                setState(() {});
+              },
+              starCount: 5,
+              rating: rating,
+              size: 60.0,
+              color: Colors.lightBlue.shade800,
+              borderColor: Colors.lightBlue.shade800,
+              spacing:0.0
+          ),
+          new Center(
+            child: new FlatButton(
+              child: Text("Submit"),
+              onPressed: () {
+              },
+              color: isLeave ? Colors.red : Colors.blue,
+              colorBrightness: Brightness.dark,
+              disabledColor: Colors.blueGrey,
+              highlightColor: Colors.red,
+              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
+            ),
+          )
+        ],
+
+      ),
+    );
+  }
+
+
 
   @override
   void showError() {
