@@ -710,7 +710,6 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
       params['time']=_formdata['selectedTimeValue'];
       params['max_invite']=_formdata['_max_people'];
       params['vanue']=_formdata['_vanueValue'];
-      print(params.toString());
       _createInvitePresenter.CreateInviteOnClick(params);
     }
   }

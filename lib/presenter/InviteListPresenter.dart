@@ -120,7 +120,7 @@ class InviteListPresenter{
 
   hostLog(String invid,String hostlog) async{
     try{
-      String response = await inviteListModel.postHostLog(invid,"");
+      String response = await inviteListModel.postHostLog(invid,hostlog);
       if(response!=null && !response.contains("sessionExpired")) {
         inviteDetailCallBack.updateViewsStartInvite(response);
       }
@@ -134,7 +134,7 @@ class InviteListPresenter{
 
   commentAndRate(String invid,String comment, String rate) async{
     try{
-      String response = await inviteListModel.rateAndComment(invid,"","");
+      String response = await inviteListModel.rateAndComment(invid,comment,rate);
       if(response!=null && !response.contains("sessionExpired")) {
         inviteDetailCallBack.updateViewsStartInvite(response);
       }

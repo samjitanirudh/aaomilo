@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 
 class PhotoScroller extends StatelessWidget {
-  PhotoScroller(this.photoUrls);
+  PhotoScroller(this.photoUrls,this.nameList);
 
-  final List<String> photoUrls;
+  final List<String> photoUrls,nameList;
 
   Widget _buildPhoto(BuildContext context, int index) {
-    print(photoUrls[index]);
+
     var photo = photoUrls[index]+"?"+new DateTime.now().millisecondsSinceEpoch.toString();
 
     return Padding(
-      padding: const EdgeInsets.only(right: 16.0),
+      padding: const EdgeInsets.only(right: 8.0),
       child: Column(
         children: [
           CircleAvatar(
             backgroundImage:  NetworkImage(photo),
             radius: 30.0,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(nameList[index].toString()),
           ),
         ],
       ),
@@ -31,7 +35,7 @@ class PhotoScroller extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox.fromSize(
-          size: const Size.fromHeight(80.0),
+          size: const Size.fromHeight(120.0),
           child: ListView.builder(
             itemCount: photoUrls.length,
             scrollDirection: Axis.horizontal,

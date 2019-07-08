@@ -25,6 +25,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
   bool _isLoading = false;
   BuildContext bContext;
   List<String> photoUrls = new List();
+  List<String> joinNameList = new List();
   Invite invite;
   String _logentry="",_comment;
   double rating=0.0;
@@ -119,6 +120,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
     if (iJoined != null && iJoined.length > 0) {
       for (int i = 0; i < iJoined.length; i++) {
         photoUrls.add(iJoined[i].profile_img);
+        joinNameList.add(iJoined[i].name);
       }
     }
   }
@@ -135,7 +137,10 @@ class InviteDetailScreenState extends State<StatefulWidget>
           children: <Widget>[
             new SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: new Container(
+              child:
+              Form(
+                key: _formKey,
+                child:new Container(
                 color: Colors.blue.shade100,
                 padding: EdgeInsets.all(5),
                 child: new Column(
@@ -180,6 +185,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
                   ],
                 ),
               ),
+              )
             ),
             _isLoading ? loaderOnViewUpdate() : new Container()
           ],
@@ -327,8 +333,8 @@ class InviteDetailScreenState extends State<StatefulWidget>
           ),
           new Container(
             width: MediaQuery.of(bContext).size.width * 0.7,
-            height: 80,
-            child: PhotoScroller(photoUrls),
+            height: 120,
+            child: PhotoScroller(photoUrls,joinNameList),
           )
         ],
       ),
@@ -411,7 +417,13 @@ class InviteDetailScreenState extends State<StatefulWidget>
             child: new FlatButton(
               child: Text("Submit"),
               onPressed: () {
-
+                if (_formKey.currentState.validate()) {
+                  _formKey.currentState.save();
+                  setState(() {
+                    _isLoading=true;
+                  });
+                  inviteListPresenter.hostLog(invite.id, _logentry);
+                }
               },
               color: isLeave ? Colors.red : Colors.blue,
               colorBrightness: Brightness.dark,
@@ -534,6 +546,13 @@ class InviteDetailScreenState extends State<StatefulWidget>
             child: new FlatButton(
               child: Text("Submit"),
               onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  _formKey.currentState.save();
+                  setState(() {
+                    _isLoading=true;
+                  });
+                  inviteListPresenter.commentAndRate(invite.id, _comment, rating.toString());
+                }
               },
               color: isLeave ? Colors.red : Colors.blue,
               colorBrightness: Brightness.dark,

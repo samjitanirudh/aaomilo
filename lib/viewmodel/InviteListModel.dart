@@ -219,7 +219,7 @@ class InviteListModel{
     String user = await UserProfile().getInstance().getLoggedInUser();
     headers['Content-type']="application/x-www-form-urlencoded";
     headers['Authorization']="Berear "+user;
-    return http.post(startInviteuri,body: 'invite_id='+inv_id+'&comment='+comment+'&rating='+rate,headers: headers).then((http.Response response) {
+    return http.post(commentRateUri,body: 'invite_id='+inv_id+'&comment='+comment+'&rating='+rate,headers: headers).then((http.Response response) {
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error while fetching data");
