@@ -118,8 +118,8 @@ class InviteListModel{
       inv.setCreated_date(webList[i]["created_date"]);
       inv.setFirst_name(webList[i]["first_name"]);
       inv.setinviteStarted(webList[i]["start_invite"]);
-      if(null!=webList[i]["hostlog"] && webList[i]["hostlog"]!="")
-        inv.setHostlog(webList[i]["hostlog"]);
+      if(null!=webList[i]["log"] && webList[i]["log"]!="")
+        inv.setHostlog(webList[i]["log"][0]["comment"]);
       inv.setJoined(webList[i]["joined"]);
       inv.setisJoined(webList[i]["is_joined"]);
       inv.setisLogged(webList[i]["isLoged"]);

@@ -61,10 +61,10 @@ class InviteDetailScreenState extends State<StatefulWidget>
 
   displayJoinLeaveButton(){
     //user has joined the invite , invite is yet not started, enable leave button
-    if (invite.getisJoined() == "1" && invite.inviteStarted=="0") isLeave = true;
+    if (invite.getisJoined() == "1" && invite.inviteStarted=="0" && timeRemainingInvite()>15) isLeave = true;
     //user has not joined the invite , invite is yet not started, enable join button
-    if (invite.getisJoined() == "0" && invite.inviteStarted=="0") isLeave = false;
-    if(invite.getisJoined()== "2")
+    if (invite.getisJoined() == "0" && invite.inviteStarted=="0" && timeRemainingInvite()>10) isLeave = false;
+    if(invite.getisJoined()== "2" || timeRemainingInvite()<10)
       hideJoinLeaveButton=true;
   }
 
@@ -74,6 +74,8 @@ class InviteDetailScreenState extends State<StatefulWidget>
     int timeRemaining = inviteDate.difference(now).inMinutes;
     if(timeRemaining<-60 && invite.getisJoined() == "2" && invite.isLogged=="0"){
       displayHostLog= true;
+    }else if(invite.isLogged=="1"){
+      displayHostLogView= true;
     }
   }
 
