@@ -4,7 +4,7 @@ import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/viewmodel/Venue.dart';
 import 'package:flutter_meetup_login/views/ImageListviewChecked.dart';
-
+import 'package:flutter_meetup_login/utils/AppColors.dart';
 class CreateInvite extends StatefulWidget {
   CreateInvite({Key key}) : super(key: key);
 
@@ -17,7 +17,7 @@ class CreateInvite extends StatefulWidget {
 
 class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallbacks,InviteCallbacks{
   static final TextStyle textStyle = TextStyle(
-      fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.blue.shade900);
+      fontFamily: 'Montserrat', fontSize: 20.0, color: AppColors.SecondaryColor);
   var _formKey = GlobalKey<FormState>();
   var _formview;
   Map _formdata=new Map();
@@ -86,7 +86,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
 
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: AppColors.PrimaryColor,
             title: appbarTitle(),
             textTheme: TextTheme(
                 title: TextStyle(
@@ -108,7 +108,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
 
   Widget createInviteUI(BuildContext context) {
     _formview = Container(
-        color: Colors.blue.shade50,
+        color: AppColors.BackgroundColor,
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
             child: Form(
@@ -547,12 +547,12 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   }
 
   RaisedButton inviteTimePicker(FormFieldState<String> state) {
-    TimeOfDay _toTime = const TimeOfDay(hour: 7, minute: 28);
+    TimeOfDay _toTime = TimeOfDay.now();
     selectedTime=_toTime;
     return RaisedButton(
         child: new Text(selectedTimeValue,
             style: TextStyle(
-                color: Colors.pink,
+                color: AppColors.SecondaryColor,
                 fontSize: 16,
                 fontWeight: FontWeight.bold)),
         padding: EdgeInsets.all(20),
@@ -655,7 +655,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
         new Material(
           elevation: 5.0,
           borderRadius: BorderRadius.circular(7.0),
-          color: Colors.blue.shade900,
+          color: AppColors.AcsentVColor,
           child: MaterialButton(
             minWidth: MediaQuery.of(context).size.width * 0.8,
             padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),

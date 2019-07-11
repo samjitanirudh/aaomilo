@@ -4,6 +4,7 @@ import 'package:flutter_meetup_login/utils/PhotoScroller.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:flutter_meetup_login/utils/AppColors.dart';
 
 class InviteDetailScreen extends StatefulWidget {
   final Invite invite;
@@ -31,7 +32,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
   double rating=0.0;
   InviteDetailScreenState(this.invite);
 
-  var joinButtonText = "Attende";
+  var joinButtonText = "Attend";
   var leaveButtonText = "Leave";
   bool isLeave = false,hideJoinLeaveButton=false,displayStartInviteButton=false;
   bool displayHostLog=false,displayHostLogView=false;
@@ -131,6 +132,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
 
     return new Scaffold(
         appBar: new AppBar(
+          backgroundColor: AppColors.PrimaryColor,
           title: new Text('Invite details'),
         ),
         body: new Stack(
@@ -141,10 +143,11 @@ class InviteDetailScreenState extends State<StatefulWidget>
               Form(
                 key: _formKey,
                 child:new Container(
-                color: Colors.blue.shade100,
+                  height: MediaQuery.of(bContext).size.height,
+                color: AppColors.BackgroundColor,
                 padding: EdgeInsets.all(5),
                 child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
@@ -352,10 +355,10 @@ class InviteDetailScreenState extends State<StatefulWidget>
             onPressed: () {
               joinOrLeaveInvite();
             },
-            color: isLeave ? Colors.red : Colors.blue,
+            color: isLeave ? Colors.red : AppColors.SecondaryColor,
             colorBrightness: Brightness.dark,
             disabledColor: Colors.blueGrey,
-            highlightColor: Colors.red,
+            highlightColor: AppColors.AcsentVColor,
             padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
           )
         ],
@@ -425,10 +428,10 @@ class InviteDetailScreenState extends State<StatefulWidget>
                   inviteListPresenter.hostLog(invite.id, _logentry);
                 }
               },
-              color: isLeave ? Colors.red : Colors.blue,
+              color: isLeave ? Colors.red : AppColors.SecondaryColor,
               colorBrightness: Brightness.dark,
               disabledColor: Colors.blueGrey,
-              highlightColor: Colors.red,
+              highlightColor: AppColors.AcsentVColor,
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
             ),
           )
@@ -554,10 +557,10 @@ class InviteDetailScreenState extends State<StatefulWidget>
                   inviteListPresenter.commentAndRate(invite.id, _comment, rating.toString());
                 }
               },
-              color: isLeave ? Colors.red : Colors.blue,
+              color: isLeave ? Colors.red : AppColors.SecondaryColor,
               colorBrightness: Brightness.dark,
               disabledColor: Colors.blueGrey,
-              highlightColor: Colors.red,
+              highlightColor: AppColors.AcsentVColor,
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
             ),
           )
@@ -612,7 +615,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
       children: [
         new Opacity(
           opacity: 0.3,
-          child: const ModalBarrier(dismissible: false, color: Colors.blue),
+          child: const ModalBarrier(dismissible: false, color: AppColors.BackgroundColor),
         ),
         new Center(
           child: new CircularProgressIndicator(),

@@ -8,6 +8,7 @@ import 'package:flutter_meetup_login/presenter/ProfileUpdatePresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Skills.dart';
 import 'package:flutter_meetup_login/views/MultiSelectChoiceView.dart';
+import 'package:flutter_meetup_login/utils/AppColors.dart';
 
 class UpdateUserProfileScreen extends StatefulWidget {
   UpdateUserProfileScreen({Key key, this.title}) : super(key: key);
@@ -79,7 +80,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
 
     return new Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: AppColors.PrimaryColor,
           title: Text("Update Profile"),
           textTheme: TextTheme(
               title: TextStyle(
@@ -102,7 +103,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
         children: [
           new Opacity(
             opacity: 0.3,
-            child: const ModalBarrier(dismissible: false, color: Colors.blue),
+            child: const ModalBarrier(dismissible: false, color: AppColors.BackgroundColor),
           ),
           new Center(
             child: new CircularProgressIndicator(),
@@ -185,362 +186,364 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
         child: Form(
         key: _formKey,
         child:
-            new Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        new GestureDetector(
-          onTap: () => imagePicker.showDialog(context),
-          child: new Container(
-            padding: EdgeInsets.all(10),
-            child: updateProfileImage(),
-          ),
-        ),
-        new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10),
-                child:
-                new TextFormField(
-                  autovalidate: true,
-                  decoration: new InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(
-                        10.0, 20.0, 10.0, 10.0),
-                    labelText: "Enter Your Full Name",
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius:
-                      new BorderRadius.circular(5.0),
-                      borderSide: new BorderSide(),
-                    ),
-                    //fillColor: Colors.green
-                  ),
-                  validator: (val) {
-                    if (val.length == 0) {
-                      return "Please enter your name!";
-                    } else {
-                      return null;
-                    }
-                  },
-                  onSaved: (String val) {
-                    _formdata['firstname'] = val;
-                  },
-                  controller: firstNameController,
-                  keyboardType: TextInputType.emailAddress,
-                  style: new TextStyle(
-                    fontFamily: "Poppins",
+            new Container(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                new GestureDetector(
+                  onTap: () => imagePicker.showDialog(context),
+                  child: new Container(
+                    padding: EdgeInsets.all(10),
+                    child: updateProfileImage(),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(10),
-                child:
-                new TextFormField(
-                  validator: (String arg) {
-                    if (arg.length < 10)
-                      return 'About me must be more than 10 numbers';
-                    else
-                      return null;
-                  },
-                  onSaved: (String val) {
-                    _formdata['contact_no'] = val;
-                  },
-                  controller: contactController,
-                  decoration: new InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(
-                        10.0, 20.0, 10.0, 10.0),
-                    labelText: "Contact no",
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius:
-                      new BorderRadius.circular(5.0),
-                      borderSide: new BorderSide(),
-                    ),
-                    //fillColor: Colors.green
-                  ),
-                ),
-              ),Padding(
-                padding: EdgeInsets.all(10),
-                child:
-                new TextFormField(
-                  validator: validateEmail,
-                  onSaved: (String val) {
-                    _formdata['email'] = val;
-                  },
-                  controller: emailController,
-                  decoration: new InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(
-                        10.0, 20.0, 10.0, 10.0),
-                    labelText: "Email",
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius:
-                      new BorderRadius.circular(5.0),
-                      borderSide: new BorderSide(),
-                    ),
-                    //fillColor: Colors.green
-                  ),
-                ),
-              ),Padding(
-                padding: EdgeInsets.all(10),
-                child:
-                new TextFormField(
-                  validator: (String arg) {
-                    if (arg.length < 10)
-                      return 'About me must be more than 10 charaters';
-                    else
-                      return null;
-                  },
-                  onSaved: (String val) {
-                    _formdata['about'] = val;
-                  },
-                  controller: aboutController,
-                  decoration: new InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(
-                        10.0, 20.0, 10.0, 10.0),
-                    labelText: "Write Something about you",
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius:
-                      new BorderRadius.circular(5.0),
-                      borderSide: new BorderSide(),
-                    ),
-                    //fillColor: Colors.green
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: new TextFormField(
-                  validator: (String arg) {
-                    if (arg.length < 10)
-                      return 'Project information must be more than 10 charaters';
-                    else
-                      return null;
-                  },
-                  onSaved: (String val) {
-                    _formdata['project'] = val;
-                  },
-                  controller: projectController,
-                  decoration: new InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(
-                        10.0, 20.0, 10.0, 10.0),
-                    labelText: "Enter you project name",
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius:
-                      new BorderRadius.circular(5.0),
-                      borderSide: new BorderSide(),
-                    ),
-                    //fillColor: Colors.green
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(10),
-                child:
-                new TextFormField(
-                  validator: (String arg) {
-                    if (arg.length < 10)
-                      return 'designation/role must be more than 10 charaters';
-                    else
-                      return null;
-                  },
-                  onSaved: (String val) {
-                    _formdata['_designation'] = val;
-                  },
-                  controller: designationController,
-                  decoration: new InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(
-                        10.0, 20.0, 10.0, 10.0),
-                    labelText: "Enter your Designation/Role",
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius:
-                      new BorderRadius.circular(5.0),
-                      borderSide: new BorderSide(),
-                    ),
-                    //fillColor: Colors.green
-                  ),
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.all(10),
-                      child: new Container(
-                        width: 180,
+                new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(10),
                         child:
                         new TextFormField(
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 3,
+                          autovalidate: true,
+                          decoration: new InputDecoration(
+                            contentPadding: EdgeInsets.fromLTRB(
+                                10.0, 20.0, 10.0, 10.0),
+                            labelText: "Enter Your Full Name",
+                            fillColor: Colors.white,
+                            border: new OutlineInputBorder(
+                              borderRadius:
+                              new BorderRadius.circular(5.0),
+                              borderSide: new BorderSide(),
+                            ),
+                            //fillColor: Colors.green
+                          ),
+                          validator: (val) {
+                            if (val.length == 0) {
+                              return "Please enter your name!";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (String val) {
+                            _formdata['firstname'] = val;
+                          },
+                          controller: firstNameController,
+                          keyboardType: TextInputType.emailAddress,
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child:
+                        new TextFormField(
                           validator: (String arg) {
-                            if (selectedReportList.length < 1)
-                              return 'Select atleast one skill';
+                            if (arg.length < 10)
+                              return 'About me must be more than 10 numbers';
                             else
                               return null;
                           },
                           onSaved: (String val) {
-                            _formdata['skill'] =
-                                selectedReportList.join(",");
+                            _formdata['contact_no'] = val;
                           },
-                          controller: skillController,
+                          controller: contactController,
                           decoration: new InputDecoration(
-                            contentPadding: EdgeInsets.all(10),
-                            hintText:
-                            selectedReportList.join(" , "),
+                            contentPadding: EdgeInsets.fromLTRB(
+                                10.0, 20.0, 10.0, 10.0),
+                            labelText: "Contact no",
                             fillColor: Colors.white,
                             border: new OutlineInputBorder(
                               borderRadius:
-                              new BorderRadius.circular(
-                                  5.0),
+                              new BorderRadius.circular(5.0),
                               borderSide: new BorderSide(),
                             ),
                             //fillColor: Colors.green
                           ),
                         ),
-                      )),
-                  Padding(
-                      padding: EdgeInsets.all(10),
-                      child: new Container(
-                          width: 130,
-                          height: 60,
-                          child: new Material(
-                            elevation: 6.0,
-                            borderRadius:
-                            BorderRadius.circular(7.0),
-                            color: Colors.blue.shade900,
-                            child: MaterialButton(
-                              minWidth: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width /
-                                  2.9,
-                              padding: EdgeInsets.fromLTRB(
-                                  10.0, 10.0, 10.0, 10.0),
-                              onPressed: () {
-                                _showSkillsDialog();
-                              },
-                              child: Text("Select your Skills",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight:
-                                      FontWeight.normal,
-                                      fontSize: 12)),
+                      ),Padding(
+                        padding: EdgeInsets.all(10),
+                        child:
+                        new TextFormField(
+                          validator: validateEmail,
+                          onSaved: (String val) {
+                            _formdata['email'] = val;
+                          },
+                          controller: emailController,
+                          decoration: new InputDecoration(
+                            contentPadding: EdgeInsets.fromLTRB(
+                                10.0, 20.0, 10.0, 10.0),
+                            labelText: "Email",
+                            fillColor: Colors.white,
+                            border: new OutlineInputBorder(
+                              borderRadius:
+                              new BorderRadius.circular(5.0),
+                              borderSide: new BorderSide(),
                             ),
-                          ))),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.all(10),
-                      child: new Container(
-                        width: 180,
+                            //fillColor: Colors.green
+                          ),
+                        ),
+                      ),Padding(
+                        padding: EdgeInsets.all(10),
+                        child:
+                        new TextFormField(
+                          validator: (String arg) {
+                            if (arg.length < 10)
+                              return 'About me must be more than 10 charaters';
+                            else
+                              return null;
+                          },
+                          onSaved: (String val) {
+                            _formdata['about'] = val;
+                          },
+                          controller: aboutController,
+                          decoration: new InputDecoration(
+                            contentPadding: EdgeInsets.fromLTRB(
+                                10.0, 20.0, 10.0, 10.0),
+                            labelText: "Write Something about you",
+                            fillColor: Colors.white,
+                            border: new OutlineInputBorder(
+                              borderRadius:
+                              new BorderRadius.circular(5.0),
+                              borderSide: new BorderSide(),
+                            ),
+                            //fillColor: Colors.green
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
                         child: new TextFormField(
                           validator: (String arg) {
-                            if (selectCategoryList.length < 1)
-                              return 'Select atleast one interest ';
+                            if (arg.length < 10)
+                              return 'Project information must be more than 10 charaters';
                             else
                               return null;
                           },
                           onSaved: (String val) {
-                            _formdata['intereset'] =
-                                selectCategoryList.join(",");
+                            _formdata['project'] = val;
                           },
-                          controller: interesetController,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 3,
+                          controller: projectController,
                           decoration: new InputDecoration(
-                            contentPadding: EdgeInsets.all(10),
-                            hintText:
-                            selectCategoryList.join(" , "),
+                            contentPadding: EdgeInsets.fromLTRB(
+                                10.0, 20.0, 10.0, 10.0),
+                            labelText: "Enter you project name",
                             fillColor: Colors.white,
                             border: new OutlineInputBorder(
                               borderRadius:
-                              new BorderRadius.circular(
-                                  5.0),
+                              new BorderRadius.circular(5.0),
                               borderSide: new BorderSide(),
                             ),
                             //fillColor: Colors.green
                           ),
                         ),
-                      )),
-                  Padding(
-                      padding: EdgeInsets.all(10),
-                      child: new Container(
-                          width: 130,
-                          height: 60,
-                          child: new Material(
-                            elevation: 6.0,
-                            borderRadius:
-                            BorderRadius.circular(7.0),
-                            color: Colors.blue.shade900,
-                            child: MaterialButton(
-                              minWidth: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width /
-                                  2.9,
-                              padding: EdgeInsets.fromLTRB(
-                                  10.0, 10.0, 10.0, 10.0),
-                              onPressed: () {
-                                _showInterestDialog();
-                              },
-                              child: Text(
-                                  "Select your category of interest",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight:
-                                      FontWeight.normal,
-                                      fontSize: 12)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child:
+                        new TextFormField(
+                          validator: (String arg) {
+                            if (arg.length < 10)
+                              return 'designation/role must be more than 10 charaters';
+                            else
+                              return null;
+                          },
+                          onSaved: (String val) {
+                            _formdata['_designation'] = val;
+                          },
+                          controller: designationController,
+                          decoration: new InputDecoration(
+                            contentPadding: EdgeInsets.fromLTRB(
+                                10.0, 20.0, 10.0, 10.0),
+                            labelText: "Enter your Designation/Role",
+                            fillColor: Colors.white,
+                            border: new OutlineInputBorder(
+                              borderRadius:
+                              new BorderRadius.circular(5.0),
+                              borderSide: new BorderSide(),
                             ),
-                          ))),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.all(40),
-                child: new Material(
-                  elevation: 3.0,
-                  borderRadius: BorderRadius.circular(7.0),
-                  color: Colors.blue.shade900,
-                  child: MaterialButton(
-                    minWidth:
-                    MediaQuery
-                        .of(context)
-                        .size
-                        .width / 3.5,
-                    padding: EdgeInsets.all(10),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
-                        isLoading = true;
+                            //fillColor: Colors.green
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.all(10),
+                              child: new Container(
+                                width: 180,
+                                child:
+                                new TextFormField(
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: 3,
+                                  validator: (String arg) {
+                                    if (selectedReportList.length < 1)
+                                      return 'Select atleast one skill';
+                                    else
+                                      return null;
+                                  },
+                                  onSaved: (String val) {
+                                    _formdata['skill'] =
+                                        selectedReportList.join(",");
+                                  },
+                                  controller: skillController,
+                                  decoration: new InputDecoration(
+                                    contentPadding: EdgeInsets.all(10),
+                                    hintText:
+                                    selectedReportList.join(" , "),
+                                    fillColor: Colors.white,
+                                    border: new OutlineInputBorder(
+                                      borderRadius:
+                                      new BorderRadius.circular(
+                                          5.0),
+                                      borderSide: new BorderSide(),
+                                    ),
+                                    //fillColor: Colors.green
+                                  ),
+                                ),
+                              )),
+                          Padding(
+                              padding: EdgeInsets.all(10),
+                              child: new Container(
+                                  width: 130,
+                                  height: 60,
+                                  child: new Material(
+                                    elevation: 6.0,
+                                    borderRadius:
+                                    BorderRadius.circular(7.0),
+                                    color: AppColors.SecondaryColor,
+                                    child: MaterialButton(
+                                      minWidth: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width /
+                                          2.9,
+                                      padding: EdgeInsets.fromLTRB(
+                                          10.0, 10.0, 10.0, 10.0),
+                                      onPressed: () {
+                                        _showSkillsDialog();
+                                      },
+                                      child: Text("Select your Skills",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight:
+                                              FontWeight.normal,
+                                              fontSize: 12)),
+                                    ),
+                                  ))),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.all(10),
+                              child: new Container(
+                                width: 180,
+                                child: new TextFormField(
+                                  validator: (String arg) {
+                                    if (selectCategoryList.length < 1)
+                                      return 'Select atleast one interest ';
+                                    else
+                                      return null;
+                                  },
+                                  onSaved: (String val) {
+                                    _formdata['intereset'] =
+                                        selectCategoryList.join(",");
+                                  },
+                                  controller: interesetController,
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: 3,
+                                  decoration: new InputDecoration(
+                                    contentPadding: EdgeInsets.all(10),
+                                    hintText:
+                                    selectCategoryList.join(" , "),
+                                    fillColor: Colors.white,
+                                    border: new OutlineInputBorder(
+                                      borderRadius:
+                                      new BorderRadius.circular(
+                                          5.0),
+                                      borderSide: new BorderSide(),
+                                    ),
+                                    //fillColor: Colors.green
+                                  ),
+                                ),
+                              )),
+                          Padding(
+                              padding: EdgeInsets.all(10),
+                              child: new Container(
+                                  width: 130,
+                                  height: 60,
+                                  child: new Material(
+                                    elevation: 6.0,
+                                    borderRadius:
+                                    BorderRadius.circular(7.0),
+                                    color: AppColors.SecondaryColor,
+                                    child: MaterialButton(
+                                      minWidth: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width /
+                                          2.9,
+                                      padding: EdgeInsets.fromLTRB(
+                                          10.0, 10.0, 10.0, 10.0),
+                                      onPressed: () {
+                                        _showInterestDialog();
+                                      },
+                                      child: Text(
+                                          "Select your category of interest",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight:
+                                              FontWeight.normal,
+                                              fontSize: 12)),
+                                    ),
+                                  ))),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(40),
+                        child: new Material(
+                          elevation: 3.0,
+                          borderRadius: BorderRadius.circular(7.0),
+                          color: AppColors.AcsentVColor,
+                          child: MaterialButton(
+                            minWidth:
+                            MediaQuery
+                                .of(context)
+                                .size
+                                .width / 3.5,
+                            padding: EdgeInsets.all(10),
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
+                                isLoading = true;
 
-                        _formdata['sgid'] = UserProfile().getInstance().sg_id;
+                                _formdata['sgid'] = UserProfile().getInstance().sg_id;
 
-                        if(null!=_image){
-                          var fileExt = basename(_image.path).split(".");
-                          _formdata['profilepicname'] = fileExt[1].toString();
-                        }
+                                if(null!=_image){
+                                  var fileExt = basename(_image.path).split(".");
+                                  _formdata['profilepicname'] = fileExt[1].toString();
+                                }
 
-                        profileUpdatePresenter.PostProfileData(_formdata, _image);
-                      }
-                    },
-                    child: Text("Update Profile",
-                        textAlign: TextAlign.center,
-                        style: style.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold)),
-                  ),
-                ),
-              ),
-            ]),
-      ],
-    )
+                                profileUpdatePresenter.PostProfileData(_formdata, _image);
+                              }
+                            },
+                            child: Text("Update",
+                                textAlign: TextAlign.center,
+                                style: style.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                      ),
+                    ]),
+              ],
+            ), decoration: new BoxDecoration(color: AppColors.BackgroundColor),
           )
+        )
         )
       );
   }

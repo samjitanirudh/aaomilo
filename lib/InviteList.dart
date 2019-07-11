@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/views/InviteDetailScreen.dart';
+import 'package:flutter_meetup_login/utils/AppColors.dart';
 
 import 'viewmodel/InviteListModel.dart';
 
@@ -42,10 +42,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   void initState() {
     // TODO: implement initState
     super.initState();
-//    inviteListPresenter= new InviteListPresenter(this);
-//    inviteListPresenter.GetInviteList(false);
     cList = new CategoryClass().getCategoryList();
-
     inviteListPresenter = new InviteListPresenter(this);
     _isLoading=true;
     inviteListPresenter.GetInviteList(false);
@@ -56,7 +53,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     bContext = context;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: AppColors.PrimaryColor,
         title: Text("Invites"),
         textTheme: TextTheme(
             title: TextStyle(
@@ -496,7 +493,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
       children: [
         new Opacity(
           opacity: 0.3,
-          child: const ModalBarrier(dismissible: false, color: Colors.blue),
+          child: const ModalBarrier(dismissible: false, color: AppColors.BackgroundColor),
         ),
         new Center(
           child: new CircularProgressIndicator(),

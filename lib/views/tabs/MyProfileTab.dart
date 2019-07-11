@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/ProfileUpdatePresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
+import 'package:flutter_meetup_login/utils/AppColors.dart';
 
 class MyProfile extends StatefulWidget {
   @override
@@ -56,7 +57,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     }
     return new Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: AppColors.PrimaryColor,
           title: Text("My Profile"),
           actions: <Widget>[
             new IconButton(
@@ -95,172 +96,175 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
   List<Widget> getProfileView(bool loaded,NetworkImage nI){
     _formview=SafeArea(
       child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                  padding: EdgeInsets.all(10),
-                  color: Colors.blue.shade100,
-                  width: MediaQuery.of(context).size.width,
-                  child:
-                  new Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          new Container(
-                              width: 120.0,
-                              height: 120.0,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: loaded ? nI : AssetImage(
-                                        "assets/images/profile.png")
+          child: new Container(
+            height: MediaQuery.of(bContext).size.height,
+              decoration: new BoxDecoration(color: AppColors.BackgroundColor),
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    padding: EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width,
+                    child:
+                    new Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            new Container(
+                                width: 120.0,
+                                height: 120.0,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: loaded ? nI : AssetImage(
+                                          "assets/images/profile.png")
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0)),
+                                  color: Colors.redAccent,
+                                )),
+                          ],
+                        ),
+                        Expanded(
+                            child:
+                            new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(padding: EdgeInsets.all(8.0),
+                                      child: new Text(
+                                        _formdata['name'],
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      )),
                                 ),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0)),
-                                color: Colors.redAccent,
-                              )),
-                        ],
-                      ),
-                      Expanded(
-                          child:
-                          new Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Padding(padding: EdgeInsets.all(8.0),
-                                    child: new Text(
-                                      _formdata['name'],
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                    )),
-                              ),
-                              SizedBox(height: 5,),
-                              Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Padding(padding: EdgeInsets.all(8.0),
-                                      child: new Text(
-                                        _formdata['designation'],
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black),
-                                      ))),
-                              SizedBox(height: 5,),
-                              Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Padding(padding: EdgeInsets.all(8.0),
-                                      child: new Text(
-                                        _formdata['email'],
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black),
-                                      ))),
-                              SizedBox(height: 5,),
-                              Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Padding(padding: EdgeInsets.all(8.0),
-                                      child: new Text(
-                                        _formdata['contact_no'],
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black),
-                                      )))
-                            ],
-                          )
-                      )],
-                  )
-              ),
-              Container(
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                            padding: EdgeInsets.all(12),
-                            child: new Text(
-                              "About Me",
-                              style: TextStyle(
-                                  fontSize: 22,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.brown),
-                            ))),
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                            padding: EdgeInsets.all(12),
-                            child: new Text(_formdata['about_me'],
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontStyle: FontStyle.normal,
-                                  color: Colors.black),
-                            ))),
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                            padding: EdgeInsets.all(12),
-                            child: new Text(
-                              "My Skills",
-                              style: TextStyle(
-                                  fontSize: 22,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.brown),
-                            ))),
-                  ],
+                                SizedBox(height: 5,),
+                                Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Padding(padding: EdgeInsets.all(8.0),
+                                        child: new Text(
+                                          _formdata['designation'],
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontStyle: FontStyle.normal,
+                                              color: Colors.black),
+                                        ))),
+                                SizedBox(height: 5,),
+                                Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Padding(padding: EdgeInsets.all(8.0),
+                                        child: new Text(
+                                          _formdata['email'],
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontStyle: FontStyle.normal,
+                                              color: Colors.black),
+                                        ))),
+                                SizedBox(height: 5,),
+                                Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Padding(padding: EdgeInsets.all(8.0),
+                                        child: new Text(
+                                          _formdata['contact_no'],
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontStyle: FontStyle.normal,
+                                              color: Colors.black),
+                                        )))
+                              ],
+                            )
+                        )],
+                    )
                 ),
-              ),
-              new Container(
-                  height: 60.0,
-                  child: new Scrollbar(child: new ListView(
-                      scrollDirection: Axis.horizontal,
-                      children:getUserSkillsView()
-                  ))
-              ),
-//              ),
-              Container(
-                child: new Column(
+                Container(
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Align(
-                          alignment: Alignment.topLeft,
+                          alignment: Alignment.centerLeft,
                           child: Padding(
                               padding: EdgeInsets.all(12),
                               child: new Text(
-                                "My Interests",
+                                "About Me",
                                 style: TextStyle(
                                     fontSize: 22,
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.brown),
+                                    color: AppColors.AcsentVColor),
                               ))),
                       Align(
-                          alignment: Alignment.topLeft,
+                          alignment: Alignment.centerLeft,
                           child: Padding(
                               padding: EdgeInsets.all(12),
-                              child: new Text(_formdata['interest'],
+                              child: new Text(_formdata['about_me'],
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontStyle: FontStyle.normal,
                                     color: Colors.black),
                               ))),
-                    ]
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                              padding: EdgeInsets.all(12),
+                              child: new Text(
+                                "My Skills",
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.AcsentVColor),
+                              ))),
+                    ],
+                  ),
                 ),
-              )
-            ],
-          )),
+                new Container(
+                    height: 60.0,
+                    child: new Scrollbar(child: new ListView(
+                        scrollDirection: Axis.horizontal,
+                        children:getUserSkillsView()
+                    ))
+                ),
+//              ),
+                Container(
+                  child: new Column(
+                      children: <Widget>[
+                        Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                                padding: EdgeInsets.all(12),
+                                child: new Text(
+                                  "My Interests",
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.AcsentVColor),
+                                ))),
+                        Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                                padding: EdgeInsets.all(12),
+                                child: new Text(_formdata['interest'],
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontStyle: FontStyle.normal,
+                                      color: Colors.black),
+                                ))),
+                      ]
+                  ),
+                )
+              ],
+            )),
+          )
     );
     var view =new List<Widget> () ;
     view.add(_formview);
@@ -290,7 +294,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
           child: RaisedButton(
               child: new Text(skills[index],
                   style: TextStyle(
-                      color: Colors.pink,
+                      color: Colors.grey.shade900,
                       fontSize: 16,
                       fontWeight: FontWeight.bold)),
               padding: EdgeInsets.all(20),

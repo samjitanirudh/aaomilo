@@ -55,10 +55,10 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
         });
       },
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.list), title: Text("Invite List"), backgroundColor: Colors.blue),
-          BottomNavigationBarItem(icon: Icon(Icons.add_circle), title: Text("Create Invite"),backgroundColor: Colors.blue),
-          BottomNavigationBarItem(icon: Icon(Icons.event_available), title: Text("My Events"),backgroundColor: Colors.blue),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), title: Text("My Profile"),backgroundColor: Colors.blue),
+          BottomNavigationBarItem(icon: Icon(Icons.list), title: Text("Invite List"), backgroundColor: Color(0xff00334e)),
+          BottomNavigationBarItem(icon: Icon(Icons.add_circle), title: Text("Create Invite"),backgroundColor: Color(0xff00334e)),
+          BottomNavigationBarItem(icon: Icon(Icons.event_available), title: Text("My Events"),backgroundColor: Color(0xff00334e)),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), title: Text("My Profile"),backgroundColor: Color(0xff00334e)),
 
         ],
       ),

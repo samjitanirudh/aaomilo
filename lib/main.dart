@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'SplashScreen',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        primaryColor: Colors.blueAccent.shade100
+        primaryColor: Color(0xffb74093)
       ),
       home: new SplashScreen(),
       routes: <String, WidgetBuilder>{

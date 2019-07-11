@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
+import 'package:flutter_meetup_login/utils/AppColors.dart';
 
 class MyInvites extends StatefulWidget {
   final String title;
@@ -29,11 +30,13 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
+          backgroundColor: AppColors.PrimaryColor,
           title: new Text('My Invites'),
         ),
         body: SingleChildScrollView(
-
-          child: Column(
+          child: new Container(
+            decoration: new BoxDecoration(color: AppColors.BackgroundColor),
+            child: new Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
@@ -60,8 +63,6 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
                                   )),
 
                           child: Card(
-
-
                             child: Container(width: 200,
                                 height: 300,
                                 child: Column(children: <Widget>[
@@ -166,7 +167,6 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
                                   )),
 
                           child: Card(
-
 
                             child: Container(width: 200,
                                 height: 300,
@@ -355,6 +355,8 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
 
             ],
           ),
+          )
+          ,
         ));
   }
 
