@@ -10,12 +10,14 @@ import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'viewmodel/InviteListModel.dart';
 
 class InviteList extends StatefulWidget {
-
   String selectedCategoryList;
-  InviteList(String selectedIndexList): selectedCategoryList=selectedIndexList,super(key: new ObjectKey(""));
+
+  InviteList(String selectedIndexList)
+      : selectedCategoryList = selectedIndexList,
+        super(key: new ObjectKey(""));
 
   @override
-    State<StatefulWidget> createState() {
+  State<StatefulWidget> createState() {
     return new InviteListState(selectedCategoriesId: selectedCategoryList);
   }
 }
@@ -27,7 +29,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   static const platform =
       const MethodChannel('samples.flutter.dev/ssoanywhere');
   BuildContext bContext;
-  bool _isLoading=false;
+  bool _isLoading = false;
 
   String selectedCatList;
 
@@ -44,7 +46,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     super.initState();
     cList = new CategoryClass().getCategoryList();
     inviteListPresenter = new InviteListPresenter(this);
-    _isLoading=true;
+    _isLoading = true;
     inviteListPresenter.GetInviteList(false);
   }
 
@@ -52,45 +54,30 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   Widget build(BuildContext context) {
     bContext = context;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.PrimaryColor,
-        title: Text("Invites"),
-        textTheme: TextTheme(
-            title: TextStyle(
+        appBar: AppBar(
+            backgroundColor: AppColors.PrimaryColor,
+            title: Text("Invites"),
+            textTheme: TextTheme(
+                title: TextStyle(
               color: Colors.white,
               fontSize: 20.0,
             )),
-          actions: <Widget>[
-      new IconButton(
-      icon: new Icon(Icons.filter_list), color: Colors.white,padding: EdgeInsets.all(20),
-      onPressed: () {
-
-//        Navigator.push(
-//          context,
-//          MaterialPageRoute(
-//              builder: (context) =>
-//                  CategoriesTabs(categoryCallbacks: this)),
-//        );
-
-        _categoryListView();
-
-
-//        Navigator.of(context).pushNamed('/CategoriesTab');
-      },
-    ),
-    ]
-
-      ),
-      body:new Stack(
-        children: <Widget>[
-          _isLoading?loaderOnViewUpdate():_buildSuggestions()
-        ],
-      )
-    );
+            actions: <Widget>[
+              new IconButton(
+                icon: new Icon(Icons.filter_list),
+                color: Colors.white,
+                padding: EdgeInsets.all(20),
+                onPressed: () {
+                  _categoryListView();
+                },
+              ),
+            ]),
+        body: new Stack(
+          children: <Widget>[
+            _isLoading ? loaderOnViewUpdate() : _buildSuggestions()
+          ],
+        ));
   }
-
-
-
 
   Future<Null> _categoryListView() async {
     return showDialog<Null>(
@@ -101,18 +88,18 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
         title: new Text(
           'SAVED !!!',
           style:
-          new TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              new TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
         content: new Container(
           // Specify some width
-          width: MediaQuery.of(context).size.width ,
+          width: MediaQuery.of(context).size.width,
           height: 100,
           child: new GridView.count(
               crossAxisCount: 2,
               childAspectRatio: 1.0,
               padding: const EdgeInsets.all(7.0),
               mainAxisSpacing: 10,
-              crossAxisSpacing:5.0,
+              crossAxisSpacing: 5.0,
               children: getOption()),
         ),
         actions: <Widget>[
@@ -134,65 +121,61 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     List<Widget> options = new List();
     for (int i = 0; i < cList.length; i++)
       options.add(
-//          new SimpleDialogOption(
-//        onPressed: () {
-//          Navigator.pop(context, i);//here passing the index to be return on item selection
-//        },
-//        child: new Text(cList[i].txtCategoryName),// /item value
-//      )
-      new Container(width:MediaQuery.of(context).size.width,height: 200, child: new GridView.count(crossAxisCount: 2,
-      shrinkWrap: true,
-      children: new List<Widget>.generate(1, (index) {
-        return new GridTile(
-
-            child: GestureDetector( child: Container(
-
-                decoration: BoxDecoration(color: Colors.blue.shade50,shape: BoxShape.rectangle),
-                child: Column(mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: 120,
-                      height: 120,
-                      alignment: Alignment.bottomCenter,
-                      padding: EdgeInsets.all(50),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(categoryImageAPI + cList[i].imgUrl),
-                              fit: BoxFit.cover)),
-
-                    ),
-                    Text(
-                      cList[index].txtCategoryName,
-                      textAlign: TextAlign.center,style: TextStyle(fontSize:15,),
-                    ),
-                  ],
-                )
-            ),
-              onLongPress: () {
-                setState(() {
+          new Container(
+        width: MediaQuery.of(context).size.width,
+        height: 200,
+        child: new GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            children: new List<Widget>.generate(1, (index) {
+              return new GridTile(
+                  child: GestureDetector(
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.blue.shade50, shape: BoxShape.rectangle),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          width: 120,
+                          height: 120,
+                          alignment: Alignment.bottomCenter,
+                          padding: EdgeInsets.all(50),
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      categoryImageAPI + cList[i].imgUrl),
+                                  fit: BoxFit.cover)),
+                        ),
+                        Text(
+                          cList[index].txtCategoryName,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    )),
+                onLongPress: () {
+                  setState(() {
 //                  _changeSelection(enable: false, index: -1);
-                });
-              },
-              onTap: () {
-                setState(() {
+                  });
+                },
+                onTap: () {
+                  setState(() {
 //                  if (_selectedIndexList.contains(index)) {
 //                    _selectedIndexList.remove(index);
 //                  } else {
 //                    _selectedIndexList.add(index);
 //                  }
-                });
-              },
-
-            )
-        );
-      }
-      )
-      ),)
-      );
+                  });
+                },
+              ));
+            })),
+      ));
 
     return options;
   }
-
 
   Widget _buildSuggestions() {
     return new Container(
@@ -207,14 +190,15 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
               final index = i;
               return new Padding(
                   padding:
-                      EdgeInsets.only(bottom: 3, left: 2, right: 2, top: 3),
+                      EdgeInsets.only(bottom: 3, left: 3, right: 3, top: 3),
                   child: Card(
-                    elevation: 8.0,
+                    elevation: 15.0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(3.0),
                     ),
                     child: new Container(
-                      decoration: new BoxDecoration(color: Colors.transparent),
+                      decoration:
+                          new BoxDecoration(color: AppColors.BackgroundColor),
                       child: _buildRow(_suggestions[index]),
                     ),
                   ));
@@ -227,11 +211,10 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   Future<void> _refreshStockPrices() async {
     if (mounted) {
       setState(() {
-        _isLoading=true;
+        _isLoading = true;
       });
     }
     inviteListPresenter.clearInviteList();
-//    inviteListPresenter.GetInviteList(null, null);
     inviteListPresenter.GetInviteList(false);
   }
 
@@ -246,16 +229,36 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
       }
     });
     return new ListTile(
-      onTap:() => navigateToDetails(invite),
+      onTap: () => navigateToDetails(invite),
       contentPadding: EdgeInsets.symmetric(horizontal: 3.0, vertical: 0.0),
-      title: Column(children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: 150,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: loaded ? nI : AssetImage("assets/images/pulse.gif"),
-                  fit: BoxFit.fill)),
+      title: new Column(children: <Widget>[
+        new Stack(
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 150,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image:
+                          loaded ? nI : AssetImage("assets/images/pulse.gif"),
+                      fit: BoxFit.fill)),
+            ),
+            new Container(
+              width: MediaQuery.of(context).size.width,
+              height: 150,
+              decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                colors: [
+                  AppColors.BackgroundColor.withOpacity(0.0),
+                  AppColors.BackgroundColor,
+                ],
+                stops: [0.9, 1.0],
+                begin: FractionalOffset.centerLeft,
+                end: FractionalOffset.centerRight,
+                tileMode: TileMode.repeated,
+              )),
+            )
+          ],
         ),
         Align(
           alignment: Alignment.centerLeft,
@@ -308,7 +311,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
           ),
         )
       ]),
-      subtitle: Container(
+      subtitle: new Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.fromLTRB(5, 10, 0, 2),
           child: Row(
@@ -316,97 +319,72 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
               Expanded(
                   flex: 1,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("assets/images/group.png"),
-                                  fit: BoxFit.fill))),
+                        child: new Icon(
+                          Icons.group,
+                          color: AppColors.AcsentVColor,
+                        ),
+                      ),
                       Container(
-                        padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
                         child: Text(
                           invite.joined + "/" + invite.allowed_member_count,
                           style: TextStyle(
-                              color: Colors.black38,
-                              fontWeight: FontWeight.normal,
+                              color: AppColors.AcsentVColor,
+                              fontWeight: FontWeight.bold,
                               fontSize: 18.0),
                         ),
                       )
                     ],
                   )),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage("assets/images/comment.png"),
-                                  fit: BoxFit.fill))),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
-                        child: Text(
-                          "-",
-                          style: TextStyle(
-                              color: Colors.black38,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 18.0),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
               Expanded(
                   flex: 1,
                   child: Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image:
-                                    AssetImage("assets/images/favourites.png"),
-                                fit: BoxFit.fill))),
-                  )),
+                      alignment: Alignment.center,
+                      child: Container(
+                        child: new Icon(
+                          Icons.comment,
+                          color: AppColors.AcsentVColor,
+                        ),
+                      ))),
+              Expanded(
+                  flex: 1,
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        child: new Icon(
+                          Icons.rate_review,
+                          color: AppColors.AcsentVColor,
+                        ),
+                      )))
             ],
           )),
     );
   }
 
-  navigateToDetails(final Invite inv){
-
+  navigateToDetails(final Invite inv) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => InviteDetailScreen(invite: inv),
       ),
-    ).then((dynamic value){
+    ).then((dynamic value) {
       returnedFromInviteDetailsScreen(value);
     });
   }
 
-  returnedFromInviteDetailsScreen(dynamic value){
-    if(null!=value && value){
+  returnedFromInviteDetailsScreen(dynamic value) {
+    if (null != value && value) {
       if (mounted) {
         setState(() {
-          _isLoading=true;
+          _isLoading = true;
         });
       }
       inviteListPresenter.clearInviteList();
       inviteListPresenter.GetInviteList(false);
     }
   }
-
 
   @override
   void showError() {
@@ -418,7 +396,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     // TODO: implement updateViews
     if (mounted) {
       setState(() {
-        _isLoading=false;
+        _isLoading = false;
         _suggestions = invitedata;
       });
     }
@@ -493,7 +471,8 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
       children: [
         new Opacity(
           opacity: 0.3,
-          child: const ModalBarrier(dismissible: false, color: AppColors.BackgroundColor),
+          child: const ModalBarrier(
+              dismissible: false, color: AppColors.BackgroundColor),
         ),
         new Center(
           child: new CircularProgressIndicator(),
@@ -508,5 +487,3 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     // TODO: implement updateViewsPastInvites
   }
 }
-
-

@@ -5,6 +5,7 @@ import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
+import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 
 class InviteDetailScreen extends StatefulWidget {
   final Invite invite;
@@ -21,7 +22,6 @@ class InviteDetailScreen extends StatefulWidget {
 class InviteDetailScreenState extends State<StatefulWidget>
     implements InviteDetailCallBack {
   var _formKey = GlobalKey<FormState>();
-  var _formView;
   Map _formdata=new Map();
   bool _isLoading = false;
   BuildContext bContext;
@@ -32,8 +32,8 @@ class InviteDetailScreenState extends State<StatefulWidget>
   double rating=0.0;
   InviteDetailScreenState(this.invite);
 
-  var joinButtonText = "Attend";
-  var leaveButtonText = "Leave";
+  var joinButtonText = AppStringClass.INV_DTL_JOIN_BUTTON;
+  var leaveButtonText = AppStringClass.INV_DTL_LEAVE_BUTTON;
   bool isLeave = false,hideJoinLeaveButton=false,displayStartInviteButton=false;
   bool displayHostLog=false,displayHostLogView=false;
   bool displayCommentRate=false,displayCommentRateView=false;
@@ -133,7 +133,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
     return new Scaffold(
         appBar: new AppBar(
           backgroundColor: AppColors.PrimaryColor,
-          title: new Text('Invite details'),
+          title: new Text(AppStringClass.INV_DTL_SCREEN_TITLE),
         ),
         body: new Stack(
           children: <Widget>[
@@ -143,7 +143,6 @@ class InviteDetailScreenState extends State<StatefulWidget>
               Form(
                 key: _formKey,
                 child:new Container(
-                  height: MediaQuery.of(bContext).size.height,
                 color: AppColors.BackgroundColor,
                 padding: EdgeInsets.all(5),
                 child: new Column(
@@ -166,8 +165,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
                     SizedBox(
                       height: 5,
                     ),
-                    new Text(
-                      "Description",
+                    new Text(AppStringClass.INV_DTL_DESCRIPTION,
                       style: TextStyle(fontSize: 24),
                     ),
                     new Text(
@@ -248,7 +246,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
                       width: 10,
                     ),
                     new Text(
-                      "Hosted by " + invite.first_name.toString(),
+                      AppStringClass.INV_DTL_HOST_BY + invite.first_name.toString(),
                       style: new TextStyle(fontSize: 12),
                     )
                   ],
@@ -259,7 +257,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
             new Expanded(
                 child:
                 displayStartInviteButton?new FlatButton(
-                      child: Text("START"),
+                      child: Text(AppStringClass.INV_DTL_START_BUTTON),
                       onPressed: () {
                         startInvite();
                       },
@@ -390,7 +388,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
         mainAxisAlignment:MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Text("Log entry",style: TextStyle(fontSize: 20)),
+          new Text(AppStringClass.INV_DTL_HOST_LOG,style: TextStyle(fontSize: 20)),
           new TextFormField(
             obscureText: false,
             keyboardType: TextInputType.multiline,
@@ -401,13 +399,13 @@ class InviteDetailScreenState extends State<StatefulWidget>
             },
             validator: (String arg){
               if(arg.length<10){
-                return   "Please log invite in detail! Atleast 150 characters";
+                return   AppStringClass.INV_DTL_HOST_LOG_ERR;
               }else
                 return null;
             },
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                hintText: "i.e. Describe this invite's experiance...",
+                hintText: AppStringClass.INV_DTL_HOST_LOG_HINT,
                 errorStyle: TextStyle(
                     color: Colors.red,
                     wordSpacing: 1.0,
@@ -418,7 +416,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
           ),
           new Center(
             child: new FlatButton(
-              child: Text("Submit"),
+              child: Text(AppStringClass.INV_DTL_SUBMIT_BUTTON),
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
@@ -447,7 +445,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
           mainAxisAlignment:MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Text("Log entry",style: TextStyle(fontSize: 20)),
+            new Text(AppStringClass.INV_DTL_HOST_LOG,style: TextStyle(fontSize: 20)),
             new Text(invite.hostlog.toString(),style: TextStyle(fontSize: 14)),
           ],
         ),
@@ -464,7 +462,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
         mainAxisAlignment:MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          comments.length>0?new Text("Comments!",style: TextStyle(fontSize: 20)):new Container(),
+          comments.length>0?new Text(AppStringClass.INV_DTL_USER_CMNTS,style: TextStyle(fontSize: 20)):new Container(),
           new Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -506,7 +504,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
         mainAxisAlignment:MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Text("Your Comment!",style: TextStyle(fontSize: 20)),
+          new Text(AppStringClass.INV_DTL_USER_CMNTS_EDIT,style: TextStyle(fontSize: 20)),
           new TextFormField(
             obscureText: false,
             keyboardType: TextInputType.multiline,
@@ -517,13 +515,13 @@ class InviteDetailScreenState extends State<StatefulWidget>
             },
             validator: (String arg){
               if(arg.length<10){
-                return   "Please enter your comment!";
+                return   AppStringClass.INV_DTL_USER_CMNTS_EDIT_ERR;
               }else
                 return null;
             },
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                hintText: "i.e. How was your experiance in this invite",
+                hintText: AppStringClass.INV_DTL_USER_CMNTS_EDIT_HINT,
                 errorStyle: TextStyle(
                     color: Colors.red,
                     wordSpacing: 1.0,
@@ -547,7 +545,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
           ),
           new Center(
             child: new FlatButton(
-              child: Text("Submit"),
+              child: Text(AppStringClass.INV_DTL_SUBMIT_BUTTON),
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
