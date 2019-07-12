@@ -466,8 +466,24 @@ class InviteDetailScreenState extends State<StatefulWidget>
           mainAxisAlignment:MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Text(AppStringClass.INV_DTL_HOST_LOG,style: TextStyle(fontSize: 20)),
-            new Text(invite.hostlog.toString(),style: TextStyle(fontSize: 14)),
+            new Row(
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundImage:  new NetworkImage(photoUrls[joinNameList.indexOf(invite.first_name)]),
+                  radius: 20.0,
+                ),
+                new Text(invite.first_name,style: TextStyle(fontSize: 20)),
+              ],
+            )
+            ,
+            Padding(
+              padding: EdgeInsets.fromLTRB(5, 15, 5, 15),
+              child: new Text(
+                invite.hostlog.toString(),
+                style:
+                TextStyle(fontSize: 18, fontStyle: FontStyle.normal,wordSpacing: 2.2,letterSpacing: 0.2,fontFamily: 'forum'),
+              ),
+            )
           ],
         ),
       );

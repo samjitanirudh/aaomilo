@@ -83,7 +83,7 @@ flutter:
   fonts:
     - family: forum
       fonts:
-        - asset: fonts/regular.ttf
+        - asset: assets/font/regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
