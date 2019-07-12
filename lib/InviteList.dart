@@ -248,13 +248,13 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
               height: 150,
               decoration: new BoxDecoration(
                   gradient: new LinearGradient(
-                colors: [
-                  AppColors.BackgroundColor.withOpacity(0.0),
-                  AppColors.BackgroundColor,
-                ],
+                  colors: [
+                    AppColors.BackgroundColor.withOpacity(0.2),
+                    AppColors.BackgroundColor,
+                  ],
                 stops: [0.9, 1.0],
-                begin: FractionalOffset.centerLeft,
-                end: FractionalOffset.centerRight,
+                begin: FractionalOffset.topCenter,
+                end: FractionalOffset.bottomCenter,
                 tileMode: TileMode.repeated,
               )),
             )
@@ -265,9 +265,9 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
           child: Container(
             padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
             child: Text(
-              invite.title,
+              invite.title.toString().toUpperCase(),
               style: TextStyle(
-                  color: Colors.indigo,
+                  color: AppColors.AcsentVColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 18.0),
             ),
@@ -278,11 +278,11 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
               child: Container(
             padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
             child: Text(
-              "Date: " + invite.created_date,
-              style: TextStyle(
-                  color: Colors.black38,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0),
+                  "Date: " + invite.created_date,
+                  style: TextStyle(
+                      color: AppColors.AcsentVColor,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14.0),
             ),
           )),
           Expanded(
@@ -291,9 +291,9 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
                 child: Text(
                   "Time: " + invite.time,
                   style: TextStyle(
-                      color: Colors.black38,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0),
+                      color: AppColors.AcsentVColor,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14.0),
                 )),
           )
         ]),
@@ -302,11 +302,11 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
           child: Container(
             padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
             child: Text(
-              invite.venue,
-              style: TextStyle(
-                  color: Colors.black38,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 16.0),
+                  "Venue: " + invite.venue,
+                  style: TextStyle(
+                      color: AppColors.AcsentVColor,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14.0),
             ),
           ),
         )
@@ -327,6 +327,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
                           color: AppColors.AcsentVColor,
                         ),
                       ),
+                      SizedBox(width: 5,),
                       Container(
                         child: Text(
                           invite.joined + "/" + invite.allowed_member_count,

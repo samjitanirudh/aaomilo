@@ -135,62 +135,64 @@ class InviteDetailScreenState extends State<StatefulWidget>
           backgroundColor: AppColors.PrimaryColor,
           title: new Text(AppStringClass.INV_DTL_SCREEN_TITLE),
         ),
-        body: new Stack(
-          children: <Widget>[
-            new SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child:
-              Form(
-                key: _formKey,
-                child:new Container(
-                color: AppColors.BackgroundColor,
-                padding: EdgeInsets.all(5),
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    inviteDetailHeader(),
-                    Divider(
-                      color: Colors.grey,
+        body:
+        new Container(
+        color: AppColors.BackgroundColor,
+          child: new Stack(
+            children: <Widget>[
+              new SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child:
+                  Form(
+                    key: _formKey,
+                    child:new Container(
+                      color: AppColors.BackgroundColor,
+                      padding: EdgeInsets.all(5),
+                      child: new Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          inviteDetailHeader(),
+                          inviteDetailInfo(),
+                          Divider(
+                            color: Colors.grey,
+                          ),
+                          inviteJoinedList(),
+                          Divider(
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          new Text(AppStringClass.INV_DTL_DESCRIPTION,
+                            style: TextStyle(fontSize: 24),
+                          ),
+                          new Text(
+                            invite.description.toString(),
+                            style:
+                            TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          displayHostLog?hostLogEditor():hostLogView(),
+                          displayCommentRateView?commentRateView(comments):new Container(),
+                          displayCommentRate?commentRateEditor():new Container(),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          hideJoinLeaveButton?new Container():joinOrLeaveInvteButton(),
+                        ],
+                      ),
                     ),
-                    inviteDetailInfo(),
-                    Divider(
-                      color: Colors.grey,
-                    ),
-                    inviteJoinedList(),
-                    Divider(
-                      color: Colors.grey,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    new Text(AppStringClass.INV_DTL_DESCRIPTION,
-                      style: TextStyle(fontSize: 24),
-                    ),
-                    new Text(
-                      invite.description.toString(),
-                      style:
-                          TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    displayHostLog?hostLogEditor():hostLogView(),
-                    displayCommentRateView?commentRateView(comments):new Container(),
-                    displayCommentRate?commentRateEditor():new Container(),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    hideJoinLeaveButton?new Container():joinOrLeaveInvteButton(),
-                  ],
-                ),
+                  )
               ),
-              )
-            ),
-            _isLoading ? loaderOnViewUpdate() : new Container()
-          ],
-        ));
+              _isLoading ? loaderOnViewUpdate() : new Container()
+            ],
+          ),
+        )
+        );
   }
 
   inviteDetailInfo() {
@@ -304,6 +306,21 @@ class InviteDetailScreenState extends State<StatefulWidget>
                 child: Image(image: AssetImage("assets/images/comment.png"))),
           ],
         ),
+      ),
+      new Container(
+        width: MediaQuery.of(context).size.width,
+        height: 150,
+        decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                AppColors.BackgroundColor.withOpacity(0.2),
+                AppColors.BackgroundColor,
+              ],
+              stops: [0.95, 1.0],
+              begin: FractionalOffset.topCenter,
+              end: FractionalOffset.bottomCenter,
+              tileMode: TileMode.repeated,
+            )),
       )
     ]);
   }

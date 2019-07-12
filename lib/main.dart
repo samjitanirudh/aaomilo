@@ -5,7 +5,6 @@ import 'package:flutter_meetup_login/splash_screen.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Skills.dart';
 import 'package:flutter_meetup_login/viewmodel/Venue.dart';
-import 'package:flutter_meetup_login/views/CreateInvite.dart';
 import 'package:flutter_meetup_login/views/tabViewScreen.dart';
 import 'package:flutter_meetup_login/views/login_screen.dart';
 
