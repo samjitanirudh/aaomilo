@@ -156,11 +156,11 @@ class InviteDetailScreenState extends State<StatefulWidget>
                           inviteDetailHeader(),
                           inviteDetailInfo(),
                           Divider(
-                            color: Colors.grey,
+                            color: Colors.grey.withOpacity(0.2),
                           ),
                           inviteJoinedList(),
                           Divider(
-                            color: Colors.grey,
+                              color: Colors.grey.withOpacity(0.2)
                           ),
                           SizedBox(
                             height: 5,
@@ -168,11 +168,15 @@ class InviteDetailScreenState extends State<StatefulWidget>
                           new Text(AppStringClass.INV_DTL_DESCRIPTION,
                             style: TextStyle(fontSize: 24),
                           ),
-                          new Text(
-                            invite.description.toString(),
-                            style:
-                            TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
-                          ),
+                          Padding(
+                            padding: EdgeInsets.all(5),
+                            child: new Text(
+                              invite.description.toString(),
+                              style:
+                              TextStyle(fontSize: 18, fontStyle: FontStyle.normal,wordSpacing: 2.2,letterSpacing: 0.2,fontFamily: 'forum'),
+                            ),
+                          )
+                          ,
                           SizedBox(
                             height: 15,
                           ),
