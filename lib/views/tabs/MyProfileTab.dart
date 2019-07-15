@@ -49,7 +49,6 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
       nI.resolve(new ImageConfiguration()).addListener((_, __) {
         if (mounted) {
           setState(() {
-            _isLoading=false;
             loaded = true;
           });
         }
@@ -320,16 +319,19 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     // TODO: implement updateView
     if(mounted) {
       setState(() {
-        _formdata["name"] = userdetails["name"];
-        _formdata["designation"] = userdetails["designation"];
-        _formdata["about_me"] = userdetails["about_me"];
-        _formdata["skills"] = userdetails["skills"];
-        _formdata["interest"] = userdetails["interest"];
-        _formdata["profileimg"] = userdetails["profileimg"]+"&"+new DateTime.now().millisecondsSinceEpoch.toString();
-        _formdata["email"]= userdetails["email"];
-        _formdata["contact_no"]= userdetails["contact_no"];
-        _formdata["project"]= userdetails["project"];
+        if(userdetails.length>0){
+          _formdata["name"] = userdetails["name"];
+          _formdata["designation"] = userdetails["designation"];
+          _formdata["about_me"] = userdetails["about_me"];
+          _formdata["skills"] = userdetails["skills"];
+          _formdata["interest"] = userdetails["interest"];
+          _formdata["profileimg"] = userdetails["profileimg"]+"&"+new DateTime.now().millisecondsSinceEpoch.toString();
+          _formdata["email"]= userdetails["email"];
+          _formdata["contact_no"]= userdetails["contact_no"];
+          _formdata["project"]= userdetails["project"];
 
+        }
+        _isLoading=false;
       });
     }
   }

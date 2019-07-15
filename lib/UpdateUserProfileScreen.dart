@@ -114,7 +114,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   }
 
   updateProfileImage(){
-    if(loaded){
+    if(loaded && null!=nI){
       return new Container(
         height: 160.0,
         width: 160.0,
@@ -705,27 +705,39 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   void updateView(Map userdetails) {
     if(mounted) {
       setState(() {
-        _isLoading=false;
-        firstNameController.text= userdetails["name"];
-        emailController.text= userdetails["email"];
-        contactController.text= userdetails["contact_no"];
-        designationController.text= userdetails["designation"];
-        aboutController.text=userdetails["about_me"];
-        skillController.text=userdetails["skills"];
-        selectedReportList = userdetails["skills"].split(",");
-        interesetController.text= userdetails["interest"];
-        projectController.text= userdetails["project"];
-        selectCategoryList= userdetails["interest"].split(",");
-        _formdata["profileimg"] = userdetails["profileimg"];
-        nI = new NetworkImage(_formdata["profileimg"]+"&"+new DateTime.now().millisecondsSinceEpoch.toString(),headers: {"Authorization": "Berear "+UserProfile().getInstance().sg_id});
-        nI.resolve(new ImageConfiguration()).addListener((_, __) {
-          if (mounted) {
-            setState(() {
-
-              loaded = true;
+        _isLoading = false;
+        if (userdetails.length > 0) {
+          firstNameController.text = userdetails["name"];
+          emailController.text = userdetails["email"];
+          contactController.text = userdetails["contact_no"];
+          designationController.text = userdetails["designation"];
+          aboutController.text = userdetails["about_me"];
+          skillController.text = userdetails["skills"];
+          selectedReportList = userdetails["skills"].split(",");
+          interesetController.text = userdetails["interest"];
+          projectController.text = userdetails["project"];
+          selectCategoryList = userdetails["interest"].split(",");
+          _formdata["profileimg"] = userdetails["profileimg"];
+          if(_formdata["profileimg"]!=""){
+            nI = new NetworkImage(_formdata["profileimg"] + "&" +
+                new DateTime.now().millisecondsSinceEpoch.toString(),
+                headers: {"Authorization": "Berear " + UserProfile()
+                    .getInstance()
+                    .sg_id});
+            nI.resolve(new ImageConfiguration()).addListener((_, __) {
+              if (mounted) {
+                setState(() {
+                  loaded = true;
+                });
+              }
             });
+          }else{
+                loaded = true;
           }
-        });
+
+        }else{
+          loaded = true;
+        }
       });
     }
 
