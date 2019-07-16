@@ -23,7 +23,7 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
   // Create a tab controller
   TabController controller;
   int _selectedPage = 0;
-  final pageOptions = [InviteList(null),  CreateInvite(), MyInvites(), MyProfile()
+  final pageOptions = [InviteList(null),  CreateInvite(), MyInvitesScreen(), MyProfile()
   ];
 
   @override

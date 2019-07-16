@@ -487,4 +487,9 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   void updateViewsPastInvites(List<Invite> invitedata) {
     // TODO: implement updateViewsPastInvites
   }
+
+  @override
+  void updateViewsUpcomingInvites(List<Invite> invitedata) {
+    // TODO: implement updateViewsUpcomingInvites
+  }
 }

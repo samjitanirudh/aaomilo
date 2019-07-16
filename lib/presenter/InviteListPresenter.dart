@@ -89,10 +89,11 @@ class InviteListPresenter{
   upComingEvents() async {
     try{
       String response = await inviteListModel.upcomingInviteRequest();
-      print(response);
+
       if(response!=null && !response.contains("sessionExpired")) {
-        inviteListModel.getListInvites(json.decode(response));
-        inviteListCallBack.updateViews(inviteListModel.getInviteList());
+        inviteListModel.getUpcomingListInvites(json.decode(response));
+        inviteListCallBack.updateViewsUpcomingInvites(inviteListModel.getUpcomingInviteList());
+
       }
       else{
         inviteListCallBack.showErrorDialog("sessionExpired");
@@ -105,10 +106,10 @@ class InviteListPresenter{
   pastEvents() async {
     try{
       String response = await inviteListModel.pastInviteRequest();
-      print("past" + response);
+
       if(response!=null && !response.contains("sessionExpired")) {
-        inviteListModel.getListInvites(json.decode(response));
-        inviteListCallBack.updateViewsPastInvites(inviteListModel.getInviteList());
+        inviteListModel.getPastListInvites(json.decode(response));
+        inviteListCallBack.updateViewsPastInvites(inviteListModel.getPastInviteList());
       }
       else{
         inviteListCallBack.showErrorDialog("sessionExpired");
@@ -151,6 +152,7 @@ class InviteListPresenter{
 abstract class InviteListCallBack{
    void updateViews(List<Invite> invitedata);
    void updateViewsPastInvites(List<Invite> invitedata);
+   void updateViewsUpcomingInvites(List<Invite> invitedata);
    void showError();
    void showErrorDialog(String error);
 }
