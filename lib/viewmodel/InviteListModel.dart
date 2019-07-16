@@ -23,6 +23,8 @@ class InviteListModel{
   var commentRateUri = "http://www.convergepro.xyz/meetupapi/work/action.php?action=comments";
 
   static List<Invite> inviteList = new List();
+  static List<Invite> upcomingInviteList = new List();
+  static List<Invite> pastInviteList = new List();
 
   InviteListModel();
 
@@ -32,6 +34,14 @@ class InviteListModel{
 
   List<Invite> getInviteList(){
     return inviteList;
+  }
+
+  List<Invite> getPastInviteList(){
+    return pastInviteList;
+  }
+  List<Invite> getUpcomingInviteList(){
+    return upcomingInviteList;
+
   }
 
   Future<String> checkRefreshToken() {
@@ -129,6 +139,61 @@ class InviteListModel{
     }
   }
 
+
+  void getUpcomingListInvites(List<dynamic> webList){
+    upcomingInviteList.clear();
+
+    for(int i =0;i<webList.length;i++){
+      Invite inv=new Invite();
+      inv.sid(webList[i]["id"]);
+      inv.setTitle(webList[i]["title"]);
+      inv.setDescription(webList[i]["description"]);
+      inv.setCategory_id(webList[i]["category_id"]);
+      inv.setTime(webList[i]["time"]);
+      inv.setVenue(webList[i]["venue"]);
+      inv.setImage(webList[i]["image"]);
+      inv.setAllowed_member_count(webList[i]["allowed_member_count"]);
+      inv.setCreated_by(webList[i]["created_by"]);
+      inv.setCreated_date(webList[i]["created_date"]);
+      inv.setFirst_name(webList[i]["first_name"]);
+      inv.setinviteStarted(webList[i]["start_invite"]);
+      if(null!=webList[i]["log"] && webList[i]["log"]!="")
+        inv.setHostlog(webList[i]["log"][0]["comment"]);
+      inv.setJoined(webList[i]["joined"]);
+      inv.setisJoined(webList[i]["is_joined"]);
+      inv.setisLogged(webList[i]["isLoged"]);
+      inv.setisCommented(webList[i]["is_commented"]);
+      inv.setJoineList(getInviteJoinees(webList[i]["joinees"],webList[i]["user_comments"]));
+      upcomingInviteList.add(inv);
+    }
+  }
+
+  void getPastListInvites(List<dynamic> webList){
+    pastInviteList.clear();
+    for(int i =0;i<webList.length;i++){
+      Invite inv=new Invite();
+      inv.sid(webList[i]["id"]);
+      inv.setTitle(webList[i]["title"]);
+      inv.setDescription(webList[i]["description"]);
+      inv.setCategory_id(webList[i]["category_id"]);
+      inv.setTime(webList[i]["time"]);
+      inv.setVenue(webList[i]["venue"]);
+      inv.setImage(webList[i]["image"]);
+      inv.setAllowed_member_count(webList[i]["allowed_member_count"]);
+      inv.setCreated_by(webList[i]["created_by"]);
+      inv.setCreated_date(webList[i]["created_date"]);
+      inv.setFirst_name(webList[i]["first_name"]);
+      inv.setinviteStarted(webList[i]["start_invite"]);
+      if(null!=webList[i]["log"] && webList[i]["log"]!="")
+        inv.setHostlog(webList[i]["log"][0]["comment"]);
+      inv.setJoined(webList[i]["joined"]);
+      inv.setisJoined(webList[i]["is_joined"]);
+      inv.setisLogged(webList[i]["isLoged"]);
+      inv.setisCommented(webList[i]["is_commented"]);
+      inv.setJoineList(getInviteJoinees(webList[i]["joinees"],webList[i]["user_comments"]));
+      pastInviteList.add(inv);
+    }
+  }
   List<InviteJoinees> getInviteJoinees(List<dynamic> jList,Map jCommentsList){
     List<InviteJoinees> iJoined=new List<InviteJoinees>();
     if(null!=jList) {
