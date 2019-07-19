@@ -33,7 +33,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "indec.meetup.flutter_meetup_login"
+        applicationId "io.flutter.app.FlutterApplication"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
@@ -60,3 +60,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(path: ':ssoanywhere')
 }
+
+apply plugin: 'io.fabric'
+apply plugin: 'com.google.gms.google-services'

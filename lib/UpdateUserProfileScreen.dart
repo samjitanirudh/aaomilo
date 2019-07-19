@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert' show utf8, base64;
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
@@ -11,15 +12,17 @@ import 'package:flutter_meetup_login/views/MultiSelectChoiceView.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 
 class UpdateUserProfileScreen extends StatefulWidget {
-  UpdateUserProfileScreen({Key key, this.title}) : super(key: key);
+  final FirebaseAnalytics analytics;
+  UpdateUserProfileScreen({Key key, this.title,this.analytics}) : super(key: key);
   final String title;
 
   @override
-  _UpdateProfileState createState() => new _UpdateProfileState();
+  _UpdateProfileState createState() => new _UpdateProfileState(analytics);
 }
 
 class _UpdateProfileState extends State<UpdateUserProfileScreen>
     with TickerProviderStateMixin, ImagePickerListener, ProfileUpdateCallbacks {
+  final FirebaseAnalytics analytics;
   var _formKey = GlobalKey<FormState>();
   var _formview;
   Map _formdata = new Map();
@@ -44,7 +47,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   var emailController = new TextEditingController();
   bool loaded=false;
   bool _isLoading=false;
-  _UpdateProfileState(){
+  _UpdateProfileState(this.analytics){
     _formdata["firstname"]="";
     _formdata["about"]="";
     _formdata["_project"]="";
@@ -56,6 +59,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   @override
   void initState() {
     super.initState();
+    _setCurrentScreen();
     _controller = new AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -72,6 +76,13 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.setCurrentScreen(
+      screenName: "Update Profile Screen",
+      screenClassOverride: 'UserProfileScreen',
+    );
   }
 
   @override

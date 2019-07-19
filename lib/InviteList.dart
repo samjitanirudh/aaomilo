@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
@@ -11,18 +12,20 @@ import 'viewmodel/InviteListModel.dart';
 
 class InviteList extends StatefulWidget {
   String selectedCategoryList;
+  final FirebaseAnalytics analytics;
 
-  InviteList(String selectedIndexList)
+  InviteList({Key key, this.analytics,String selectedIndexList})
       : selectedCategoryList = selectedIndexList,
         super(key: new ObjectKey(""));
 
   @override
   State<StatefulWidget> createState() {
-    return new InviteListState(selectedCategoriesId: selectedCategoryList);
+    return new InviteListState(analytics:analytics,selectedCategoriesId: selectedCategoryList);
   }
 }
 
 class InviteListState extends State<InviteList> implements InviteListCallBack {
+  final FirebaseAnalytics analytics;
   List<Invite> _suggestions = new List<Invite>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
   InviteListPresenter inviteListPresenter;
@@ -38,16 +41,24 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   List<Categories> cList = new List();
   var categoryImageAPI = "http://convergepro.xyz/meetupapi/cat_img/";
 
-  InviteListState({this.selectedCategoriesId});
+  InviteListState({Key key, this.analytics,this.selectedCategoriesId});
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _setCurrentScreen();
     cList = new CategoryClass().getCategoryList();
     inviteListPresenter = new InviteListPresenter(this);
     _isLoading = true;
     inviteListPresenter.GetInviteList(false);
+  }
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.setCurrentScreen(
+      screenName: "Invite List",
+      screenClassOverride: 'InviteList',
+    );
   }
 
   @override

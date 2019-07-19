@@ -1,17 +1,20 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/loginPresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'dart:convert';
 
 class loginScreen extends StatefulWidget {
-  loginScreen({Key key}) : super(key: key);
+  final FirebaseAnalytics analytics;
+  loginScreen({Key key,this.analytics}) : super(key: key);
 
   @override
-  _loginScreenState createState() => new _loginScreenState();
+  _loginScreenState createState() => new _loginScreenState(analytics);
 }
 
 class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
-	String _accessToken = 'LOGIN';
+  final FirebaseAnalytics analytics;
+  String _accessToken = 'LOGIN';
     TextStyle style = TextStyle(
 		fontFamily: 'Montserrat',
 		fontSize: 20.0,
@@ -27,7 +30,7 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
   LoginPresenter _loginPresenter;
   BuildContext bContext;
 
-  _loginScreenState() {
+  _loginScreenState(this.analytics) {
     _loginPresenter = new LoginPresenter(this);
   }
 
@@ -157,6 +160,20 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _setCurrentScreen();
+  }
+
+  Future<void> _setCurrentScreen() async {
+    await analytics.setCurrentScreen(
+      screenName: "Login Screen",
+      screenClassOverride: 'LoginScreen',
     );
   }
 

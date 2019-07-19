@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1056025009780",
+    "firebase_url": "https://meetup-1c8c9.firebaseio.com",
+    "project_id": "meetup-1c8c9",
+    "storage_bucket": "meetup-1c8c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056025009780:android:4878d44f6f65b16a",
+        "android_client_info": {
+          "package_name": "io.flutter.app.FlutterApplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056025009780-0n9l1mh4mhujcdqg7bif9r1ncqqaq3ps.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuduTLRYCcusFa9uyexXTTn2PATHMvYPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056025009780-0n9l1mh4mhujcdqg7bif9r1ncqqaq3ps.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
