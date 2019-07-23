@@ -6,7 +6,7 @@ import 'package:flutter_meetup_login/views/tabs/CategoriesTab.dart';
 import 'package:flutter_meetup_login/views/tabs/MyInvites.dart';
 import 'package:flutter_meetup_login/views/tabs/MyProfileTab.dart';
 import 'package:flutter_meetup_login/views/tabs/NotificationTab.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 
 class TabViewScreen extends StatefulWidget {
@@ -20,19 +20,21 @@ class TabViewScreen extends StatefulWidget {
 
 // SingleTickerProviderStateMixin is used for animation
 class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   final FirebaseAnalytics analytics;
   // Create a tab controller
   TabController controller;
   int _selectedPage = 0;
   List<dynamic> pageOptions;
   TabsState(this.analytics);
-
+  String _homeScreenText;
   @override
   void initState() {
     super.initState();
     _setCurrentScreen();
     // Initialize the Tab Controller
     controller = new TabController(length: 4, vsync: this);
+    initFireBase();
   }
 
   Future<void> _setCurrentScreen() async {
@@ -74,5 +76,32 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
 
 
     );
+  }
+
+  void initFireBase() {
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        //print("onMessage: $message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        //print("onMessage: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        //print("onMessage: $message");
+      },
+    );
+
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      _homeScreenText = token;
+      print(_homeScreenText);
+    });
   }
 }

@@ -3,29 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/InviteList.dart';
 import 'package:flutter_meetup_login/UpdateUserProfileScreen.dart';
 import 'package:flutter_meetup_login/splash_screen.dart';
+import 'package:flutter_meetup_login/utils/NotificationItemClass.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Skills.dart';
 import 'package:flutter_meetup_login/viewmodel/Venue.dart';
 import 'package:flutter_meetup_login/views/tabViewScreen.dart';
 import 'package:flutter_meetup_login/views/login_screen.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 
 void main() {
-  // Set `enableInDevMode` to true to see reports while in debug mode
-  // This is only to be used for confirming that reports are being
-  // submitted as expected. It is not intended to be used for everyday
-  // development.
-  Crashlytics.instance.enableInDevMode = true;
-
-  // Pass all uncaught errors to Crashlytics.
-  FlutterError.onError = (FlutterErrorDetails details) {
-    Crashlytics.instance.onError(details);
-  };
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  String _homeScreenText = "Waiting for token...";
   static FirebaseAnalytics analytics = FirebaseAnalytics();
+
+
   MyApp(){
     CategoryClass().categoryGetRequest();
     VenueClass().venueGetRequest();
