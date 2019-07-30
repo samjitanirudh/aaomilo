@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/services.dart';
+import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:http/http.dart' as http;
 
 class CreateInviteModel {
@@ -14,8 +15,8 @@ class CreateInviteModel {
   var txtDate, txtTime;
   var txtVanue;
 
-  var inviteAPI         = "http://convergepro.xyz/meetupapi/work/action.php";
-  var categoryImageAPI  = "http://convergepro.xyz/meetupapi/work/action.php?cat_img=";
+  var inviteAPI         = AppStringClass.APP_BASE_URL+"work/action.php";
+  var categoryImageAPI  = AppStringClass.APP_BASE_URL+"work/action.php?cat_img=";
 
   Map<String, String> headers = new Map();
 
@@ -59,7 +60,8 @@ class CreateInviteModel {
         .post(url, body: body, headers: headers, encoding: encoding)
         .then((http.Response response) {
       final int statusCode = response.statusCode;
-      if (statusCode < 200 || statusCode > 400 || json == null) {
+
+      if (statusCode < 200 || statusCode > 400 || json == null || response.body!="") {
         throw new Exception("Error while fetching data");
       }else if(response.body == "token expired"){
         return "sessionExpired";
@@ -89,9 +91,6 @@ class CreateInviteModel {
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error while fetching data");
       }
-//      else if(response.body == "token expired"){
-//        return "sessionExpired";
-//      }
       return response.body;
     });
   }

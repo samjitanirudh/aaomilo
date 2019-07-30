@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -14,7 +15,7 @@ class Venue{
 
 class VenueClass{
 
-  var uri ="http://convergepro.xyz/meetupapi/work/action.php?action=venue";
+  var uri =AppStringClass.APP_BASE_URL+"work/action.php?action=venue";
   static List<Venue> VenueList = new List();
 
   List<Venue> getVenueList(){

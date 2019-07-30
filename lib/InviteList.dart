@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
+import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
@@ -39,7 +40,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   String selectedCategoriesId;
   int index = 0;
   List<Categories> cList = new List();
-  var categoryImageAPI = "http://convergepro.xyz/meetupapi/cat_img/";
+  var categoryImageAPI = AppStringClass.APP_BASE_URL+"cat_img/";
 
   InviteListState({Key key, this.analytics,this.selectedCategoriesId});
 

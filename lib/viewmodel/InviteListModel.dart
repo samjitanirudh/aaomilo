@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/services.dart';
+import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:http/http.dart' as http;
 import 'Invite.dart';
 import 'ProfileDataUpdate.dart';
@@ -11,16 +12,16 @@ class InviteListModel{
   static final InviteListModel inviteListModel=new InviteListModel();
   Map<String, String> headers = new Map();
 
-  var uri ="http://convergepro.xyz/meetupapi/work/action.php?action=getinvites";
-  var joinLeaveuri ="http://convergepro.xyz/meetupapi/work/action.php?action=joinleave";
+  var uri =AppStringClass.APP_BASE_URL+"work/action.php?action=getinvites";
+  var joinLeaveuri =AppStringClass.APP_BASE_URL+"work/action.php?action=joinleave";
 
-  var uriSelectedCategories = "http://convergepro.xyz/meetupapi/work/action.php?action=getinvites&category_id=";
-  var uriFutureInvites = "http://www.convergepro.xyz/meetupapi/work/action.php?action=myinvites&futr=futr";
-  var uriPastInvites = "http://www.convergepro.xyz/meetupapi/work/action.php?action=myinvites&past=past";
+  var uriSelectedCategories = AppStringClass.APP_BASE_URL+"work/action.php?action=getinvites&category_id=";
+  var uriFutureInvites = AppStringClass.APP_BASE_URL+"work/action.php?action=myinvites&futr=futr";
+  var uriPastInvites = AppStringClass.APP_BASE_URL+"work/action.php?action=myinvites&past=past";
 
-  var startInviteuri ="http://convergepro.xyz/meetupapi/work/action.php?action=startinvite";
-  var hostlogUri = "http://www.convergepro.xyz/meetupapi/work/action.php?action=invitelog";
-  var commentRateUri = "http://www.convergepro.xyz/meetupapi/work/action.php?action=comments";
+  var startInviteuri =AppStringClass.APP_BASE_URL+"work/action.php?action=startinvite";
+  var hostlogUri = AppStringClass.APP_BASE_URL+"work/action.php?action=invitelog";
+  var commentRateUri = AppStringClass.APP_BASE_URL+"work/action.php?action=comments";
 
   static List<Invite> inviteList = new List();
   static List<Invite> upcomingInviteList = new List();
@@ -98,7 +99,8 @@ class InviteListModel{
 
   Future<String> getInvite(String url,String token) {
     headers['Content-type']="application/x-www-form-urlencoded";
-    headers['Authorization']="Berear "+token;
+    headers['Authorization']="berear "+token;
+
     return http.post(url,headers: headers).then((http.Response response) {
 
       final int statusCode = response.statusCode;
@@ -107,7 +109,7 @@ class InviteListModel{
       }else if(response.body == "token expired"){
         return "sessionExpired";
       }
-      print("response" +response.body);
+
       return response.body;
     });
   }

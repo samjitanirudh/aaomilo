@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -15,8 +16,8 @@ class Categories{
 
 class CategoryClass{
 
-  var uri ="http://convergepro.xyz/meetupapi/work/action.php?action=categories";
-  var categoryImageAPI  = "http://convergepro.xyz/meetupapi/work/action.php?cat_img=";
+  var uri =AppStringClass.APP_BASE_URL+"work/action.php?action=categories";
+  var categoryImageAPI  = AppStringClass.APP_BASE_URL+"work/action.php?cat_img=";
   static List<Categories> categoryList = new List();
 
   List<Categories> getCategoryList(){

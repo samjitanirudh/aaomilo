@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 
 class ImageListViewChecked extends StatefulWidget {
   List<Product> imageList;
@@ -32,7 +33,7 @@ class ImageListViewCheckedState extends State<ImageListViewChecked> {
   ImageSelectedCallbacks callback;
   int groupChoice;
   FormFieldState<String> stateForm;
-  String imageUrl = "http://convergepro.xyz/meetupapi/cat_img/";
+  String imageUrl = AppStringClass.APP_BASE_URL+"cat_img/";
 
   ImageListViewCheckedState(this.callback, this.imageList,this.stateForm);
 

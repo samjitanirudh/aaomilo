@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ProfileDataUpdate.dart';
 class ProfileDataModel {
 
-  var profileAPI         = "http://convergepro.xyz/meetupapi/work/action.php";
-  var profilePicAPI         = "http://convergepro.xyz/meetupapi/work/action.php?action=profilepic";
+  var profileAPI         = AppStringClass.APP_BASE_URL+"work/action.php";
+  var profilePicAPI         = AppStringClass.APP_BASE_URL+"work/action.php?action=profilepic";
 
   Map<String, String> headers = new Map();
 
