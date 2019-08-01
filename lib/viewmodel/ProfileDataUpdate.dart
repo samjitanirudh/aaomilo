@@ -9,7 +9,7 @@ import 'ProfileDataUpdate.dart';
 class ProfileDataModel {
 
   var profileAPI         = AppStringClass.APP_BASE_URL+"work/action.php";
-  var profilePicAPI         = AppStringClass.APP_BASE_URL+"work/action.php?action=profilepic";
+  var profilePicAPI      = AppStringClass.APP_BASE_URL+"work/action.php?action=profilepic";
 
   Map<String, String> headers = new Map();
 

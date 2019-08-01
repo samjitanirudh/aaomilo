@@ -61,7 +61,7 @@ class CreateInviteModel {
         .then((http.Response response) {
       final int statusCode = response.statusCode;
 
-      if (statusCode < 200 || statusCode > 400 || json == null || response.body!="") {
+      if ((statusCode < 200 || statusCode > 400 || json == null) || response.body=="") {
         throw new Exception("Error while fetching data");
       }else if(response.body == "token expired"){
         return "sessionExpired";
@@ -80,7 +80,6 @@ class CreateInviteModel {
     String date = 'created_date='+txtDate+'&';
     String time = 'time='+txtTime+'&';
     String vanue = 'venue_id='+txtVanue+'&';
-    String user = 'created_by=App';
     return action+title+category+categoryImage+descr+noinvite+date+time+vanue;
   }
 

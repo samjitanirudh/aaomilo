@@ -46,18 +46,10 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
   Future initState() {
     // TODO: implement initState
     super.initState();
-
-//    _callAsync();
     inviteListPresenter = new InviteListPresenter(this);
     inviteListPresenter.pastEvents();
-
-
     inviteListPresenter.upComingEvents();
     _isLoading = true;
-
-
-
-
   }
 
   @override
