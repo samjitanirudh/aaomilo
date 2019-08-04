@@ -1,36 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetup_login/views/tabs/MyProfileTab.dart';
 
 class PhotoScroller extends StatelessWidget {
-  PhotoScroller(this.photoUrls,this.nameList);
-
-  final List<String> photoUrls,nameList;
+  PhotoScroller(this.photoUrls,this.nameList,this.userlist);
+  BuildContext bContext;
+  final List<String> photoUrls,nameList,userlist;
 
   Widget _buildPhoto(BuildContext context, int index) {
-
     var photo = photoUrls[index]+"?"+new DateTime.now().millisecondsSinceEpoch.toString();
-
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
-      child: Column(
-        children: [
-          CircleAvatar(
-            backgroundImage:  NetworkImage(photo),
-            radius: 30.0,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(nameList[index].toString()),
-          ),
-        ],
-      ),
+      child:
+      new GestureDetector(
+        onTap: () =>navigateToProfileView(userlist[index]),
+        child: Column(
+          children: [
+            CircleAvatar(
+              backgroundImage:  NetworkImage(photo),
+              radius: 30.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(nameList[index].toString()),
+            ),
+          ],
+        ),
+      )
+
     );
 
+  }
+
+  navigateToProfileView(String user){
+    Navigator.push(bContext,
+      MaterialPageRoute(
+        builder: (context) => MyProfile(userid: user),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-
+    bContext=context;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

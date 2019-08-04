@@ -1,7 +1,7 @@
 import 'package:flutter_meetup_login/viewmodel/CreateInviteModel.dart';
 import 'dart:convert';
 
-import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
+import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 
 class CreateInvitePreseter{
 

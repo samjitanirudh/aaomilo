@@ -3,6 +3,7 @@ import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
 import 'package:flutter_meetup_login/utils/PhotoScroller.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
+import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'package:flutter_meetup_login/utils/AppStringClass.dart';
@@ -27,6 +28,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
   BuildContext bContext;
   List<String> photoUrls = new List();
   List<String> joinNameList = new List();
+  List<String> joinUserList = new List();
   Invite invite;
   String _logentry="",_comment;
   double rating=0.0;
@@ -122,6 +124,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
       for (int i = 0; i < iJoined.length; i++) {
         photoUrls.add(iJoined[i].profile_img);
         joinNameList.add(iJoined[i].name);
+        joinUserList.add(iJoined[i].sg_id);
       }
     }
   }
@@ -356,7 +359,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
           new Container(
             width: MediaQuery.of(bContext).size.width * 0.7,
             height: 120,
-            child: PhotoScroller(photoUrls,joinNameList),
+            child: PhotoScroller(photoUrls,joinNameList,joinUserList),
           )
         ],
       ),

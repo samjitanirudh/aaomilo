@@ -6,6 +6,7 @@ import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:http/http.dart' as http;
 import 'Invite.dart';
 import 'ProfileDataUpdate.dart';
+import 'UserProfile.dart';
 
 class InviteListModel{
   static const platform = const MethodChannel('samples.flutter.dev/ssoanywhere');

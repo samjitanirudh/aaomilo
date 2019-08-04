@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
+import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 
 class ProfileUpdatePresenter{
 
@@ -12,6 +13,10 @@ class ProfileUpdatePresenter{
   ProfileUpdatePresenter(ProfileUpdateCallbacks proCallback){
     profileCallback = proCallback;
     profileUpdate = new ProfileDataModel();
+  }
+
+  getUserProfile(){
+    return userProfile;
   }
 
   PostProfileData(Map params,File _image) async {
@@ -42,6 +47,19 @@ class ProfileUpdatePresenter{
     try{
       loggedInUser=await userProfile.getLoggedInUser();
       String webList= await profileUpdate.userGetRequest(loggedInUser);
+      if(webList!="sessionExpired")
+        profileCallback.updateView(profileUpdate.getUserDetails(json.decode(webList)));
+      else
+        profileCallback.showErrorDialog(webList);
+    }on Exception catch (error) {
+      profileCallback.showErrorDialog(error.toString());
+    }
+  }
+
+  getUserProfileData(String userid) async{
+    try{
+      //loggedInUser=await userProfile.getLoggedInUser();
+      String webList= await profileUpdate.userProfileGetRequest(userid);
       if(webList!="sessionExpired")
         profileCallback.updateView(profileUpdate.getUserDetails(json.decode(webList)));
       else

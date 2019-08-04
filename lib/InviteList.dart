@@ -6,6 +6,7 @@ import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
+import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 import 'package:flutter_meetup_login/views/InviteDetailScreen.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 

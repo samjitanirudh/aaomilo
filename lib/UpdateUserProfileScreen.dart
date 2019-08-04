@@ -11,6 +11,8 @@ import 'package:flutter_meetup_login/viewmodel/Skills.dart';
 import 'package:flutter_meetup_login/views/MultiSelectChoiceView.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 
+import 'viewmodel/UserProfile.dart';
+
 class UpdateUserProfileScreen extends StatefulWidget {
   final FirebaseAnalytics analytics;
   UpdateUserProfileScreen({Key key, this.title,this.analytics}) : super(key: key);

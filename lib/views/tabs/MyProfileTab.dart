@@ -2,29 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/ProfileUpdatePresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
+import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 
 class MyProfile extends StatefulWidget {
+  String userid;
+
+  MyProfile({Key key,this.userid}):super(key: key);
+
   @override
   _MyProfilePage createState() {
     // TODO: implement createState
-    _MyProfilePage _myProfilePage = new _MyProfilePage();
+    _MyProfilePage _myProfilePage = new _MyProfilePage(this.userid);
     return _myProfilePage;
   }
 }
 
 class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
-  TextStyle style =
-  TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white,);
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.white,);
   Map _formdata = new Map();
   ProfileUpdatePresenter profileUpdatePresenter;
   var _formview;
   bool _isLoading = false;
   BuildContext bContext;
+  String user_id;
+
+  _MyProfilePage(this.user_id);
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    profileUpdatePresenter=new ProfileUpdatePresenter(this);
+    print("Username"+UserProfile().getInstance().first_name);
+    if(UserProfile().getInstance().first_name=="" && user_id==""){
+      getUserProfileData(user_id);
+    }else{
+      loadViewWithData(UserProfile().getInstance().getUserDataInMap(UserProfile().getInstance()));
+    }
+  }
+
+  getUserProfileData(String user_id){
     _formdata["name"]="";
     _formdata["designation"]="";
     _formdata["about_me"]="";
@@ -32,10 +49,11 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     _formdata["interest"]="";
     _formdata["email"]="";
     _formdata["contact_no"]="";
-    profileUpdatePresenter=new ProfileUpdatePresenter(this);
     _isLoading=true;
-    profileUpdatePresenter.getProfileData();
-
+    if(user_id=="" || user_id==null)
+      profileUpdatePresenter.getProfileData();
+    else
+      profileUpdatePresenter.getUserProfileData(user_id);
   }
 
   @override
@@ -58,20 +76,17 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
         appBar: AppBar(
           backgroundColor: AppColors.PrimaryColor,
           title: Text("My Profile"),
-          actions: <Widget>[
-            new IconButton(
+          actions: user_id==""?<Widget>[new IconButton(
               icon: new Icon(Icons.search),
               onPressed: () {
                 Navigator.of(context).pushNamed('/UpdateUserProfileScreen');
               },
-            ),
-            new IconButton(
+            ), new IconButton(
               icon: new Icon(Icons.menu),
               onPressed: () {
                 tokenExpired();
               },
-            ),
-          ],
+            ),]:<Widget>[],
           iconTheme: IconThemeData(
             color: Colors.white,
           ),
@@ -320,20 +335,27 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     if(mounted) {
       setState(() {
         if(userdetails.length>0){
-          _formdata["name"] = userdetails["name"];
-          _formdata["designation"] = userdetails["designation"];
-          _formdata["about_me"] = userdetails["about_me"];
-          _formdata["skills"] = userdetails["skills"];
-          _formdata["interest"] = userdetails["interest"];
-          _formdata["profileimg"] = userdetails["profileimg"]+"&"+new DateTime.now().millisecondsSinceEpoch.toString();
-          _formdata["email"]= userdetails["email"];
-          _formdata["contact_no"]= userdetails["contact_no"];
-          _formdata["project"]= userdetails["project"];
-
+          loadViewWithData(userdetails);
         }
         _isLoading=false;
       });
     }
+  }
+
+  loadViewWithData(Map userdetails){
+    _formdata["name"] = userdetails["name"]==""?"-":userdetails["name"];
+    _formdata["designation"] = userdetails["designation"]==""?"-":userdetails["designation"];
+    _formdata["about_me"] = userdetails["about_me"]==""?"-":userdetails["about_me"];
+    _formdata["skills"] = userdetails["skills"]==""?"No skills":userdetails["skills"];
+    _formdata["interest"] = (userdetails["interest"]==""||userdetails["interest"]==null)?"-":userdetails["interest"];
+    if(UserProfile().getInstance().profileupdate)
+      _formdata["profileimg"] = UserProfile().getInstance().profilePicAPI+"&"+new DateTime.now().millisecondsSinceEpoch.toString();
+    else
+      _formdata["profileimg"] = UserProfile().getInstance().profilePicAPI;
+    _formdata["email"]= userdetails["email"]==""?"-":userdetails["email"];
+    _formdata["contact_no"]= userdetails["contact_no"]==""?"-":userdetails["contact_no"];
+    _formdata["project"]= userdetails["project"]==""?"-":userdetails["project"];
+    UserProfile().getInstance().setProfileImageUpdate(false);
   }
 
   @override

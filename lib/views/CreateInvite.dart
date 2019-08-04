@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/CreateInvitePresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
+import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 import 'package:flutter_meetup_login/viewmodel/Venue.dart';
 import 'package:flutter_meetup_login/views/ImageListviewChecked.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';

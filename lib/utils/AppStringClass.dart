@@ -11,7 +11,7 @@ class AppStringClass{
   static final String INV_DTL_START_BUTTON = "Start";
   static final String INV_DTL_SCREEN_TITLE = "Invite details";
   static final String INV_DTL_DESCRIPTION = "Invite description";
-  static final String INV_DTL_HOST_LOG = "Outline by ";
+  static final String INV_DTL_HOST_LOG = "Host Comment";
   static final String INV_DTL_SUBMIT_BUTTON = "Submit";
   static final String INV_DTL_USER_CMNTS = "Comments";
   static final String INV_DTL_USER_CMNTS_EDIT = "Your Comments";

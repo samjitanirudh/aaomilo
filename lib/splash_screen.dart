@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'viewmodel/ProfileDataUpdate.dart';
+import 'viewmodel/UserProfile.dart';
 
 class SplashScreen extends StatefulWidget {
 
@@ -71,13 +72,15 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
+
 Widget _splashScreen() {
- return new Container(
+  return new Container(
       decoration: new BoxDecoration(
           color: const Color(0xff7c94b6),
           image: new DecorationImage(
             image: new ExactAssetImage('assets/images/splash_screen.png'),
             fit: BoxFit.cover,
           ),
-      ));
+      )
+  );
  }
