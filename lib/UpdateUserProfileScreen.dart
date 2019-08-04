@@ -735,13 +735,13 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                 headers: {"Authorization": "Berear " + UserProfile()
                     .getInstance()
                     .sg_id});
-            nI.resolve(new ImageConfiguration()).addListener((_, __) {
+            nI.resolve(new ImageConfiguration()).addListener(new ImageStreamListener((_, __) {
               if (mounted) {
                 setState(() {
                   loaded = true;
                 });
               }
-            });
+            }));
           }else{
                 loaded = true;
           }

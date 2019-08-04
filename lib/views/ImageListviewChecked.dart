@@ -47,13 +47,13 @@ class ImageListViewCheckedState extends State<ImageListViewChecked> {
         children: imageList.map((Product product) {
           bool loaded=false;
           NetworkImage nI= new NetworkImage(imageUrl+product.categoryImage);
-          nI.resolve(new ImageConfiguration()).addListener((_,__){
+          nI.resolve(new ImageConfiguration()).addListener(new ImageStreamListener((_,__){
             if(mounted){
                 setState(() {
                   loaded=true;
                 });
             }
-          });
+          }));
           return new Container(
               height: 150,
               width: 150,

@@ -233,13 +233,13 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   Widget _buildRow(Invite invite) {
     bool loaded = false;
     NetworkImage nI = new NetworkImage(invite.image);
-    nI.resolve(new ImageConfiguration()).addListener((_, __) {
+    nI.resolve(new ImageConfiguration()).addListener(new ImageStreamListener((_, __) {
       if (mounted) {
         setState(() {
           loaded = true;
         });
       }
-    });
+    }));
     return new ListTile(
       onTap: () => navigateToDetails(invite),
       contentPadding: EdgeInsets.symmetric(horizontal: 3.0, vertical: 0.0),

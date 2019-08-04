@@ -46,13 +46,13 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     if(null!=_formdata["profileimg"]) {
       print("Berear "+UserProfile().getInstance().sg_id);
       nI = new NetworkImage(_formdata["profileimg"],headers: {"Authorization": "Berear "+UserProfile().getInstance().sg_id});
-      nI.resolve(new ImageConfiguration()).addListener((_, __) {
+      nI.resolve(new ImageConfiguration()).addListener(new ImageStreamListener((_, __) {
         if (mounted) {
           setState(() {
             loaded = true;
           });
         }
-      });
+      }));
     }
     return new Scaffold(
         appBar: AppBar(
