@@ -5,23 +5,21 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 class LoginModel {
-  var loginUrl = "https://reqres.in/api/users";
+
   static const platform = const MethodChannel('samples.flutter.dev/ssoanywhere');
+  static int refreshCount=0;
+
+  LoginModel();
+
+
   Future<String> checkLogin( String uname, String pass) {
     return _getAccessToken(uname,pass); // ignore: argument_type_not_assignable
   }
 
-//  Future<String> post(String url, {Map headers, body, encoding}) {
-//    return http
-//        .post(url, body: body, headers: headers, encoding: encoding)
-//        .then((http.Response response) {
-//      final int statusCode = 100;//response.statusCode;
-//      if (statusCode < 200 || statusCode > 400 || json == null) {
-//        throw new Exception("Error while fetching data");
-//      }
-//      return response.body;
-//    });
-//  }
+  Future<String> refreshToken() {
+    return _getRefreshAccessToken(); // ignore: argument_type_not_assignable
+  }
+
   Future<String> _getAccessToken( String uname, String pass) async {
     String accessToken;
     try {
@@ -36,5 +34,17 @@ class LoginModel {
     }
     return accessToken;
   }
-  LoginModel();
+
+  Future<String> _getRefreshAccessToken() async {
+    String accessToken;
+    try {
+      final String result = await platform.invokeMethod('getRefreshToken');
+      accessToken = result;
+    } on PlatformException catch (e) {
+      accessToken = "Error : '${e.code}'.";
+    }
+    return accessToken;
+  }
+
+
 }

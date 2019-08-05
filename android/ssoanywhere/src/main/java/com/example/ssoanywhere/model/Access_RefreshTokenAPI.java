@@ -122,7 +122,7 @@ public class Access_RefreshTokenAPI {
         try {
             JSONObject jsonObject = new JSONObject(response);
             String Access_Token = jsonObject.getString("access_token");
-            String Refresh_Token = jsonObject.getString("refresh_token");
+            //String Refresh_Token = jsonObject.getString("refresh_token")!=null?jsonObject.getString("refresh_token"):"";
             String expiredTime = jsonObject.getString("expires_in");
             if (Access_Token.equals("")) {
                 return "refresh_callAPI";

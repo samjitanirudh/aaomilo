@@ -4,6 +4,8 @@ import 'dart:core';
 import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'LoginModel.dart';
+
 class UserProfile{
 
   var first_name="";
@@ -60,18 +62,6 @@ class UserProfile{
   getUserPorfilePicUrl()=>base64Encode(utf8.encode(this.sg_id+".jpg"));
   setProfileImageUpdate(var viewed) => this.profileupdate= viewed;
 
-  Future<String> getLoggedInUser() async{
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String myString =  prefs.getString('user') ?? '';
-    return myString;
-  }
-
-  Future<bool> saveLoggedInUser(String user) async {
-    UserProfile().getInstance().setSGID(user);
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.setString('user', user);
-  }
-
   getUserDataInMap(UserProfile uProfile){
     Map userdata = new Map();
     userdata["name"]=uProfile.first_name;
@@ -84,6 +74,41 @@ class UserProfile{
     userdata["profileimg"] = profilePicAPI;
     userdata["project"]= uProfile.project_name;
     return userdata;
+  }
+
+
+  Future<String> getLoggedInUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (!isTokenExpiried(prefs.getString('timestamp'))){
+      String myString = prefs.getString('user') ?? '';
+      return myString;
+    }
+    else {
+      String response = await LoginModel().refreshToken();
+      if(!response.contains("Error") && (response!=null || response.compareTo("")!=0)){
+        Map sessionList=json.decode(response);
+        saveLoggedInUser(sessionList["access_token"].toString());
+        return sessionList["access_token"].toString();
+      }
+    }
+  }
+
+  Future<bool> saveLoggedInUser(String user) async {
+    UserProfile().getInstance().setSGID(user);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('timestamp', new DateTime.now().toString());
+    return prefs.setString('user', user);
+  }
+
+  bool isTokenExpiried(String timestamp){
+    DateTime tokenTime = DateTime.parse(timestamp);
+    DateTime currentTime = new DateTime.now();
+    Duration difference = currentTime.difference(tokenTime);
+    int elapsedtime = difference.inMinutes;
+    if(elapsedtime>=9)
+      return true;
+    else
+      return false;
   }
 
 

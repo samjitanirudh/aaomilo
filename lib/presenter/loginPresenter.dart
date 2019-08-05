@@ -12,7 +12,6 @@ class LoginPresenter {
   loginButtonOnClick(String uName, String pwd) async {
     try{
       String response = await _loginModel.checkLogin(uName, pwd);
-      print("SSOResponse: "+ response);
       if(response!=null && !response.contains("Error : ")) {
         _callbacks.loginSuccessfull(response);
       }
