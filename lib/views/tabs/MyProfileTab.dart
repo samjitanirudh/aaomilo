@@ -33,8 +33,8 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     // TODO: implement initState
     super.initState();
     profileUpdatePresenter=new ProfileUpdatePresenter(this);
-    print("Username"+UserProfile().getInstance().first_name);
-    if(UserProfile().getInstance().first_name=="" && user_id==""){
+    print("Username"+user_id);
+    if(UserProfile().getInstance().first_name=="" || user_id!=""){
       getUserProfileData(user_id);
     }else{
       loadViewWithData(UserProfile().getInstance().getUserDataInMap(UserProfile().getInstance()));

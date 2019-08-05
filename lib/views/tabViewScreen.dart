@@ -50,7 +50,7 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
       InviteList(analytics: analytics, selectedIndexList: null,),
       CreateInvite(),
       MyInvitesScreen(),
-      MyProfile()
+      MyProfile(userid: "",)
     ];
     return new Scaffold(
       // Appbar

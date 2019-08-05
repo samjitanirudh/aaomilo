@@ -96,8 +96,9 @@ class ProfileDataModel {
 
   Future<String> getUser(String url,String token) {
     headers['Authorization']="Berear "+token;
+    print("URL "+url);
     return http.post(url,headers: headers).then((http.Response response) {
-
+      print("response "+response.body);
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw new Exception("Error while fetching data");
@@ -109,6 +110,22 @@ class ProfileDataModel {
   }
 
   Map getUserDetails(List<dynamic> webList){
+    Map userdata =new Map();
+    for(int i =0;i<webList.length;i++){
+      userdata["name"]=webList[i]['first_name'];
+      userdata["email"]=webList[i]['email_id'];
+      userdata["contact_no"]=webList[i]['contact_no'];
+      userdata["project"]=webList[i]['project'];
+      userdata["designation"]=webList[i]['designation'];
+      userdata["about_me"]=webList[i]['about_me'];
+      userdata["skills"]=webList[i]['skills'];
+      userdata["interest"]=webList[i]['interest'];
+      userdata["profileimg"]=this.profilePicAPI;
+    }
+    return userdata;
+  }
+
+  Map getLoggedUserDetails(List<dynamic> webList){
     Map userdata =new Map();
     for(int i =0;i<webList.length;i++){
       userdata["name"]=webList[i]['first_name'];

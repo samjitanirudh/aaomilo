@@ -48,7 +48,7 @@ class ProfileUpdatePresenter{
       loggedInUser=await userProfile.getLoggedInUser();
       String webList= await profileUpdate.userGetRequest(loggedInUser);
       if(webList!="sessionExpired")
-        profileCallback.updateView(profileUpdate.getUserDetails(json.decode(webList)));
+        profileCallback.updateView(profileUpdate.getLoggedUserDetails(json.decode(webList)));
       else
         profileCallback.showErrorDialog(webList);
     }on Exception catch (error) {
