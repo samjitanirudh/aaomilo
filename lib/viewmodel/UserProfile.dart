@@ -61,15 +61,15 @@ class UserProfile{
   setProfileImageUpdate(var viewed) => this.profileupdate= viewed;
 
   Future<String> getLoggedInUser() async{
-    var prefs = await SharedPreferences.getInstance();
-    String myString = prefs.getString('user') ?? '';
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String myString =  prefs.getString('user') ?? '';
     return myString;
   }
 
-  saveLoggedInUser(String user) async {
+  Future<bool> saveLoggedInUser(String user) async {
     UserProfile().getInstance().setSGID(user);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user', user);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setString('user', user);
   }
 
   getUserDataInMap(UserProfile uProfile){

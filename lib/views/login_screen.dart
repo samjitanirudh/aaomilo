@@ -192,16 +192,12 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
     if (_formKey.currentState.validate()) {
       setState(() => _isLoading = true);
       _loginPresenter.loginButtonOnClick(_emailController.text, _pwdController.text);
-//      _formKey.currentState.save();
-//      navigationPage();
-
-//      _loginPresenter.loginButtonOnClick(_email, _pwd);
     }
   }
 
 
-  void navigationPage(String user) {
-    UserProfile().getInstance().saveLoggedInUser(user);   //replace SGID with logged in user
+  void navigationPage(String user) async{
+    await UserProfile().getInstance().saveLoggedInUser(user);   //replace SGID with logged in user
     Navigator.of(context).pushReplacementNamed('/TabViewScreen');
   }
 

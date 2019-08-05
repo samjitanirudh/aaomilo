@@ -58,7 +58,6 @@ class ProfileUpdatePresenter{
 
   getUserProfileData(String userid) async{
     try{
-      //loggedInUser=await userProfile.getLoggedInUser();
       String webList= await profileUpdate.userProfileGetRequest(userid);
       if(webList!="sessionExpired")
         profileCallback.updateView(profileUpdate.getUserDetails(json.decode(webList)));
