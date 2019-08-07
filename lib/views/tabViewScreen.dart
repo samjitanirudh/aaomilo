@@ -93,7 +93,6 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
         );
       },
       onLaunch: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
         showDialog(
             context: context,
             builder: (BuildContext context){
@@ -105,7 +104,6 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
         );
       },
       onResume: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
         showDialog(
             context: context,
             builder: (BuildContext context){
