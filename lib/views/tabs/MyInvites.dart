@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
+import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 
@@ -129,7 +130,7 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
                       height: 300,
                       child: Column(children: <Widget>[
                         Image.network(
-                          invitesList[index].image,
+                          AppStringClass.APP_BASE_URL+"cat_img/"+invitesList[index].image,
                           height: 150, width: 150,), Align(
                           alignment: Alignment.centerLeft,
                           child: Container(

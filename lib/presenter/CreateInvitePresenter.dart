@@ -35,7 +35,6 @@ class CreateInvitePreseter{
       if(response!=null) {
         List<dynamic> images= json.decode(Uri.decodeFull(response));
         _callbacks.updateCategoryImages(images);
-//        print(images[0]['imagepath']);
       }
     }on Exception catch(error) {
 

@@ -311,7 +311,6 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
       state.didChange(id.toString());
       _formdata['catImageSelected'] = id;
       catImageSelected = id;
-      //print(catImageSelected.toString());
     });
   }
 

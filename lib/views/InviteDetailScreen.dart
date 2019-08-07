@@ -291,7 +291,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
           height: MediaQuery.of(bContext).size.height * 0.25,
           width: MediaQuery.of(bContext).size.width,
           child: Image(
-            image: NetworkImage(invite.image.toString()),
+            image: NetworkImage(AppStringClass.APP_BASE_URL+"cat_img/"+invite.image.toString()),
             fit: BoxFit.fill,
           )),
       new Container(

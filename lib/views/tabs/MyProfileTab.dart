@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/ProfileUpdatePresenter.dart';
+import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
@@ -25,7 +26,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
   bool _isLoading = false;
   BuildContext bContext;
   String user_id;
-
+  String ProfilePicApi=AppStringClass.APP_BASE_URL+"work/action.php?action=profilepic";
   _MyProfilePage(this.user_id);
 
   @override
@@ -33,7 +34,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     // TODO: implement initState
     super.initState();
     profileUpdatePresenter=new ProfileUpdatePresenter(this);
-    print("Username"+user_id);
+
     if(UserProfile().getInstance().first_name=="" || user_id!=""){
       getUserProfileData(user_id);
     }else{
@@ -61,17 +62,21 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
     bContext=context;
     bool loaded=false;
     NetworkImage nI;
-    if(null!=_formdata["profileimg"]) {
-      print("Berear "+UserProfile().getInstance().sg_id);
-      nI = new NetworkImage(_formdata["profileimg"],headers: {"Authorization": "Berear "+UserProfile().getInstance().sg_id});
-      nI.resolve(new ImageConfiguration()).addListener(new ImageStreamListener((_, __) {
-        if (mounted) {
-          setState(() {
-            loaded = true;
-          });
-        }
-      }));
+    String imgUrl="";
+    if(user_id!=""){
+      imgUrl= ProfilePicApi+"&user_id="+user_id;
+    }else if(null!=_formdata["profileimg"]) {
+      imgUrl= ProfilePicApi;
     }
+    nI = new NetworkImage(imgUrl,headers: {"Authorization": "Berear "+UserProfile().getInstance().sg_id});
+    nI.resolve(new ImageConfiguration()).addListener(new ImageStreamListener((_, __) {
+      if (mounted) {
+        setState(() {
+          loaded = true;
+        });
+      }
+    }));
+
     return new Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.PrimaryColor,

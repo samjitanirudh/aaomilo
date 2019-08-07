@@ -7,7 +7,7 @@ class PhotoScroller extends StatelessWidget {
   final List<String> photoUrls,nameList,userlist;
 
   Widget _buildPhoto(BuildContext context, int index) {
-    var photo = photoUrls[index]+"?"+new DateTime.now().millisecondsSinceEpoch.toString();
+    var photo = photoUrls[index];
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child:
@@ -16,7 +16,7 @@ class PhotoScroller extends StatelessWidget {
         child: Column(
           children: [
             CircleAvatar(
-              backgroundImage:  NetworkImage(photo),
+              backgroundImage:  new NetworkImage(photo),
               radius: 30.0,
             ),
             Padding(

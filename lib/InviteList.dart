@@ -233,7 +233,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
 
   Widget _buildRow(Invite invite) {
     bool loaded = false;
-    NetworkImage nI = new NetworkImage(invite.image);
+    NetworkImage nI = new NetworkImage(categoryImageAPI+invite.image);
     nI.resolve(new ImageConfiguration()).addListener(new ImageStreamListener((_, __) {
       if (mounted) {
         setState(() {

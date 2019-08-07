@@ -110,7 +110,6 @@ class InviteListModel{
       }else if(response.body == "token expired"){
         return "sessionExpired";
       }
-
       return response.body;
     });
   }

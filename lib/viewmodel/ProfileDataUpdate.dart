@@ -120,7 +120,7 @@ class ProfileDataModel {
       userdata["about_me"]=webList[i]['about_me'];
       userdata["skills"]=webList[i]['skills'];
       userdata["interest"]=webList[i]['interest'];
-      userdata["profileimg"]=this.profilePicAPI;
+      userdata["profileimg"]=this.profilePicAPI+"&user_id=";
     }
     return userdata;
   }
