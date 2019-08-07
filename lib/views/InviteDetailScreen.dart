@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
 import 'package:flutter_meetup_login/utils/PhotoScroller.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
-import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
@@ -132,10 +131,9 @@ class InviteDetailScreenState extends State<StatefulWidget>
   @override
   Widget build(BuildContext context) {
     bContext = context;
-
     return new Scaffold(
         appBar: new AppBar(
-          backgroundColor: AppColors.PrimaryColor,
+          backgroundColor: AppColors.PurpleVColor,
           title: new Text(AppStringClass.INV_DTL_SCREEN_TITLE),
         ),
         body:
@@ -150,7 +148,6 @@ class InviteDetailScreenState extends State<StatefulWidget>
                     key: _formKey,
                     child:new Container(
                       color: AppColors.BackgroundColor,
-                      padding: EdgeInsets.all(5),
                       child: new Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,7 +186,6 @@ class InviteDetailScreenState extends State<StatefulWidget>
                           SizedBox(
                             height: 5,
                           ),
-                          hideJoinLeaveButton?new Container():joinOrLeaveInvteButton(),
                         ],
                       ),
                     ),
@@ -286,48 +282,143 @@ class InviteDetailScreenState extends State<StatefulWidget>
   }
 
   inviteDetailHeader() {
-    return new Stack(alignment: Alignment.bottomRight, children: <Widget>[
+    return new Stack(alignment: Alignment.bottomRight,
+        children: <Widget>[
+//      new Container(
+//          height: MediaQuery.of(bContext).size.height * 0.25,
+//          width: MediaQuery.of(bContext).size.width,
+//          child: Image(
+//            image: NetworkImage(AppStringClass.APP_BASE_URL+"cat_img/"+invite.image.toString()),
+//            fit: BoxFit.fill,
+//          )),
       new Container(
-          height: MediaQuery.of(bContext).size.height * 0.25,
-          width: MediaQuery.of(bContext).size.width,
-          child: Image(
-            image: NetworkImage(AppStringClass.APP_BASE_URL+"cat_img/"+invite.image.toString()),
-            fit: BoxFit.fill,
-          )),
-      new Container(
-        height: 32,
-        margin: EdgeInsets.all(5),
-        width: MediaQuery.of(bContext).size.width,
-        child: new Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            new MaterialButton(
-                onPressed: null,
-                child:
-                    Image(image: AssetImage("assets/images/favourites.png"))),
-            new MaterialButton(
-                onPressed: null,
-                child: Image(image: AssetImage("assets/images/profile.png"))),
-            new MaterialButton(
-                onPressed: null,
-                child: Image(image: AssetImage("assets/images/comment.png"))),
-          ],
-        ),
-      ),
-      new Container(
-        width: MediaQuery.of(context).size.width,
-        height: 150,
-        decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-              colors: [
-                AppColors.BackgroundColor.withOpacity(0.2),
-                AppColors.BackgroundColor,
-              ],
-              stops: [0.95, 1.0],
-              begin: FractionalOffset.topCenter,
-              end: FractionalOffset.bottomCenter,
-              tileMode: TileMode.repeated,
-            )),
+        padding: EdgeInsets.all(10),
+          decoration: new BoxDecoration(
+            color:AppColors.PurpleVColor
+          ),
+        child:
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              new Container(
+                padding: EdgeInsets.all(10),
+                decoration: new BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                      width: 3.0,
+                    color: Colors.white
+                  ),
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(5.0) //                 <--- border radius here
+                  ),
+                ),
+                child: new Column(
+                  children: <Widget>[
+                    new Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: AppColors.BackgroundColor,
+                          backgroundImage:  NetworkImage("https://cdn1.iconfinder.com/data/icons/clock-faces-1-12/100/Clock-8-128.png"),
+                          radius: 20.0,
+                        ),
+                        Expanded(
+                            child:
+                            new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                new Row(
+                                  children: <Widget>[
+                                    new Container(
+                                      padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
+                                      child:   new Text("Date & Time"),
+                                    )
+                                  ],
+                                ),
+                                new Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    new Container(
+                                        padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
+                                        child:   new Text(invite.created_date.toString())
+                                    ),
+                                    new Container(
+                                        padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
+                                        child:   new Text(invite.time.toString() +" onwards")
+                                    )
+                                  ],
+                                )
+                              ],
+                            )
+                        )
+                      ],
+                    ),
+                    Divider(height: 20,color: AppColors.SecondaryColor,),
+                    new Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: AppColors.BackgroundColor,
+                          backgroundImage:  NetworkImage("https://www.shareicon.net/data/256x256/2015/11/22/676270_map_512x512.png"),
+                          radius: 20.0,
+                        ),
+                        Expanded(
+                            child:
+                            new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                new Row(
+                                  children: <Widget>[
+                                    new Container(
+                                      padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
+                                      child:   new Text("Location"),
+                                    )
+                                  ],
+                                ),
+                                new Container(
+                                    padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
+                                    child:   new Text(invite.venue.toString())
+                                )
+                              ],
+                            )
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              //hideJoinLeaveButton?new Container():joinOrLeaveInvteButton(),
+              Container(
+                  margin: EdgeInsets.all(5),
+                  color: isLeave ? Colors.red : AppColors.lightBlueVColor,
+                  width: MediaQuery.of(context).size.width,
+                  height: 60,
+                  child:
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        FlatButton(
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0),
+                          ),
+                          onPressed: () {},
+                          color: Colors.red[300],
+                          child: Text(
+                            "Button",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Raleway',
+                              fontSize: 22.0,
+                            ),
+                          ),
+                        ),
+                        joinOrLeaveInvteButton(),
+                      ],
+                    )
+
+              )
+
+            ],
+          ),
       )
     ]);
   }
@@ -367,25 +458,24 @@ class InviteDetailScreenState extends State<StatefulWidget>
   }
 
   joinOrLeaveInvteButton() {
-    return new Container(
-      child: new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          new FlatButton(
+    return
+        new Container(
+          padding: EdgeInsets.only(left: 5,right: 5,top: 5),
+          child: new FlatButton(
             child: Text(isLeave ? leaveButtonText : joinButtonText),
             onPressed: () {
               joinOrLeaveInvite();
             },
-            color: isLeave ? Colors.red : AppColors.SecondaryColor,
+            shape: new RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(5.0),
+            ),
             colorBrightness: Brightness.dark,
             disabledColor: Colors.blueGrey,
             highlightColor: AppColors.AcsentVColor,
             padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
-          )
-        ],
-      ),
-    );
+          ),
+        );
+
   }
 
   joinOrLeaveInvite() {

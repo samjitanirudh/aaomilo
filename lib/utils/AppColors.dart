@@ -13,4 +13,10 @@ static const MaterialColor BackgroundColor=MaterialColor(_BackgroundValue,<int, 
 
 static const int _AcsentValue = 0xff145374;
 static const MaterialColor AcsentVColor=MaterialColor(_AcsentValue,<int, Color>{100: Color(_AcsentValue),},);
+
+static const int _Purple = 0xff59499e;
+static const MaterialColor PurpleVColor=MaterialColor(_Purple,<int, Color>{100: Color(_Purple),},);
+
+static const int _lightBlue = 0xff35bee0;
+static const MaterialColor lightBlueVColor=MaterialColor(_lightBlue,<int, Color>{100: Color(_lightBlue),},);
 }
