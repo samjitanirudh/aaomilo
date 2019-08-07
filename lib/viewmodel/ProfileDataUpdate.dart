@@ -96,7 +96,6 @@ class ProfileDataModel {
 
   Future<String> getUser(String url,String token) {
     headers['Authorization']="Berear "+token;
-    print("URL "+url);
     return http.post(url,headers: headers).then((http.Response response) {
       print("response "+response.body);
       final int statusCode = response.statusCode;
@@ -148,6 +147,29 @@ class ProfileDataModel {
       userProfile.profileupdate=true;
     }
     return userdata;
+  }
+
+  postFCMToken(String token) async{
+    String user = await UserProfile().getInstance().getLoggedInUser();
+    postFCMTokenAPI(user,token);
+  }
+
+  Future<String> postFCMTokenAPI(String token,String fcmtoken) {
+    String body = "fcm="+fcmtoken;
+    headers['Content-type']="application/x-www-form-urlencoded";
+    headers['Authorization']="Berear "+token;
+    var encoding = Encoding.getByName('utf-8');
+    return http
+        .post(profileAPI+"?action=notificationtoken", body: Uri.encodeFull(body), headers: headers, encoding: encoding)
+        .then((http.Response response) {
+      final int statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode > 400 || json == null) {
+        throw new Exception("Error while fetching data");
+      }else if(response.body=="token expired"){
+        return "sessionExpired";
+      }
+      return response.body;
+    });
   }
 
 }

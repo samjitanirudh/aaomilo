@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/InviteList.dart';
+import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/views/CreateInvite.dart';
 import 'package:flutter_meetup_login/views/tabs/CategoriesTab.dart';
 import 'package:flutter_meetup_login/views/tabs/MyInvites.dart';
@@ -81,7 +82,15 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
   void initFireBase() {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        //print("onMessage: $message");
+        showDialog(
+            context: context,
+            builder: (BuildContext context){
+              return AlertDialog(
+                title: Text(message["notification"]["title"],style: new TextStyle(fontSize: 16),),
+                content: Text(message["notification"]["body"]),
+              );
+            }
+        );
       },
       onLaunch: (Map<String, dynamic> message) async {
         //print("onMessage: $message");
@@ -101,7 +110,7 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
     _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
       _homeScreenText = token;
-      print(_homeScreenText);
+      ProfileDataModel().postFCMToken(token);
     });
   }
 }
