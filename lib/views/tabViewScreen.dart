@@ -93,10 +93,28 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
         );
       },
       onLaunch: (Map<String, dynamic> message) async {
-        //print("onMessage: $message");
+        print("onMessage: $message");
+        showDialog(
+            context: context,
+            builder: (BuildContext context){
+              return AlertDialog(
+                title: Text(message["notification"]["title"],style: new TextStyle(fontSize: 16),),
+                content: Text(message["notification"]["body"]),
+              );
+            }
+        );
       },
       onResume: (Map<String, dynamic> message) async {
-        //print("onMessage: $message");
+        print("onMessage: $message");
+        showDialog(
+            context: context,
+            builder: (BuildContext context){
+              return AlertDialog(
+                title: Text(message["notification"]["title"],style: new TextStyle(fontSize: 16),),
+                content: Text(message["notification"]["body"]),
+              );
+            }
+        );
       },
     );
 
