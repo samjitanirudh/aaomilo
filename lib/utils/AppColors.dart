@@ -19,4 +19,10 @@ static const MaterialColor PurpleVColor=MaterialColor(_Purple,<int, Color>{100: 
 
 static const int _lightBlue = 0xff35bee0;
 static const MaterialColor lightBlueVColor=MaterialColor(_lightBlue,<int, Color>{100: Color(_lightBlue),},);
+
+static const int _lightPurple = 0xff8589ef;
+static const MaterialColor lightPurple=MaterialColor(_lightPurple,<int, Color>{100: Color(_lightPurple),},);
+
+static const int _lightGreen = 0xff5cba47;
+static const MaterialColor lightGreen=MaterialColor(_lightGreen,<int, Color>{100: Color(_lightGreen),},);
 }

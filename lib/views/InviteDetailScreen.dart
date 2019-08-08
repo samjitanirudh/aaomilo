@@ -134,11 +134,11 @@ class InviteDetailScreenState extends State<StatefulWidget>
     return new Scaffold(
         appBar: new AppBar(
           backgroundColor: AppColors.PurpleVColor,
-          title: new Text(AppStringClass.INV_DTL_SCREEN_TITLE),
+          title: new Text(invite.title.toString(),style: TextStyle(fontSize: 15),),
         ),
         body:
         new Container(
-        color: AppColors.BackgroundColor,
+        color: Colors.white,
           child: new Stack(
             children: <Widget>[
               new SingleChildScrollView(
@@ -147,36 +147,18 @@ class InviteDetailScreenState extends State<StatefulWidget>
                   Form(
                     key: _formKey,
                     child:new Container(
-                      color: AppColors.BackgroundColor,
+                      color: Colors.white,
                       child: new Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           inviteDetailHeader(),
-                          inviteDetailInfo(),
+                          inviteDescriptionView(),
                           Divider(
                             color: Colors.grey.withOpacity(0.2),
                           ),
-                          inviteJoinedList(),
-                          Divider(
-                              color: Colors.grey.withOpacity(0.2)
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          new Text(AppStringClass.INV_DTL_DESCRIPTION,
-                            style: TextStyle(fontSize: 24),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: new Text(
-                              invite.description.toString(),
-                              style:
-                              TextStyle(fontSize: 18, fontStyle: FontStyle.normal,wordSpacing: 2.2,letterSpacing: 0.2,fontFamily: 'forum'),
-                            ),
-                          )
-                          ,
+                          invitejonees(),
                           SizedBox(
                             height: 15,
                           ),
@@ -196,6 +178,36 @@ class InviteDetailScreenState extends State<StatefulWidget>
           ),
         )
         );
+  }
+
+  inviteDescriptionView(){
+   return new Container(
+     padding: EdgeInsets.all(15),
+      child:
+            new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      new Text("Description",
+                          style:
+                          TextStyle(fontSize: 18, fontStyle: FontStyle.normal,wordSpacing: 2.2,letterSpacing: 0.2,fontWeight: FontWeight.bold ),)
+                    ],
+                  ),
+                Divider(height: 15, color: AppColors.BackgroundColor,),
+                Padding(
+                  padding: EdgeInsets.all(0),
+                  child: new Text(
+                    "I think it’s important to know that you don’t have to learn to code or take on what we refer to as a technical role. While I think that with enough dedication anyone can learn how to code, or be an engineer, you might just not want to.There are so many other roles to consider in tech. I’ll give you my thoughts on some of them and I’ll explore how viable they are from the point of view of someone in Naija.",
+                    style:
+                    TextStyle(fontSize: 19, fontStyle: FontStyle.normal,wordSpacing: 1.2,letterSpacing: 0.1,fontFamily: 'forum'),
+                    textAlign: TextAlign.justify,
+                  ),
+                )
+
+              ],
+            ),
+    );
   }
 
   inviteDetailInfo() {
@@ -284,13 +296,6 @@ class InviteDetailScreenState extends State<StatefulWidget>
   inviteDetailHeader() {
     return new Stack(alignment: Alignment.bottomRight,
         children: <Widget>[
-//      new Container(
-//          height: MediaQuery.of(bContext).size.height * 0.25,
-//          width: MediaQuery.of(bContext).size.width,
-//          child: Image(
-//            image: NetworkImage(AppStringClass.APP_BASE_URL+"cat_img/"+invite.image.toString()),
-//            fit: BoxFit.fill,
-//          )),
       new Container(
         padding: EdgeInsets.all(10),
           decoration: new BoxDecoration(
@@ -309,7 +314,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
                     color: Colors.white
                   ),
                   borderRadius: BorderRadius.all(
-                      Radius.circular(5.0) //                 <--- border radius here
+                      Radius.circular(5.0) //
                   ),
                 ),
                 child: new Column(
@@ -386,35 +391,37 @@ class InviteDetailScreenState extends State<StatefulWidget>
                 ),
               ),
               //hideJoinLeaveButton?new Container():joinOrLeaveInvteButton(),
-              Container(
+              hideJoinLeaveButton?new Container():new Container(
                   margin: EdgeInsets.all(5),
-                  color: isLeave ? Colors.red : AppColors.lightBlueVColor,
                   width: MediaQuery.of(context).size.width,
                   height: 60,
+                  decoration: BoxDecoration(
+                    color: isLeave ? Colors.red : AppColors.lightBlueVColor,
+                    border: Border.all(
+                        width: 3.0,
+                        color: isLeave ? Colors.red : AppColors.lightBlueVColor
+                    ),
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(5.0) //
+                    ),
+                  ),
                   child:
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        FlatButton(
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0),
-                          ),
-                          onPressed: () {},
-                          color: Colors.red[300],
-                          child: Text(
-                            "Button",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Raleway',
-                              fontSize: 22.0,
-                            ),
-                          ),
-                        ),
                         joinOrLeaveInvteButton(),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                                  padding: EdgeInsets.only(left: 5,right: 15,top: 5),
+                                  child: Text(isLeave ?"":"+",style: TextStyle(color: Colors.white,fontSize: 25),),
+                                )
+                          ],
+                        )
                       ],
                     )
-
               )
 
             ],
@@ -457,9 +464,31 @@ class InviteDetailScreenState extends State<StatefulWidget>
     );
   }
 
+  invitejonees(){
+    return Container(
+      padding: EdgeInsets.all(15),
+      child: 
+      new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Container(
+            child: Text("Open slots("+invite.joined.toString() +"/" + invite.allowed_member_count.toString()+")",
+                    style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: AppColors.lightGreen),),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          new Container(
+            child: PhotoScroller(photoUrls,joinNameList,joinUserList),
+          )
+        ],
+      ),
+    );
+  }
+
   joinOrLeaveInvteButton() {
-    return
-        new Container(
+    return new Container(
+          width: MediaQuery.of(bContext).size.width*0.8,
           padding: EdgeInsets.only(left: 5,right: 5,top: 5),
           child: new FlatButton(
             child: Text(isLeave ? leaveButtonText : joinButtonText),
@@ -475,7 +504,6 @@ class InviteDetailScreenState extends State<StatefulWidget>
             padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
           ),
         );
-
   }
 
   joinOrLeaveInvite() {
@@ -697,8 +725,6 @@ class InviteDetailScreenState extends State<StatefulWidget>
       ),
     );
   }
-
-
 
   @override
   void showError() {

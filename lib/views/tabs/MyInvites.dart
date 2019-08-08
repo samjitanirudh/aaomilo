@@ -57,12 +57,12 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          backgroundColor: AppColors.PrimaryColor,
+          backgroundColor: AppColors.PurpleVColor,
           title: new Text('My Invites'),
         ),
         body: SingleChildScrollView(
           child: new Container(
-            decoration: new BoxDecoration(color: AppColors.BackgroundColor),
+            decoration: new BoxDecoration(color: Colors.white),
             child: new Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -71,7 +71,7 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
                 child: Text('Upcoming Events',
                   style: TextStyle(fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue.shade500),
+                      color: AppColors.lightBlueVColor),
                   textAlign: TextAlign.left,),),
 
               _buildListView(_upcomingEvents),
@@ -80,26 +80,13 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
                   alignment: Alignment.topLeft, padding: EdgeInsets.all(5),
                   child: Text(
                     'Past Events',
-                    style: TextStyle(fontSize: 12,
+                    style: TextStyle(fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue.shade500),
+                        color: AppColors.lightBlueVColor),
                     textAlign: TextAlign.left,
                   )),
 
             _buildListView(_pastEvents),
-
-              Container(
-                  alignment: Alignment.topLeft, padding: EdgeInsets.all(5),
-                  child: Text(
-                    'Bookmarked Events',
-                    style: TextStyle(fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue.shade500),
-                    textAlign: TextAlign.left,
-                  )),
-
-             _buildListView(_pastEvents),
-
             ],
           ),
         )
@@ -109,7 +96,8 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
 
   Widget _buildListView(List<Invite> invitesList ) {
 
-    return SizedBox(height: 300.0,
+    return SizedBox(
+      height: 250.0,
       child: ListView.builder(
           physics: ClampingScrollPhysics(),
           shrinkWrap: true,
@@ -118,17 +106,18 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
           itemBuilder: (context, index) =>
               GestureDetector(
                 onTap: () =>
-
                     Scaffold.of(context).showSnackBar(
                         new SnackBar(
                           content: navigateToDetails(invitesList[index]),
                         )),
-
                 child: Card(
-
-                  child: Container(width: 200,
-                      height: 300,
-                      child: Column(children: <Widget>[
+                  child: Container(
+                      width: 150,
+                      color: AppColors.BackgroundColor,
+                      height: 250,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
                         Image.network(
                           AppStringClass.APP_BASE_URL+"cat_img/"+invitesList[index].image,
                           height: 150, width: 150,), Align(

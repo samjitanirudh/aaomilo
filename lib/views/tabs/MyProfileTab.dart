@@ -79,15 +79,15 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
 
     return new Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.PrimaryColor,
+          backgroundColor: AppColors.PurpleVColor,
           title: Text("My Profile"),
           actions: user_id==""?<Widget>[new IconButton(
-              icon: new Icon(Icons.search),
+              icon: new Icon(Icons.edit),
               onPressed: () {
                 Navigator.of(context).pushNamed('/UpdateUserProfileScreen');
               },
             ), new IconButton(
-              icon: new Icon(Icons.menu),
+              icon: new Icon(Icons.lock_open),
               onPressed: () {
                 tokenExpired();
               },
@@ -117,7 +117,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
       child: SingleChildScrollView(
           child: new Container(
             height: MediaQuery.of(bContext).size.height,
-              decoration: new BoxDecoration(color: AppColors.BackgroundColor),
+              decoration: new BoxDecoration(color: Colors.white),
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -160,10 +160,10 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                                       child: new Text(
                                         _formdata['name'],
                                         style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 20,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.black),
+                                            color: AppColors.lightBlueVColor),
                                       )),
                                 ),
                                 SizedBox(height: 5,),
@@ -175,7 +175,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontStyle: FontStyle.normal,
-                                              color: Colors.black),
+                                              color: AppColors.PurpleVColor),
                                         ))),
                                 SizedBox(height: 5,),
                                 Align(
@@ -186,7 +186,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                                           style: TextStyle(
                                               fontSize: 12,
                                               fontStyle: FontStyle.normal,
-                                              color: Colors.black),
+                                              color: AppColors.PurpleVColor),
                                         ))),
                                 SizedBox(height: 5,),
                                 Align(
@@ -197,7 +197,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                                           style: TextStyle(
                                               fontSize: 12,
                                               fontStyle: FontStyle.normal,
-                                              color: Colors.black),
+                                              color: AppColors.PurpleVColor),
                                         )))
                               ],
                             )
@@ -218,7 +218,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                                     fontSize: 22,
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.bold,
-                                    color: AppColors.AcsentVColor),
+                                    color: AppColors.lightBlueVColor),
                               ))),
                       Align(
                           alignment: Alignment.centerLeft,
@@ -228,7 +228,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontStyle: FontStyle.normal,
-                                    color: Colors.black),
+                                    color: AppColors.PurpleVColor),
                               ))),
                       Align(
                           alignment: Alignment.topLeft,
@@ -240,7 +240,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                                     fontSize: 22,
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.bold,
-                                    color: AppColors.AcsentVColor),
+                                    color: AppColors.lightBlueVColor),
                               ))),
                     ],
                   ),
@@ -252,7 +252,6 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                         children:getUserSkillsView()
                     ))
                 ),
-//              ),
                 Container(
                   child: new Column(
                       children: <Widget>[
@@ -266,7 +265,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                                       fontSize: 22,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.AcsentVColor),
+                                      color: AppColors.lightBlueVColor),
                                 ))),
                         Align(
                             alignment: Alignment.topLeft,
@@ -276,7 +275,7 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontStyle: FontStyle.normal,
-                                      color: Colors.black),
+                                      color: AppColors.PurpleVColor),
                                 ))),
                       ]
                   ),
@@ -310,15 +309,16 @@ class _MyProfilePage extends State<MyProfile> implements ProfileUpdateCallbacks{
       return ButtonTheme(
           minWidth: 100.0,
           height: 60.0,
+
           child: RaisedButton(
               child: new Text(skills[index],
                   style: TextStyle(
-                      color: Colors.grey.shade900,
+                      color: AppColors.lightPurple,
                       fontSize: 16,
                       fontWeight: FontWeight.bold)),
               padding: EdgeInsets.all(20),
               onPressed: null,
-              disabledColor: Colors.black12,
+              disabledColor: AppColors.BackgroundColor,
               shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(30.0))));
     });

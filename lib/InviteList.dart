@@ -68,7 +68,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     bContext = context;
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: AppColors.PrimaryColor,
+            backgroundColor: AppColors.PurpleVColor,
             title: Text("Invites"),
             textTheme: TextTheme(
                 title: TextStyle(
@@ -211,7 +211,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
                     ),
                     child: new Container(
                       decoration:
-                          new BoxDecoration(color: AppColors.BackgroundColor),
+                          new BoxDecoration(color: Colors.white),
                       child: _buildRow(_suggestions[index]),
                     ),
                   ));
@@ -251,28 +251,11 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
               width: MediaQuery.of(context).size.width,
               height: 150,
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image:
-                          loaded ? nI : AssetImage("assets/images/pulse.gif"),
-                      fit: BoxFit.fill)),
-            ),
-            new Container(
-              width: MediaQuery.of(context).size.width,
-              height: 150,
-              decoration: new BoxDecoration(
-                  gradient: new LinearGradient(
-                  colors: [
-                    AppColors.BackgroundColor.withOpacity(0.2),
-                    AppColors.BackgroundColor,
-                  ],
-                stops: [0.9, 1.0],
-                begin: FractionalOffset.topCenter,
-                end: FractionalOffset.bottomCenter,
-                tileMode: TileMode.repeated,
-              )),
+                  image: loaded ?DecorationImage(
+                      image:nI,fit: BoxFit.fill):DecorationImage(
+                      image: AssetImage("assets/images/pulse.gif"),fit: BoxFit.none)),
             )
-          ],
-        ),
+        ]),
         Align(
           alignment: Alignment.centerLeft,
           child: Container(
@@ -280,64 +263,54 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
             child: Text(
               invite.title.toString().toUpperCase(),
               style: TextStyle(
-                  color: AppColors.AcsentVColor,
+                  color: AppColors.lightBlueVColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 18.0),
             ),
           ),
         ),
         Row(children: <Widget>[
+          new Icon(Icons.timer,color: AppColors.PurpleVColor,),
           Expanded(
               child: Container(
-            padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
-            child: Text(
-                  "Date: " + invite.created_date,
+              padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
+              child: Text(invite.created_date +" @ "+invite.time,
                   style: TextStyle(
-                      color: AppColors.AcsentVColor,
+                      color: AppColors.PurpleVColor,
                       fontWeight: FontWeight.normal,
                       fontSize: 14.0),
             ),
           )),
-          Expanded(
+          new Icon(Icons.place,color: AppColors.PurpleVColor,),
+          Align(
+            alignment: Alignment.centerLeft,
             child: Container(
-                padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
-                child: Text(
-                  "Time: " + invite.time,
-                  style: TextStyle(
-                      color: AppColors.AcsentVColor,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14.0),
-                )),
+              padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
+              child: Text(
+                invite.venue,
+                style: TextStyle(
+                    color: AppColors.PurpleVColor,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 14.0),
+              ),
+            ),
           )
         ]),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
-            child: Text(
-                  "Venue: " + invite.venue,
-                  style: TextStyle(
-                      color: AppColors.AcsentVColor,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14.0),
-            ),
-          ),
-        )
       ]),
       subtitle: new Container(
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.fromLTRB(5, 10, 0, 2),
+          padding: EdgeInsets.only(left: 5,right: 5),
           child: Row(
             children: <Widget>[
               Expanded(
                   flex: 1,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Container(
                         child: new Icon(
                           Icons.group,
-                          color: AppColors.AcsentVColor,
+                          color: AppColors.PurpleVColor,
                         ),
                       ),
                       SizedBox(width: 5,),
@@ -345,7 +318,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
                         child: Text(
                           invite.joined + "/" + invite.allowed_member_count,
                           style: TextStyle(
-                              color: AppColors.AcsentVColor,
+                              color: AppColors.PurpleVColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 18.0),
                         ),
@@ -359,7 +332,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
                       child: Container(
                         child: new Icon(
                           Icons.comment,
-                          color: AppColors.AcsentVColor,
+                          color: AppColors.PurpleVColor,
                         ),
                       ))),
               Expanded(
@@ -369,7 +342,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
                       child: Container(
                         child: new Icon(
                           Icons.rate_review,
-                          color: AppColors.AcsentVColor,
+                          color: AppColors.PurpleVColor,
                         ),
                       )))
             ],

@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/InviteList.dart';
+import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/views/CreateInvite.dart';
 import 'package:flutter_meetup_login/views/tabs/CategoriesTab.dart';
@@ -65,10 +66,10 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
         });
       },
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.list), title: Text("Invite List"), backgroundColor: Color(0xff00334e)),
-          BottomNavigationBarItem(icon: Icon(Icons.add_circle), title: Text("Create Invite"),backgroundColor: Color(0xff00334e)),
-          BottomNavigationBarItem(icon: Icon(Icons.event_available), title: Text("My Events"),backgroundColor: Color(0xff00334e)),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), title: Text("My Profile"),backgroundColor: Color(0xff00334e)),
+          BottomNavigationBarItem(icon: Icon(Icons.list,color: AppColors.PurpleVColor), title: Text("Invite List",style: TextStyle(color: AppColors.PurpleVColor),), backgroundColor: Colors.white),
+          BottomNavigationBarItem(icon: Icon(Icons.add_circle,color: AppColors.PurpleVColor), title: Text("Create Invite",style: TextStyle(color: AppColors.PurpleVColor)),backgroundColor: Colors.white),
+          BottomNavigationBarItem(icon: Icon(Icons.event_available,color: AppColors.PurpleVColor), title: Text("My Events",style: TextStyle(color: AppColors.PurpleVColor)),backgroundColor: Colors.white),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle,color: AppColors.PurpleVColor), title: Text("My Profile",style: TextStyle(color: AppColors.PurpleVColor)),backgroundColor: Colors.white),
 
         ],
       ),

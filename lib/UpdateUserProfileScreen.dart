@@ -93,7 +93,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
 
     return new Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.PrimaryColor,
+          backgroundColor: AppColors.PurpleVColor,
           title: Text("Update Profile"),
           textTheme: TextTheme(
               title: TextStyle(
@@ -554,7 +554,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                       ),
                     ]),
               ],
-            ), decoration: new BoxDecoration(color: AppColors.BackgroundColor),
+            ), decoration: new BoxDecoration(color: Colors.white),
           )
         )
         )

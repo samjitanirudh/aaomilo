@@ -18,7 +18,9 @@ class CreateInvite extends StatefulWidget {
 
 class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallbacks,InviteCallbacks{
   static final TextStyle textStyle = TextStyle(
-      fontFamily: 'Montserrat', fontSize: 20.0, color: AppColors.SecondaryColor);
+      fontFamily: 'Montserrat', fontSize: 20.0, color: AppColors.lightBlueVColor);
+  static final TextStyle textEditorStyle = TextStyle(
+      fontFamily: 'Montserrat', fontSize: 20.0, color: AppColors.lightPurple);
   var _formKey = GlobalKey<FormState>();
   var _formview;
   Map _formdata=new Map();
@@ -87,7 +89,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
 
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: AppColors.PrimaryColor,
+            backgroundColor: AppColors.PurpleVColor,
             title: appbarTitle(),
             textTheme: TextTheme(
                 title: TextStyle(
@@ -109,7 +111,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
 
   Widget createInviteUI(BuildContext context) {
     _formview = Container(
-        color: AppColors.BackgroundColor,
+        color: Colors.white,
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
             child: Form(
@@ -157,7 +159,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
           ),
           new TextFormField(
             obscureText: false,
-            style: textStyle,
+            style: textEditorStyle,
             validator:(String arg){
               if(arg.length < 3)
                 return 'Name must be more than 2 charater';
@@ -334,7 +336,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
           ),
           new TextFormField(
             obscureText: false,
-            style: textStyle,
+            style: textEditorStyle,
             keyboardType: TextInputType.multiline,
             maxLines: 4,
             onSaved: (String val) {
@@ -517,7 +519,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   TextFormField datetimeTextField() {
     return new TextFormField(
       obscureText: false,
-      style: new TextStyle(fontSize: 12),
+      style: textEditorStyle,
       textAlign: TextAlign.center,
       onSaved: (String val) {
         //_email = val;
@@ -551,11 +553,8 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
     selectedTime=_toTime;
     return RaisedButton(
         child: new Text(selectedTimeValue,
-            style: TextStyle(
-                color: AppColors.SecondaryColor,
-                fontSize: 16,
-                fontWeight: FontWeight.bold)),
-        padding: EdgeInsets.all(20),
+            style: textEditorStyle),
+        padding: EdgeInsets.all(10),
         onPressed: (){_selectTime(bContext,state);});
 
   }
@@ -655,7 +654,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
         new Material(
           elevation: 5.0,
           borderRadius: BorderRadius.circular(7.0),
-          color: AppColors.AcsentVColor,
+          color: AppColors.lightGreen,
           child: MaterialButton(
             minWidth: MediaQuery.of(context).size.width * 0.8,
             padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
@@ -664,7 +663,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
             },
             child: Text("Create invite",
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: TextStyle(fontSize: 18,
                     color: Colors.white, fontWeight: FontWeight.bold)),
           ),
         );

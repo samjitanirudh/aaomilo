@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/views/tabs/MyProfileTab.dart';
 
+import 'AppColors.dart';
+
 class PhotoScroller extends StatelessWidget {
   PhotoScroller(this.photoUrls,this.nameList,this.userlist);
   BuildContext bContext;
@@ -13,18 +15,50 @@ class PhotoScroller extends StatelessWidget {
       child:
       new GestureDetector(
         onTap: () =>navigateToProfileView(userlist[index]),
-        child: Column(
-          children: [
-            CircleAvatar(
-              backgroundImage:  new NetworkImage(photo),
-              radius: 30.0,
+        child:
+        new Container(
+          padding: EdgeInsets.all(10),
+          decoration: new BoxDecoration(
+            color: AppColors.BackgroundColor,
+            border: Border.all(
+                width: 3.0,
+                color: Colors.white
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(nameList[index].toString()),
+            borderRadius: BorderRadius.all(
+                Radius.circular(15.0) //
             ),
-          ],
-        ),
+          ),
+          child:
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    backgroundImage:  new NetworkImage(photo),
+                    radius: 25.0,
+                  ),
+                ],
+              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Text(nameList[index].toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16,color: AppColors.PurpleVColor),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Text(nameList[index].toString(),style: TextStyle(fontSize: 14,color: AppColors.PurpleVColor)),
+                )
+              ]
+            ),
+            Icon(Icons.arrow_right)
+            ],
+          )
+        )
+        ,
       )
 
     );
@@ -41,20 +75,16 @@ class PhotoScroller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var textTheme = Theme.of(context).textTheme;
     bContext=context;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox.fromSize(
-          size: const Size.fromHeight(120.0),
-          child: ListView.builder(
+        ListView.builder(
             itemCount: photoUrls.length,
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.only(top: 8.0, left: 20.0),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
             itemBuilder: _buildPhoto,
           ),
-        ),
       ],
     );
   }
