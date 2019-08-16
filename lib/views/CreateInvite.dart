@@ -6,6 +6,7 @@ import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 import 'package:flutter_meetup_login/viewmodel/Venue.dart';
 import 'package:flutter_meetup_login/views/ImageListviewChecked.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
+
 class CreateInvite extends StatefulWidget {
   CreateInvite({Key key}) : super(key: key);
 

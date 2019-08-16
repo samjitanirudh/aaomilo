@@ -9,13 +9,14 @@ import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 
 class UserProfileView extends StatefulWidget {
   String userid;
+  String navigationFrom;
 
-  UserProfileView({Key key, this.userid}) : super(key: key);
+  UserProfileView({Key key, this.userid,this.navigationFrom}) : super(key: key);
 
   @override
   UserProfileViewState createState() {
     // TODO: implement createState
-    UserProfileViewState _myProfilePage = new UserProfileViewState(this.userid);
+    UserProfileViewState _myProfilePage = new UserProfileViewState(this.userid,this.navigationFrom);
     return _myProfilePage;
   }
 }
@@ -23,8 +24,9 @@ class UserProfileView extends StatefulWidget {
 class UserProfileViewState extends State<UserProfileView>
     implements ProfileUpdateCallbacks {
   String userid;
+  String navigationFrom;
 
-  UserProfileViewState(this.userid);
+  UserProfileViewState(this.userid,this.navigationFrom);
 
   TextStyle style = TextStyle(
     fontFamily: 'Montserrat',
@@ -45,13 +47,12 @@ class UserProfileViewState extends State<UserProfileView>
     // TODO: implement initState
     super.initState();
     profileUpdatePresenter = new ProfileUpdatePresenter(this);
-
-//    if(UserProfile().getInstance().first_name=="" || user_id!=""){
-    if (false) {
-      getUserProfileData(user_id);
-    } else {
-//      loadViewWithData(UserProfile().getInstance().getUserDataInMap(UserProfile().getInstance()));
-      loadViewWithData();
+    if(navigationFrom=="InviteDetails" && userid!=""){
+      getUserProfileData(userid);
+    } else if(UserProfile().getInstance().first_name==""){
+      getUserProfileData("");
+    }else{
+      loadViewWithData(UserProfile().getInstance().getUserDataInMap(UserProfile().getInstance()));
     }
   }
 
@@ -63,6 +64,7 @@ class UserProfileViewState extends State<UserProfileView>
     _formdata["interest"] = "";
     _formdata["email"] = "";
     _formdata["contact_no"] = "";
+    _formdata["project"] = "";
     _isLoading = true;
     if (user_id == "" || user_id == null)
       profileUpdatePresenter.getProfileData();
@@ -70,19 +72,22 @@ class UserProfileViewState extends State<UserProfileView>
       profileUpdatePresenter.getUserProfileData(user_id);
   }
 
-//  loadViewWithData(Map userdetails){
-  loadViewWithData() {
-    _formdata["name"] = "Anirudh Tandel";
-    _formdata["designation"] = "Team Lead";
-    _formdata["about_me"] =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-    _formdata["skills"] = "Android, PHP, JAVA, iOS, Cross Platform";
-    _formdata["interest"] = "Travel, Music, Movies, Reading";
-    _formdata["profileimg"] = ProfilePicApi;
-    _formdata["email"] = "anirudh.tandel@saint-gobain.com";
-    _formdata["contact_no"] = "8879229975";
-    _formdata["project"] = "SGDBF - Mobile Applications";
+  loadViewWithData(Map userdetails){
+    _formdata["name"] = userdetails["name"]==""?"-":userdetails["name"];
+    _formdata["designation"] = userdetails["designation"]==""?"-":userdetails["designation"];
+    _formdata["about_me"] = userdetails["about_me"]==""?"-":userdetails["about_me"];
+    _formdata["skills"] = userdetails["skills"]==""?"No skills":userdetails["skills"];
+    _formdata["interest"] = (userdetails["interest"]==""||userdetails["interest"]==null)?"-":userdetails["interest"];
+    if(UserProfile().getInstance().profileupdate)
+      _formdata["profileimg"] = UserProfile().getInstance().profilePicAPI+"&"+new DateTime.now().millisecondsSinceEpoch.toString();
+    else
+      _formdata["profileimg"] = UserProfile().getInstance().profilePicAPI;
+    _formdata["email"]= userdetails["email"]==""?"-":userdetails["email"];
+    _formdata["contact_no"]= userdetails["contact_no"]==""?"-":userdetails["contact_no"];
+    _formdata["project"]= userdetails["project"]==""?"-":userdetails["project"];
     UserProfile().getInstance().setProfileImageUpdate(false);
+    if(userid!="")
+      ProfilePicApi = ProfilePicApi+"&user_id="+userid.toString();
   }
 
   @override
@@ -100,7 +105,7 @@ class UserProfileViewState extends State<UserProfileView>
     if (mounted) {
       setState(() {
         if (userdetails.length > 0) {
-//          loadViewWithData(userdetails);
+          loadViewWithData(userdetails);
         }
         _isLoading = false;
       });
@@ -120,12 +125,16 @@ class UserProfileViewState extends State<UserProfileView>
   @override
   Widget build(BuildContext context) {
     bContext = context;
+    bool showMenu=false;
+    if(userid==null || userid==""){
+      showMenu=true;
+    }
     // TODO: implement build
     return new Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.PurpleVColor,
           title: Text("Profile"),
-          actions: user_id == ""
+          actions: showMenu
               ? <Widget>[
             new IconButton(
               icon: new Icon(Icons.edit),
@@ -167,7 +176,8 @@ class UserProfileViewState extends State<UserProfileView>
                 aboutSectionView(),
                 profileImageSectionView(),
                 contactsSectionView(),
-                skillsSectionView()
+                skillsOrHobbieSectionView("Skills",_formdata["skills"]),
+                skillsOrHobbieSectionView("Interest",_formdata["interest"])
               ],
             ),
           ),
@@ -223,6 +233,11 @@ class UserProfileViewState extends State<UserProfileView>
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.normal,
+                        color: AppColors.PurpleVColor)),
+                new Text(_formdata["project"],
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
                         color: AppColors.PurpleVColor))
               ],
             ),
@@ -267,8 +282,7 @@ class UserProfileViewState extends State<UserProfileView>
           SizedBox(
             height: 20,
           ),
-          new Text(
-            "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete ",
+          new Text(_formdata["about_me"],
             style: TextStyle(
                 fontSize: 14, wordSpacing: 1, color: AppColors.PurpleVColor),
             textAlign: TextAlign.justify,
@@ -288,7 +302,7 @@ class UserProfileViewState extends State<UserProfileView>
         child: ClipRRect(
             borderRadius: new BorderRadius.circular(8.0),
             child: Image.network(
-              ProfilePicApi + "&user_id=A6265111",
+              ProfilePicApi,headers: {"Authorization": "Berear "+UserProfile().getInstance().sg_id}
             )));
   }
 
@@ -336,7 +350,7 @@ class UserProfileViewState extends State<UserProfileView>
                           ),
                           Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: Text("anirudh.tandel@saint-gobain.com",
+                            child: Text(_formdata["email"],
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -376,7 +390,7 @@ class UserProfileViewState extends State<UserProfileView>
                           ),
                           Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: Text("8879229975",
+                            child: Text(_formdata["contact_no"],
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -390,7 +404,7 @@ class UserProfileViewState extends State<UserProfileView>
       );
   }
 
-  skillsSectionView() {
+  skillsOrHobbieSectionView(String label,String viewData) {
     return
       new Container(
         color: Colors.lightBlue.shade50,
@@ -400,91 +414,75 @@ class UserProfileViewState extends State<UserProfileView>
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Text("Skills", style: new TextStyle(fontSize: 20,
+            new Text(label, style: new TextStyle(fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: AppColors.lightGreen),),
-            new Container(
-                width: MediaQuery
-                    .of(bContext)
-                    .size
-                    .width,
-                margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                padding: EdgeInsets.fromLTRB(15, 10, 5, 5),
-                decoration: new BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(width: 3.0, color: Colors.white),
-                  borderRadius: BorderRadius.all(Radius.circular(15.0) //
-                  ),
-                ),
-                child:
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Column(crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Text(
-                              "Email",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: AppColors.PurpleVColor),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Text("anirudh.tandel@saint-gobain.com",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.PurpleVColor)),
-                          )
-                        ])
-                  ],
-                )),
-            new Container(
-                width: MediaQuery
-                    .of(bContext)
-                    .size
-                    .width,
-                margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                padding: EdgeInsets.fromLTRB(15, 10, 5, 5),
-                decoration: new BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(width: 3.0, color: Colors.white),
-                  borderRadius: BorderRadius.all(Radius.circular(15.0) //
-                  ),
-                ),
-                child:
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Column(crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Text(
-                              "Telephone/Mobile",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: AppColors.PurpleVColor),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Text("8879229975",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.PurpleVColor)),
-                          )
-                        ])
-                  ],
-                ))
+        new Container(
+          width: MediaQuery
+              .of(bContext)
+              .size
+              .width,
+          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+          padding: EdgeInsets.fromLTRB(15, 10, 5, 5),
+          decoration: new BoxDecoration(
+            color: Colors.white,
+            border: Border.all(width: 3.0, color: Colors.white),
+            borderRadius: BorderRadius.all(Radius.circular(15.0) //
+            ),
+          ),
+          child:
+              new Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: SkillOrHobbieView(viewData),
+              )
+            )
           ],
         ),
       );
   }
+
+  List<Widget> SkillOrHobbieView(String skillOrHobbie) {
+    List<Widget> skillRow = new List<Widget>();
+    String skills=skillOrHobbie;
+    var skill_r = skills.split(",");
+    int nbROws= (skill_r.length/3).ceil();
+    int skillCount=0;
+    Row nContainer;
+    for(int i =0; i<nbROws;i++){
+      nContainer=
+            new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children:addSkillsInRow(skillCount,skill_r)
+            );
+      skillCount = skillCount+3;
+      skillRow.add(nContainer);
+    }
+    return skillRow;
+  }
+
+  List<Widget> addSkillsInRow(int skillCount,var skillArray){
+    int sCount = skillCount+3>skillArray.length?skillArray.length:skillCount+3;
+    List<Widget> rowItems = new List<Widget>();
+    for(int i =skillCount; i<sCount;i++){
+      rowItems.add(getRowItem(skillArray[i]));
+    }
+    return rowItems;
+  }
+
+  Widget getRowItem(String skill){
+    return new Container(
+      width: 100,
+        margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+        decoration: new BoxDecoration(
+          color: AppColors.lightPurple,
+          border: Border.all(width: 3.0, color: Colors.white),
+          borderRadius: BorderRadius.all(Radius.circular(15.0) //
+          ),
+        ),
+      child: new Text(skill==null?"":skill,style: TextStyle(color: Colors.white),),
+    );
+
+  }
+
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_meetup_login/views/tabs/MyProfileTab.dart';
+import 'package:flutter_meetup_login/views/UserProfileView.dart';
 
 import 'AppColors.dart';
 
@@ -68,7 +68,7 @@ class PhotoScroller extends StatelessWidget {
   navigateToProfileView(String user){
     Navigator.push(bContext,
       MaterialPageRoute(
-        builder: (context) => MyProfile(userid: user),
+        builder: (context) => UserProfileView(userid: user,navigationFrom: "InviteDetails",),
       ),
     );
   }

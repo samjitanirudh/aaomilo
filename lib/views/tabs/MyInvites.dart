@@ -6,24 +6,6 @@ import 'package:flutter_meetup_login/utils/AppColors.dart';
 
 import '../InviteDetailScreen.dart';
 
-
-
-
-void main() => runApp(MyInvitesScreen());
-
-class MyInvitesScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: MyInvites(),
-      ),
-    );
-  }
-
-}
-
 class MyInvites extends StatefulWidget {
   final String title;
   MyInvites({Key key, this.title}) : super(key: key);
@@ -39,8 +21,6 @@ class _MyInvitesState extends State<MyInvites> implements InviteListCallBack {
   InviteListPresenter inviteListPresenter;
   var asyncUpcoming,ayncPast;
   bool _isLoading = false;
-
-
 
 
   @override

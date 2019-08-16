@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/InviteList.dart';
 import 'package:flutter_meetup_login/UpdateUserProfileScreen.dart';
 import 'package:flutter_meetup_login/splash_screen.dart';
-import 'package:flutter_meetup_login/utils/NotificationItemClass.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Skills.dart';
 import 'package:flutter_meetup_login/viewmodel/Venue.dart';
-import 'package:flutter_meetup_login/views/UserProfileView.dart';
 import 'package:flutter_meetup_login/views/tabViewScreen.dart';
 import 'package:flutter_meetup_login/views/login_screen.dart';
 
@@ -36,7 +34,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         primaryColor: Color(0xffb74093)
       ),
-      home: new UserProfileView(),
+      home: new SplashScreen(analytics: analytics,),
       routes: <String, WidgetBuilder>{
         '/Loginscreen': (BuildContext context) => new loginScreen(analytics: analytics,),
         '/UpdateUserProfileScreen': (BuildContext context) => new UpdateUserProfileScreen(analytics: analytics,),

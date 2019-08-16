@@ -5,11 +5,9 @@ import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
 import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
-import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 import 'package:flutter_meetup_login/views/InviteDetailScreen.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
-
 import 'viewmodel/InviteListModel.dart';
 
 class InviteList extends StatefulWidget {
@@ -63,6 +61,16 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     );
   }
 
+  Future<void> _refreshStockPrices() async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+    inviteListPresenter.clearInviteList();
+    inviteListPresenter.GetInviteList(false);
+  }
+
   @override
   Widget build(BuildContext context) {
     bContext = context;
@@ -81,7 +89,6 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
                 color: Colors.white,
                 padding: EdgeInsets.all(20),
                 onPressed: () {
-                  _categoryListView();
                 },
               ),
             ]),
@@ -90,104 +97,6 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
             _isLoading ? loaderOnViewUpdate() : _buildSuggestions()
           ],
         ));
-  }
-
-  Future<Null> _categoryListView() async {
-    return showDialog<Null>(
-      context: context,
-      // user must tap button!
-      child: new AlertDialog(
-        contentPadding: const EdgeInsets.all(50.0),
-        title: new Text(
-          'SAVED !!!',
-          style:
-              new TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-        content: new Container(
-          // Specify some width
-          width: MediaQuery.of(context).size.width,
-          height: 100,
-          child: new GridView.count(
-              crossAxisCount: 2,
-              childAspectRatio: 1.0,
-              padding: const EdgeInsets.all(7.0),
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 5.0,
-              children: getOption()),
-        ),
-        actions: <Widget>[
-          new IconButton(
-              splashColor: Colors.green,
-              icon: new Icon(
-                Icons.done,
-                color: Colors.blue,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              })
-        ],
-      ),
-    );
-  }
-
-  List<Widget> getOption() {
-    List<Widget> options = new List();
-    for (int i = 0; i < cList.length; i++)
-      options.add(
-          new Container(
-        width: MediaQuery.of(context).size.width,
-        height: 200,
-        child: new GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            children: new List<Widget>.generate(1, (index) {
-              return new GridTile(
-                  child: GestureDetector(
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.blue.shade50, shape: BoxShape.rectangle),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 120,
-                          height: 120,
-                          alignment: Alignment.bottomCenter,
-                          padding: EdgeInsets.all(50),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      categoryImageAPI + cList[i].imgUrl),
-                                  fit: BoxFit.cover)),
-                        ),
-                        Text(
-                          cList[index].txtCategoryName,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                      ],
-                    )),
-                onLongPress: () {
-                  setState(() {
-//                  _changeSelection(enable: false, index: -1);
-                  });
-                },
-                onTap: () {
-                  setState(() {
-//                  if (_selectedIndexList.contains(index)) {
-//                    _selectedIndexList.remove(index);
-//                  } else {
-//                    _selectedIndexList.add(index);
-//                  }
-                  });
-                },
-              ));
-            })),
-      ));
-
-    return options;
   }
 
   Widget _buildSuggestions() {
@@ -219,16 +128,6 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
           )),
           onRefresh: _refreshStockPrices),
     );
-  }
-
-  Future<void> _refreshStockPrices() async {
-    if (mounted) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
-    inviteListPresenter.clearInviteList();
-    inviteListPresenter.GetInviteList(false);
   }
 
   Widget _buildRow(Invite invite) {
