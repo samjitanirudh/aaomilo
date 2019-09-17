@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_meetup_login/InviteList.dart';
+import 'package:flutter_meetup_login/views/InviteList.dart';
 import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';

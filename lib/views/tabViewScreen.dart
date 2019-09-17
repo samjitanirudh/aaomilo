@@ -1,6 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_meetup_login/InviteList.dart';
+import 'package:flutter_meetup_login/views/InviteList.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/views/CreateInvite.dart';
