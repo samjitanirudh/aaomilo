@@ -1,17 +1,16 @@
 import 'dart:io';
 import 'dart:convert' show utf8, base64;
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
+import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_meetup_login/image_picker_handler.dart';
+import 'package:flutter_meetup_login/views/image_picker_handler.dart';
 import 'package:flutter_meetup_login/presenter/ProfileUpdatePresenter.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Skills.dart';
 import 'package:flutter_meetup_login/views/MultiSelectChoiceView.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 
-import 'viewmodel/UserProfile.dart';
 
 class UpdateUserProfileScreen extends StatefulWidget {
   final FirebaseAnalytics analytics;

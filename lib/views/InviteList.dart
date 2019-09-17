@@ -5,10 +5,10 @@ import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
 import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
+import 'package:flutter_meetup_login/viewmodel/InviteListModel.dart';
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 import 'package:flutter_meetup_login/views/InviteDetailScreen.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
-import 'viewmodel/InviteListModel.dart';
 
 class InviteList extends StatefulWidget {
   String selectedCategoryList;

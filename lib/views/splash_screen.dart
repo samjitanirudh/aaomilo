@@ -4,9 +4,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 
-import 'viewmodel/ProfileDataUpdate.dart';
-import 'viewmodel/UserProfile.dart';
 
 class SplashScreen extends StatefulWidget {
 

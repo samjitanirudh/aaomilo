@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_meetup_login/image_picker_handler.dart';
+import 'package:flutter_meetup_login/views/image_picker_handler.dart';
 
 
 class ImagePickerDialog extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_meetup_login/InviteList.dart';
-import 'package:flutter_meetup_login/UpdateUserProfileScreen.dart';
-import 'package:flutter_meetup_login/splash_screen.dart';
+import 'package:flutter_meetup_login/views/InviteList.dart';
+import 'package:flutter_meetup_login/views/UpdateUserProfileScreen.dart';
+import 'package:flutter_meetup_login/views/splash_screen.dart';
 import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Skills.dart';
 import 'package:flutter_meetup_login/viewmodel/Venue.dart';
