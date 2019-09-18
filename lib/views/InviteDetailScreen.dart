@@ -162,7 +162,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
                           SizedBox(
                             height: 15,
                           ),
-                          displayHostLog?hostLogEditor():hostLogView(),
+                          displayHostLog?hostLogEditor_new():hostLogView(),
                           displayCommentRateView?commentRateView(comments):new Container(),
                           displayCommentRate?commentRateEditor():new Container(),
                           SizedBox(
@@ -573,6 +573,75 @@ class InviteDetailScreenState extends State<StatefulWidget>
               disabledColor: Colors.blueGrey,
               highlightColor: AppColors.AcsentVColor,
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  hostLogEditor_new(){
+    double sizeWidth = MediaQuery.of(bContext).size.width;
+    return new Container(
+      child:
+      new Row(
+        children: <Widget>[
+          new Container(
+              width: sizeWidth*0.85,
+              padding: EdgeInsets.all(5),
+              decoration: new BoxDecoration(
+                 color: AppColors.BackgroundColor,
+                border: Border.all(
+                    width: 3.0,
+                    color: Colors.white
+                ),
+                borderRadius: BorderRadius.all(
+                    Radius.circular(15.0) //
+                ),
+              ),
+              child:
+              new TextFormField(
+                obscureText: false,
+                keyboardType: TextInputType.multiline,
+                maxLines: 2,
+                onSaved: (String val) {
+                  _logentry = val;
+                  _formdata['_logentry']=_logentry;
+                },
+                validator: (String arg){
+                  if(arg.length<10){
+                    return   AppStringClass.INV_DTL_HOST_LOG_ERR;
+                  }else
+                    return null;
+                },
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    hintText: AppStringClass.INV_DTL_HOST_LOG_HINT,
+                    errorStyle: TextStyle(
+                        color: Colors.red,
+                        wordSpacing: 1.0,
+                        fontSize: 10
+                    ),
+                    border: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(32.0))),
+              ),
+          ),
+          new ClipOval(
+            child: Material(
+              color: Colors.orange.shade300, // button color
+              child: InkWell(
+                splashColor: AppColors.PrimaryColor, // inkwell color
+                child: SizedBox(width: sizeWidth*0.15, height: 48, child: Icon(Icons.send,color: Colors.white,)),
+                onTap: () {
+                  if (_formKey.currentState.validate()) {
+                    _formKey.currentState.save();
+                    setState(() {
+                      _isLoading=true;
+                    });
+                    inviteListPresenter.hostLog(invite.id, _logentry);
+                  }
+                },
+              ),
             ),
           )
         ],

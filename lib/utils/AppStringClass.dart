@@ -17,8 +17,8 @@ class AppStringClass{
   static final String INV_DTL_USER_CMNTS_EDIT = "Your Comments";
   static final String INV_DTL_USER_CMNTS_EDIT_HINT = "How was your experiance in this invite?";
   static final String INV_DTL_USER_CMNTS_EDIT_ERR = "Please enter your comment";
-  static final String INV_DTL_HOST_LOG_HINT = "i.e. Describe this invite's experiance...";
-  static final String INV_DTL_HOST_LOG_ERR = "Please log invite in detail! Atleast 150 characters";
+  static final String INV_DTL_HOST_LOG_HINT = "Write your comment here...";
+  static final String INV_DTL_HOST_LOG_ERR = "Enter atleast 150 characters";
   static final String INV_DTL_HOST_BY ="Hosted by ";
 
 
