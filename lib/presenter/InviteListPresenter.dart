@@ -10,6 +10,8 @@ class InviteListPresenter{
 
   InviteDetailCallBack inviteDetailCallBack;
 
+  InviteDetailCommentUpdateCallback _commentUpdateCallback;
+
   InviteListModel inviteListModel=InviteListModel().getInstance();
 
   InviteListPresenter(InviteListCallBack inviteListCallBack){
@@ -18,6 +20,10 @@ class InviteListPresenter{
 
   setInviteDetailCallBack(InviteDetailCallBack invcallback){
     inviteDetailCallBack=invcallback;
+  }
+
+  setInviteDetailCommentUpdate(InviteDetailCommentUpdateCallback invcallback){
+    _commentUpdateCallback=invcallback;
   }
 
   GetInviteList(bool fetchNew) async{
@@ -137,13 +143,13 @@ class InviteListPresenter{
     try{
       String response = await inviteListModel.rateAndComment(invid,comment,rate);
       if(response!=null && !response.contains("sessionExpired")) {
-        inviteDetailCallBack.updateViewsStartInvite(response);
+        _commentUpdateCallback.commentedUpdated(response);
       }
       else{
-        inviteDetailCallBack.showErrorDialog("sessionExpired");
+        _commentUpdateCallback.showErrorDialog("sessionExpired");
       }
     }on Exception catch(error) {
-      inviteDetailCallBack.showErrorDialog("sessionExpired");
+      _commentUpdateCallback.showErrorDialog("sessionExpired");
     }
   }
 
@@ -161,5 +167,10 @@ abstract class InviteDetailCallBack{
   void updateViewsJoinLeave(String status);
   void updateViewsStartInvite(String status);
   void showError();
+  void showErrorDialog(String error);
+}
+
+abstract class InviteDetailCommentUpdateCallback{
+  void commentedUpdated(String status);
   void showErrorDialog(String error);
 }
