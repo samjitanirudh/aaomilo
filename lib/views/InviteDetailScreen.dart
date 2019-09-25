@@ -174,6 +174,19 @@ class InviteDetailScreenState extends State<StatefulWidget>
                             color: Colors.grey.withOpacity(0.2),
                           ),
                           invitejonees(),
+                          Divider(
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
+                          new Container(
+                            padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
+                            child:
+                              new Text("Feedback on invite",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.lightGreen),
+                              )
+                          ),
                           SizedBox(
                             height: 15,
                           ),
@@ -522,6 +535,15 @@ class InviteDetailScreenState extends State<StatefulWidget>
   }
 
   invitejonees() {
+    var labelText_completed = "Invite Participants";
+    var labelText_pending = "Open slots(" + invite.joined.toString() + "/" +invite.allowed_member_count.toString() +")";
+    var labelCondition=false;
+    if(displayCommentRate || displayCommentRateView){
+      labelCondition=true;
+    }
+    if(displayHostLog || displayHostLogView){
+      labelCondition=true;
+    }
     return Container(
       padding: EdgeInsets.all(15),
       child: new Column(
@@ -529,11 +551,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
         children: <Widget>[
           new Container(
             child: Text(
-              "Open slots(" +
-                  invite.joined.toString() +
-                  "/" +
-                  invite.allowed_member_count.toString() +
-                  ")",
+              labelCondition?labelText_completed:labelText_pending,
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -690,6 +708,47 @@ class InviteDetailScreenState extends State<StatefulWidget>
     } else {
       return new Container();
     }
+  }
+
+  feedbackView(){
+    return new Container(
+        child: new Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+
+          ]
+        )
+    );
+  }
+
+  feedBackViewChild(String nameOfCommenter){
+    return new Container(
+      child: new Row(
+        children: <Widget>[
+          CircleAvatar(
+            backgroundImage: new NetworkImage(
+                photoUrls[joinNameList.indexOf(nameOfCommenter)]),
+            radius: 20.0,
+          ),
+
+        ],
+      )
+    );
+  }
+
+  feedBackViewChildCommentBoc(String nameOfCommenter, String comment, String rate){
+    return new Container(
+
+      child: new Column(
+        children: <Widget>[
+          new Text(nameOfCommenter),
+          new Text(rate),
+          new Text(comment),
+        ],
+      ),
+    );
+
   }
 
   commentRateView(List<Widget> comments) {
