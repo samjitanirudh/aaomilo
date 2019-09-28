@@ -188,11 +188,11 @@ class InviteDetailScreenState extends State<StatefulWidget>
                               )
                           ),
                           SizedBox(
-                            height: 15,
+                            height: 10,
                           ),
                           displayHostLog ? hostLogEditor() : hostLogView(),
                           displayCommentRateView
-                              ? commentRateView(comments)
+                              ? feedbackView()
                               : new Container(),
                           displayCommentRate
                               ?Padding(
@@ -457,7 +457,6 @@ class InviteDetailScreenState extends State<StatefulWidget>
                 ],
               ),
             ),
-            //hideJoinLeaveButton?new Container():joinOrLeaveInvteButton(),
             hideJoinLeaveButton
                 ? new Container()
                 : new Container(
@@ -682,28 +681,25 @@ class InviteDetailScreenState extends State<StatefulWidget>
           children: <Widget>[
             new Row(
               children: <Widget>[
-                CircleAvatar(
-                  backgroundImage: new NetworkImage(
-                      photoUrls[joinNameList.indexOf(invite.first_name)]),
-                  radius: 20.0,
-                ),
-                new Text(invite.first_name, style: TextStyle(fontSize: 20)),
+                  Padding(padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
+                    child:
+                    new Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundImage: new NetworkImage(
+                                photoUrls[joinNameList.indexOf(invite.first_name)]),
+                            radius: 20.0,
+                          ),
+                          Padding(padding: EdgeInsets.all(0),
+                            child: feedBackViewChildCommentBoc(invite.first_name,invite.hostlog.toString(),"")),
+                      ]
+                    )
+                  )
               ],
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(5, 15, 5, 15),
-              child: new Text(
-                invite.hostlog.toString(),
-                style: TextStyle(
-                    fontSize: 18,
-                    fontStyle: FontStyle.normal,
-                    wordSpacing: 2.2,
-                    letterSpacing: 0.2,
-                    fontFamily: 'forum'),
-              ),
-            )
-          ],
-        ),
+            ],
+          ),
       );
     } else {
       return new Container();
@@ -715,60 +711,83 @@ class InviteDetailScreenState extends State<StatefulWidget>
         child: new Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-
-          ]
+        children: feedBackViewChild()
         )
     );
   }
 
-  feedBackViewChild(String nameOfCommenter){
-    return new Container(
-      child: new Row(
-        children: <Widget>[
-          CircleAvatar(
-            backgroundImage: new NetworkImage(
-                photoUrls[joinNameList.indexOf(nameOfCommenter)]),
-            radius: 20.0,
-          ),
+  List<Widget> feedBackViewChild(){
 
-        ],
-      )
-    );
+    List<Widget> feedbackList = new List<Widget>();
+    List<InviteJoinees> inviteJoinees = invite.getJoinees();
+    for (int i = 0; i < inviteJoinees.length; i++) {
+      InviteJoinees iJ = inviteJoinees[i];
+      if (null != iJ.getComment() && iJ.getComment().toString() != "") {
+        print(photoUrls[joinNameList.indexOf(iJ.name.toString())]);
+        Container iComment=new Container(
+            child: 
+                Padding(padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
+                  child: new Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundImage: new NetworkImage(
+                          photoUrls[joinNameList.indexOf(iJ.name.toString())]),
+                      radius: 20.0,
+                    ),
+                    Padding(padding: EdgeInsets.all(0),child:
+                      feedBackViewChildCommentBoc(iJ.name.toString(),iJ.getComment().toString(),iJ.getRate().toString())
+                    )
+                  ],
+                ),)
+            
+        );
+        feedbackList.add(iComment);
+      }
+    }
+    return feedbackList;
   }
 
   feedBackViewChildCommentBoc(String nameOfCommenter, String comment, String rate){
     return new Container(
-
-      child: new Column(
-        children: <Widget>[
-          new Text(nameOfCommenter),
-          new Text(rate),
-          new Text(comment),
-        ],
-      ),
+              margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+              width: MediaQuery.of(bContext).size.width*0.75,
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(5),
+                        child:   new Text(nameOfCommenter,style: new TextStyle(fontSize: 16),)),
+//                      Padding(
+//                        padding: EdgeInsets.all(5),
+//                        child:   new Text(rate,style: new TextStyle(fontSize: 14))),
+                  Padding(
+                    padding: EdgeInsets.all(5),
+                           child:   new Text(
+                            comment,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontStyle: FontStyle.normal,
+                              wordSpacing: 1.2,
+                              letterSpacing: 0.1,
+                              fontFamily: 'forum'),
+                          textAlign: TextAlign.justify,
+                        ))
+                    ],
+              ),
+          decoration: new BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+                width: 1.0,
+                color: AppColors.lightPurple
+            ),
+            borderRadius: BorderRadius.all(
+                Radius.circular(5.0) //
+            ),
+          ),
     );
 
-  }
-
-  commentRateView(List<Widget> comments) {
-    return new Container(
-      child: new Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          comments.length > 0
-              ? new Text(AppStringClass.INV_DTL_USER_CMNTS,
-                  style: TextStyle(fontSize: 20))
-              : new Container(),
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: comments,
-          )
-        ],
-      ),
-    );
   }
 
   List<Widget> userComments() {
