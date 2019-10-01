@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/loginPresenter.dart';
+import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'dart:convert';
 
@@ -42,9 +43,17 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
         decoration: new BoxDecoration(
 //          color: Colors.blue.shade50,
-            image: new DecorationImage(
-                image: new AssetImage("assets/images/loginbgb.jpg"),
-                fit: BoxFit.cover)),
+            gradient: new LinearGradient(
+                colors: [
+                  AppColors.PurpleVColor,
+                  AppColors.PurpleVColor,
+                ],
+                stops: [0.0, 1.0],
+                begin: FractionalOffset.topCenter,
+                end: FractionalOffset.bottomCenter,
+                tileMode: TileMode.repeated
+            )
+        ),
         child: SingleChildScrollView(
             child: Form(
                 key: _formKey,
@@ -150,7 +159,7 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
     return new Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(7.0),
-      color: Colors.blue.shade600,
+      color: AppColors.lightGreen,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width * 0.8,
         padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
@@ -183,9 +192,12 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
   Widget build(BuildContext context) {
     bContext = context;
     return new Scaffold(
-      body: new Stack(
-        children: loginUI(context),
-      ),
+      body:
+      new SingleChildScrollView(
+        child: new Stack(
+          children: loginUI(context),
+        ),
+      )
     );
   }
   void _login() {

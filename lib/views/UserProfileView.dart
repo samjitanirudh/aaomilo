@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/ProfileUpdatePresenter.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'package:flutter_meetup_login/utils/AppStringClass.dart';
-import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 
 class UserProfileView extends StatefulWidget {
@@ -471,8 +470,7 @@ class UserProfileViewState extends State<UserProfileView>
 
   Widget getRowItem(String skill){
     return new Container(
-      width: 100,
-        margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
         padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
         decoration: new BoxDecoration(
           color: AppColors.lightPurple,
@@ -480,7 +478,7 @@ class UserProfileViewState extends State<UserProfileView>
           borderRadius: BorderRadius.all(Radius.circular(15.0) //
           ),
         ),
-      child: new Text(skill==null?"":skill,style: TextStyle(color: Colors.white),),
+      child: new Text(skill==null?"":skill,style: TextStyle(color: Colors.white,fontSize: 11),),
     );
 
   }

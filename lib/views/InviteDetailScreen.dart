@@ -759,9 +759,6 @@ class InviteDetailScreenState extends State<StatefulWidget>
                       Padding(
                         padding: EdgeInsets.all(5),
                         child:   new Text(nameOfCommenter,style: new TextStyle(fontSize: 16),)),
-//                      Padding(
-//                        padding: EdgeInsets.all(5),
-//                        child:   new Text(rate,style: new TextStyle(fontSize: 14))),
                   Padding(
                     padding: EdgeInsets.all(5),
                            child:   new Text(

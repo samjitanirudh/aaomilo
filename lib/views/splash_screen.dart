@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
 
 
@@ -74,12 +75,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
 Widget _splashScreen() {
   return new Container(
-      decoration: new BoxDecoration(
-          color: const Color(0xff7c94b6),
-          image: new DecorationImage(
-            image: new ExactAssetImage('assets/images/splash_screen.png'),
-            fit: BoxFit.cover,
-          ),
+              decoration: new BoxDecoration(
+                  color: const Color(0xff7c94b6),
+                  gradient: new LinearGradient(
+                      colors: [
+                        AppColors.PurpleVColor,
+                        AppColors.lightPurple,
+                      ],
+                      stops: [0.0, 1.0],
+                      begin: FractionalOffset.topCenter,
+                      end: FractionalOffset.bottomCenter,
+                      tileMode: TileMode.repeated
+                  )
       )
   );
  }
