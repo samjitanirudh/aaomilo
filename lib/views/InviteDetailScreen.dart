@@ -177,7 +177,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
                           Divider(
                             color: Colors.grey.withOpacity(0.2),
                           ),
-                          new Container(
+                        displayHostLog?new Container(
                             padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
                             child:
                               new Text("Feedback on invite",
@@ -186,7 +186,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.lightGreen),
                               )
-                          ),
+                          ):new Container(),
                           SizedBox(
                             height: 10,
                           ),
@@ -266,8 +266,9 @@ class InviteDetailScreenState extends State<StatefulWidget>
           ),
           Padding(
             padding: EdgeInsets.all(0),
-            child: new Text(
-              "I think it’s important to know that you don’t have to learn to code or take on what we refer to as a technical role. While I think that with enough dedication anyone can learn how to code, or be an engineer, you might just not want to.There are so many other roles to consider in tech. I’ll give you my thoughts on some of them and I’ll explore how viable they are from the point of view of someone in Naija.",
+            child:new Text(invite.description,
+//            new Text(
+//              "I think it’s important to know that you don’t have to learn to code or take on what we refer to as a technical role. While I think that with enough dedication anyone can learn how to code, or be an engineer, you might just not want to.There are so many other roles to consider in tech. I’ll give you my thoughts on some of them and I’ll explore how viable they are from the point of view of someone in Naija.",
               style: TextStyle(
                   fontSize: 19,
                   fontStyle: FontStyle.normal,
@@ -390,8 +391,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
                     children: <Widget>[
                       CircleAvatar(
                         backgroundColor: AppColors.BackgroundColor,
-                        backgroundImage: NetworkImage(
-                            "https://cdn1.iconfinder.com/data/icons/clock-faces-1-12/100/Clock-8-128.png"),
+                        backgroundImage: AssetImage("assets/images/clock_icon.png"),
                         radius: 20.0,
                       ),
                       Expanded(
@@ -535,7 +535,9 @@ class InviteDetailScreenState extends State<StatefulWidget>
 
   invitejonees() {
     var labelText_completed = "Invite Participants";
-    var labelText_pending = "Open slots(" + invite.joined.toString() + "/" +invite.allowed_member_count.toString() +")";
+
+    var openSlots = int.parse(invite.allowed_member_count)-int.parse(invite.joined);
+    var labelText_pending = "Open slots (" + openSlots.toString() + "/" +invite.allowed_member_count.toString() +")";
     var labelCondition=false;
     if(displayCommentRate || displayCommentRateView){
       labelCondition=true;

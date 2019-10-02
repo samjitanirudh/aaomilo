@@ -101,7 +101,6 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
 
   Widget _buildSuggestions() {
     return new Container(
-//      decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
       child: new RefreshIndicator(
           child: Scrollbar(
               child: ListView.builder(
