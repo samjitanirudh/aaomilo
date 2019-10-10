@@ -2,8 +2,8 @@
 class AppStringClass{
 
   static final String APP_NAME = "Converge";
-  static final String APP_BASE_URL = "http://mobiledev.site/meetup/";
-//  static final String APP_BASE_URL = "http://convergepro.xyz/meetupapi/";
+//  static final String APP_BASE_URL = "http://mobiledev.site/meetup/";
+  static final String APP_BASE_URL = "http://convergepro.xyz/meetup/";
 
   //Invite Detail Screen strings
   static final String INV_DTL_JOIN_BUTTON = "Join";

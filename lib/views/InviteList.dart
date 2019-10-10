@@ -82,16 +82,7 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
                 title: TextStyle(
               color: Colors.white,
               fontSize: 20.0,
-            )),
-            actions: <Widget>[
-              new IconButton(
-                icon: new Icon(Icons.filter_list),
-                color: Colors.white,
-                padding: EdgeInsets.all(20),
-                onPressed: () {
-                },
-              ),
-            ]),
+            ))),
         body: new Stack(
           children: <Widget>[
             _isLoading ? loaderOnViewUpdate() : _buildSuggestions()
@@ -100,7 +91,8 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
   }
 
   Widget _buildSuggestions() {
-    return new Container(
+    if(_suggestions.length>0)
+      return new Container(
       child: new RefreshIndicator(
           child: Scrollbar(
               child: ListView.builder(
@@ -127,6 +119,8 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
           )),
           onRefresh: _refreshStockPrices),
     );
+    else
+      return new Text("No open invites available to join..!, Create one");
   }
 
   Widget _buildRow(Invite invite) {
