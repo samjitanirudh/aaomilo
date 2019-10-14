@@ -42,7 +42,6 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
         decoration: new BoxDecoration(
-//          color: Colors.blue.shade50,
             gradient: new LinearGradient(
                 colors: [
                   AppColors.PurpleVColor,
@@ -88,27 +87,13 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
                             passwordField()
                       ),
                       SizedBox(height: 25.0),
-//                      _isLoading
-//                          ? new CircularProgressIndicator()
-//                          :
+                      _isLoading
+                          ? new CircularProgressIndicator()
+                          :
                       loginButon(context),
                     ]))));
     var view =new List<Widget> () ;
     view.add(_formview);
-    if (_isLoading) {
-      var modal = new Stack(
-        children: [
-          new Opacity(
-            opacity: 0.3,
-            child: const ModalBarrier(dismissible: false, color: Colors.grey),
-          ),
-          new Center(
-            child: new CircularProgressIndicator(),
-          ),
-        ],
-      );
-      view.add(modal);
-    }
     return view;
   }
 

@@ -398,6 +398,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                   onSaved: (String val) {
                                     _formdata['skill'] =
                                         selectedReportList.join(",");
+                                    skillController.text = _formdata['skill'];
                                   },
                                   controller: skillController,
                                   decoration: new InputDecoration(
@@ -463,6 +464,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                   onSaved: (String val) {
                                     _formdata['intereset'] =
                                         selectCategoryList.join(",");
+
                                   },
                                   controller: interesetController,
                                   keyboardType: TextInputType.multiline,
@@ -531,7 +533,10 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
-                                isLoading = true;
+                                setState(() {
+                                  _isLoading = true;
+                                });
+
 
                                 _formdata['sgid'] = UserProfile().getInstance().sg_id;
 
@@ -573,6 +578,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
               onSelectionChanged: (selectedList) {
                 setState(() {
                   selectedReportList = selectedList;
+                  skillController.text = selectedList.join(" , ");
                 });
               },
             ),
@@ -599,6 +605,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
               onSelectionChanged: (selectedList) {
                 setState(() {
                   selectCategoryList = selectedList;
+                  interesetController.text = selectedList.join(" , ");
                 });
               },
             ),
@@ -695,8 +702,12 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
     if(errorMesage=="sessionExpired") {
       _showDialogNavigation(bContext,"Update profile", errorMesage,tokenExpired());
     }
-    else
-      _showDialog(bContext,"Update profile", errorMesage,true);
+    else {
+      setState(() {
+        _isLoading=false;
+      });
+      _showDialog(bContext, "Update profile", errorMesage, true);
+    }
   }
 
   tokenExpired(){
@@ -706,6 +717,9 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
 
   @override
   void updatedSuccessfull(String msg) {
+    setState(() {
+      _isLoading=false;
+    });
     _showDialog(bContext,"Update profile", msg,false);
   }
 

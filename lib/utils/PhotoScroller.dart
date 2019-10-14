@@ -10,6 +10,7 @@ class PhotoScroller extends StatelessWidget {
 
   Widget _buildPhoto(BuildContext context, int index) {
     var photo = photoUrls[index];
+    print(photo);
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child:
@@ -82,6 +83,7 @@ class PhotoScroller extends StatelessWidget {
         ListView.builder(
             itemCount: photoUrls.length,
             scrollDirection: Axis.vertical,
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: _buildPhoto,
           ),
