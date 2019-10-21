@@ -39,6 +39,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.7.0"
+  transformer_page_view:
 
 flutter_icons:
   ios: true
@@ -80,6 +81,9 @@ flutter:
    - assets/images/logoConverge.png
    - assets/images/joined.png
    - assets/images/clock_icon.png
+   - assets/images/slide1.png
+   - assets/images/slide2.png
+   - assets/images/slide3.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

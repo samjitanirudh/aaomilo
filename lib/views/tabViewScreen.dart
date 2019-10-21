@@ -4,10 +4,10 @@ import 'package:flutter_meetup_login/views/InviteList.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'package:flutter_meetup_login/views/CreateInvite.dart';
-import 'package:flutter_meetup_login/views/tabs/MyInvites.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'UserProfileView.dart';
+import 'myinvites_new.dart';
 
 
 class TabViewScreen extends StatefulWidget {
@@ -50,7 +50,7 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
     pageOptions = [
       InviteList(analytics: analytics, selectedIndexList: null,),
       CreateInvite(),
-      MyInvites(),
+      MyInvitesN(),
       UserProfileView(userid: "",navigationFrom: "Tab",)
     ];
     return new Scaffold(
