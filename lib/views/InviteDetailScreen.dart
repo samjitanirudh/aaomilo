@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
+import 'package:flutter_meetup_login/utils/InviteImageScroller.dart';
 import 'package:flutter_meetup_login/utils/PhotoScroller.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
@@ -677,10 +678,29 @@ class InviteDetailScreenState extends State<StatefulWidget>
   hostLogView() {
     if (null != invite.hostlog && invite.hostlog.toString() != "") {
       return new Container(
+        padding: EdgeInsets.all(15),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            new Container(
+              width: MediaQuery.of(bContext).size.width,
+              height: 220,
+              child:
+              new Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text("Invite photos!",style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.lightGreen)),
+                  InviteImageScroller(photoUrls),
+                ],
+              )
+
+            )
+            ,
             new Row(
               children: <Widget>[
                   Padding(padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
@@ -697,7 +717,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
                             child: feedBackViewChildCommentBoc(invite.first_name,invite.hostlog.toString(),"")),
                       ]
                     )
-                  )
+                  ),
               ],
             ),
             ],
@@ -728,7 +748,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
         print(photoUrls[joinNameList.indexOf(iJ.name.toString())]);
         Container iComment=new Container(
             child: 
-                Padding(padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
+                Padding(padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                   child: new Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -752,8 +772,8 @@ class InviteDetailScreenState extends State<StatefulWidget>
 
   feedBackViewChildCommentBoc(String nameOfCommenter, String comment, String rate){
     return new Container(
-              margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-              width: MediaQuery.of(bContext).size.width*0.75,
+              margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
+              width: MediaQuery.of(bContext).size.width*0.70,
               child: new Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
