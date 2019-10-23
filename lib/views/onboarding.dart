@@ -22,7 +22,7 @@ class MyHomePageState extends State<OnBoarding> {
   final List<String> text0 = [
     "Welcome in your app",
     "Enjoy teaching...",
-    "Showcase your skills",
+    "Showcase yrour skills",
   ];
 
   final List<String> text1 = [

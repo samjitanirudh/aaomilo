@@ -4,6 +4,7 @@ import 'package:flutter_meetup_login/utils/InviteImageScroller.dart';
 import 'package:flutter_meetup_login/utils/PhotoScroller.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'package:flutter_meetup_login/utils/AppStringClass.dart';
@@ -44,6 +45,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
   bool displayCommentRate = false, displayCommentRateView = false;
   InviteListPresenter inviteListPresenter;
   List<Widget> comments;
+  List<Asset> images = List<Asset>();
 
   @override
   void initState() {
@@ -611,68 +613,119 @@ class InviteDetailScreenState extends State<StatefulWidget>
 
   hostLogEditor() {
     double sizeWidth = MediaQuery.of(bContext).size.width;
+
     return new Container(
-      child: new Row(
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          new Container(
-            width: sizeWidth * 0.85,
-            padding: EdgeInsets.all(5),
-            decoration: new BoxDecoration(
-              color: AppColors.BackgroundColor,
-              border: Border.all(width: 3.0, color: Colors.white),
-              borderRadius: BorderRadius.all(Radius.circular(15.0) //
+          new MaterialButton(onPressed: ()=>{getInviteImages()},child: new Text("Upload invite images!"),),
+          new Row(
+            children: <Widget>[
+              new Container(
+                width: sizeWidth * 0.85,
+                padding: EdgeInsets.all(5),
+                decoration: new BoxDecoration(
+                  color: AppColors.BackgroundColor,
+                  border: Border.all(width: 3.0, color: Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(15.0) //
                   ),
-            ),
-            child: new TextFormField(
-              obscureText: false,
-              keyboardType: TextInputType.multiline,
-              maxLines: 2,
-              onSaved: (String val) {
-                _logentry = val;
-                _formdata['_logentry'] = _logentry;
-              },
-              validator: (String arg) {
-                if (arg.length < 10) {
-                  return AppStringClass.INV_DTL_HOST_LOG_ERR;
-                } else
-                  return null;
-              },
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  hintText: AppStringClass.INV_DTL_HOST_LOG_HINT,
-                  errorStyle: TextStyle(
-                      color: Colors.red, wordSpacing: 1.0, fontSize: 10),
-                  border: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(32.0))),
-            ),
-          ),
-          new ClipOval(
-            child: Material(
-              color: Colors.orange.shade300, // button color
-              child: InkWell(
-                splashColor: AppColors.PrimaryColor, // inkwell color
-                child: SizedBox(
-                    width: sizeWidth * 0.15,
-                    height: 48,
-                    child: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    )),
-                onTap: () {
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    inviteListPresenter.hostLog(invite.id, _logentry);
-                  }
-                },
+                ),
+                child: new TextFormField(
+                  obscureText: false,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 2,
+                  onSaved: (String val) {
+                    _logentry = val;
+                    _formdata['_logentry'] = _logentry;
+                  },
+                  validator: (String arg) {
+                    if (arg.length < 10) {
+                      return AppStringClass.INV_DTL_HOST_LOG_ERR;
+                    } else
+                      return null;
+                  },
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      hintText: AppStringClass.INV_DTL_HOST_LOG_HINT,
+                      errorStyle: TextStyle(
+                          color: Colors.red, wordSpacing: 1.0, fontSize: 10),
+                      border: UnderlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0))),
+                ),
               ),
-            ),
+              new ClipOval(
+                child: Material(
+                  color: Colors.orange.shade300, // button color
+                  child: InkWell(
+                    splashColor: AppColors.PrimaryColor, // inkwell color
+                    child: SizedBox(
+                        width: sizeWidth * 0.15,
+                        height: 48,
+                        child: Icon(
+                          Icons.send,
+                          color: Colors.white,
+                        )),
+                    onTap: () {
+                      if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        inviteListPresenter.hostLog(invite.id, _logentry);
+                      }
+                    },
+                  ),
+                ),
+              )
+            ],
           )
         ],
       ),
     );
+  }
+
+  getInviteImages(){
+    print("Before");
+    var getImages= loadAssets();
+    print("After");
+  }
+
+  Future<void> loadAssets() async {
+    List<Asset> resultList = List<Asset>();
+    String error = 'No Error Dectected';
+
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 300,
+        enableCamera: true,
+        selectedAssets: images,
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
+          actionBarColor: "#abcdef",
+          actionBarTitle: "Example App",
+          allViewTitle: "All Photos",
+          useDetailsView: false,
+          selectCircleStrokeColor: "#000000",
+        ),
+      );
+
+      for (var r in resultList) {
+        var t = await r.filePath;
+        print(t);
+      }
+    } on Exception catch (e) {
+      error = e.toString();
+    }
+    print(error);
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      images = resultList;
+    });
   }
 
   hostLogView() {
