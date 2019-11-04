@@ -252,14 +252,15 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                         child:
                         new TextFormField(
                           validator: (String arg) {
-                            if (arg.length < 10)
-                              return 'About me must be more than 10 numbers';
+                            if (arg.length != 10)
+                              return 'Contact no must be 10 numbers';
                             else
                               return null;
                           },
                           onSaved: (String val) {
                             _formdata['contact_no'] = val;
                           },
+                            keyboardType: TextInputType.number,
                           controller: contactController,
                           decoration: new InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(
@@ -694,6 +695,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
   }
 
   navigate() {
+
     Navigator.of(bContext).pushNamedAndRemoveUntil('/TabViewScreen', (Route<dynamic> route) => false);
   }
 

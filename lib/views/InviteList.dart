@@ -128,9 +128,9 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
     NetworkImage nI = new NetworkImage(categoryImageAPI+invite.image);
     nI.resolve(new ImageConfiguration()).addListener(new ImageStreamListener((_, __) {
       if (mounted) {
-        setState(() {
-          loaded = true;
-        });
+//        setState(() {
+//          loaded = true;
+//        });
       }
     }));
     return new ListTile(
@@ -143,9 +143,8 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
               width: MediaQuery.of(context).size.width,
               height: 150,
               decoration: BoxDecoration(
-                  image: loaded ?DecorationImage(
-                      image:nI,fit: BoxFit.fill):DecorationImage(
-                      image: AssetImage("assets/images/pulse.gif"),fit: BoxFit.none)),
+                  image: DecorationImage(
+                      image:nI,fit: BoxFit.fill)),
             )
         ]),
         Align(

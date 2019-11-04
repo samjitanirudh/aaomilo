@@ -195,7 +195,11 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
 
   void navigationPage(String user) async{
     await UserProfile().getInstance().saveLoggedInUser(user);   //replace SGID with logged in user
-    Navigator.of(context).pushReplacementNamed('/TabViewScreen');
+    isNewUser(user);
+  }
+
+  void isNewUser(String user){
+    _loginPresenter.checkUserExist(user);
   }
 
   String validateEmail(String value) {
@@ -217,13 +221,27 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
   }
 
   @override
+  void userCheck(String response) {
+    // TODO: implement userCheck
+    if(response!=null || response.compareTo("")!=0)
+      {
+        setState(() => _isLoading = false);
+        if(response.contains("new")){
+          Navigator.of(context).pushReplacementNamed('/UpdateUserProfileScreen');
+        }else{
+          Navigator.of(context).pushReplacementNamed('/TabViewScreen');
+        }
+      }
+  }
+
+  @override
   void loginSuccessfull(String response) {
     // TODO: implement loginSuccessfull
     // _showToast(bContext, "Login successfull");
-    if(response!=null || response.compareTo("")!=0)
-        setState(() => _isLoading = false);
-        Map sessionList=json.decode(response);
-        navigationPage(sessionList["access_token"].toString());
+    if(response!=null || response.compareTo("")!=0) {
+      Map sessionList = json.decode(response);
+      navigationPage(sessionList["access_token"].toString());
+    }
   }
 
   @override

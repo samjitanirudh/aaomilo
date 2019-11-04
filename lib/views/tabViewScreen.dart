@@ -29,6 +29,7 @@ class TabsState extends State<TabViewScreen> with SingleTickerProviderStateMixin
   List<dynamic> pageOptions;
   TabsState(this.analytics);
   String _homeScreenText;
+
   @override
   void initState() {
     super.initState();

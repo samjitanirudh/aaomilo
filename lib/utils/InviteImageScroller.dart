@@ -1,16 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_meetup_login/views/UserProfileView.dart';
 
 import 'AppColors.dart';
 
 class InviteImageScroller extends StatelessWidget {
-  InviteImageScroller(this.photoUrls);
+  InviteImageScroller(this.photoUrls,this.isLocal);
 
   BuildContext bContext;
   List<String> photoUrls;
+  bool isLocal;
 
   Widget _buildPhoto(BuildContext context, int index) {
     var photo = photoUrls[index];
+    File picLocal=null;
+    if(isLocal)
+      picLocal =new File(photoUrls[index]);
     return Padding(
         padding: const EdgeInsets.only(right: 1.0),
         child: new GestureDetector(
@@ -34,7 +40,7 @@ class InviteImageScroller extends StatelessWidget {
                         child:
                       ClipRRect(
                           borderRadius: new BorderRadius.circular(5.0),
-                          child: Image.network(photo))
+                          child: isLocal?Image.file(picLocal): Image.network(photo))
                       )
                     ],
                   ),
@@ -46,6 +52,7 @@ class InviteImageScroller extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bContext = context;
+
     return  new Container(
       height: 200.0,
       child:

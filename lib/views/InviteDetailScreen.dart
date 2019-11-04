@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/src/scheduler/ticker.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
 import 'package:flutter_meetup_login/utils/InviteImageScroller.dart';
 import 'package:flutter_meetup_login/utils/PhotoScroller.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'package:flutter_meetup_login/utils/AppStringClass.dart';
+
+import 'image_picker_handler.dart';
 
 class InviteDetailScreen extends StatefulWidget {
   final Invite invite;
@@ -22,7 +26,8 @@ class InviteDetailScreen extends StatefulWidget {
 }
 
 class InviteDetailScreenState extends State<StatefulWidget>
-    implements InviteDetailCallBack {
+    with TickerProviderStateMixin, ImagePickerListener implements InviteDetailCallBack {
+
   var _formKey = GlobalKey<FormState>();
   Map _formdata = new Map();
   bool _isLoading = false;
@@ -33,6 +38,8 @@ class InviteDetailScreenState extends State<StatefulWidget>
   Invite invite;
   String _logentry = "", _comment;
   double rating = 0.0;
+
+  ImagePickerHandler imagePicker;
 
   InviteDetailScreenState(this.invite);
 
@@ -45,12 +52,18 @@ class InviteDetailScreenState extends State<StatefulWidget>
   bool displayCommentRate = false, displayCommentRateView = false;
   InviteListPresenter inviteListPresenter;
   List<Widget> comments;
-  List<Asset> images = List<Asset>();
-
+  AnimationController _controller;
+  bool isLocal=false;   //boolean to determine invite pic from sdcard or from server, if true it is from local else from server
   @override
   void initState() {
     // `TODO: implement initState
     super.initState();
+    _controller = new AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    imagePicker = new ImagePickerHandler(this, _controller);
+    imagePicker.init();
     inviteListPresenter = new InviteListPresenter(null);
     inviteListPresenter.setInviteDetailCallBack(this);
     comments = userComments();
@@ -619,7 +632,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          new MaterialButton(onPressed: ()=>{getInviteImages()},child: new Text("Upload invite images!"),),
+         // new MaterialButton(onPressed: ()=>{imagePicker.showDialog(context)},child: new Text("Upload invite images!"),),
           new Row(
             children: <Widget>[
               new Container(
@@ -685,49 +698,6 @@ class InviteDetailScreenState extends State<StatefulWidget>
     );
   }
 
-  getInviteImages(){
-    print("Before");
-    var getImages= loadAssets();
-    print("After");
-  }
-
-  Future<void> loadAssets() async {
-    List<Asset> resultList = List<Asset>();
-    String error = 'No Error Dectected';
-
-    try {
-      resultList = await MultiImagePicker.pickImages(
-        maxImages: 300,
-        enableCamera: true,
-        selectedAssets: images,
-        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: MaterialOptions(
-          actionBarColor: "#abcdef",
-          actionBarTitle: "Example App",
-          allViewTitle: "All Photos",
-          useDetailsView: false,
-          selectCircleStrokeColor: "#000000",
-        ),
-      );
-
-      for (var r in resultList) {
-        var t = await r.filePath;
-        print(t);
-      }
-    } on Exception catch (e) {
-      error = e.toString();
-    }
-    print(error);
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      images = resultList;
-    });
-  }
-
   hostLogView() {
     if (null != invite.hostlog && invite.hostlog.toString() != "") {
       return new Container(
@@ -736,24 +706,24 @@ class InviteDetailScreenState extends State<StatefulWidget>
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Container(
-              width: MediaQuery.of(bContext).size.width,
-              height: 220,
-              child:
-              new Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text("Invite photos!",style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.lightGreen)),
-                  InviteImageScroller(photoUrls),
-                ],
-              )
-
-            )
-            ,
+//            new Container(
+//              width: MediaQuery.of(bContext).size.width,
+//              height: 220,
+//              child:
+//              new Column(
+//                mainAxisAlignment: MainAxisAlignment.start,
+//                crossAxisAlignment: CrossAxisAlignment.start,
+//                children: <Widget>[
+//                  new Text("Invite photos!",style: TextStyle(
+//                  fontSize: 16,
+//                  fontWeight: FontWeight.bold,
+//                  color: AppColors.lightGreen)),
+//                 // InviteImageScroller(photoUrls,isLocal),
+//                ],
+//              )
+//
+//            )
+//            ,
             new Row(
               children: <Widget>[
                   Padding(padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
@@ -1035,6 +1005,18 @@ class InviteDetailScreenState extends State<StatefulWidget>
       ],
     );
     return modal;
+  }
+
+
+
+  @override
+  userImage(File _image) {
+    // TODO: implement userImage
+    setState(() {
+        isLocal=true;
+        photoUrls.removeAt(0);
+        photoUrls.add(_image.path);
+    });
   }
 }
 

@@ -23,9 +23,24 @@ class LoginPresenter {
     }
   }
 
+  checkUserExist(String userToken) async{
+    try{
+      String response = await _loginModel.checkUser(userToken);
+      if(response!=null && !response.contains("Error : ")) {
+        _callbacks.userCheck(response);
+      }
+      else{
+        _callbacks.userCheck(response);
+      }
+    }on Exception catch(error){
+      _callbacks.userCheck("new");
+    }
+  }
+
 }
 
 abstract class LoginCallbacks {
   void loginSuccessfull(String response);
   void showLoginError(String error_response);
+  void userCheck(String response);
 }
