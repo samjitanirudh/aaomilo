@@ -260,7 +260,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                           onSaved: (String val) {
                             _formdata['contact_no'] = val;
                           },
-                            keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.number,
                           controller: contactController,
                           decoration: new InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(
@@ -284,6 +284,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                             _formdata['email'] = val;
                           },
                           controller: emailController,
+                          keyboardType: TextInputType.emailAddress,
                           decoration: new InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(
                                 10.0, 20.0, 10.0, 10.0),
