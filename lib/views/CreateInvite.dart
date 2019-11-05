@@ -585,7 +585,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
               margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
               child: new Column(
                 children: <Widget>[
-                  new Text("Vanue", style: textStyle),
+                  new Text("Venue", style: textStyle),
                 ],
               ),
             ),
@@ -626,7 +626,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
     elevation: 2,
     isDense: true,
     hint: Text(
-      "Please select the vanue!",
+      "Please select the venue!",
       style: TextStyle(
         color: Colors.black,
       ),

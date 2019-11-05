@@ -5,6 +5,7 @@ import 'package:flutter_meetup_login/presenter/ProfileUpdatePresenter.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 import 'package:flutter_meetup_login/utils/AppStringClass.dart';
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserProfileView extends StatefulWidget {
   String userid;
@@ -368,7 +369,7 @@ class UserProfileViewState extends State<UserProfileView>
                 decoration: new BoxDecoration(
                   color: Colors.white,
                   border: Border.all(width: 3.0, color: Colors.white),
-                  borderRadius: BorderRadius.all(Radius.circular(15.0) //
+                  borderRadius: BorderRadius.all(Radius.circular(15.0)
                   ),
                 ),
                 child:
@@ -388,12 +389,8 @@ class UserProfileViewState extends State<UserProfileView>
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Text(_formdata["contact_no"],
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.PurpleVColor)),
+                            padding: const EdgeInsets.all(0.0),
+                            child: new MaterialButton(onPressed: ()=>callContactNo(_formdata["contact_no"]),child:getContactNoUI()),
                           )
                         ])
                   ],
@@ -401,6 +398,32 @@ class UserProfileViewState extends State<UserProfileView>
           ],
         ),
       );
+  }
+
+  getContactNoUI(){
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        new Icon(Icons.phone,color: AppColors.PurpleVColor,),
+        Text(_formdata["contact_no"],
+          style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppColors.PurpleVColor),),
+        SizedBox(width: 10,),
+        Text("CALL",
+          style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppColors.lightBlueVColor),)
+
+      ],
+    );
+  }
+
+  void callContactNo(String contactNo){
+    launch("tel:$contactNo");
   }
 
   skillsOrHobbieSectionView(String label,String viewData) {
