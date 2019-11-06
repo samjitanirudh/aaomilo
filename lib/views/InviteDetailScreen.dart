@@ -35,6 +35,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
   List<String> photoUrls = new List();
   List<String> joinNameList = new List();
   List<String> joinUserList = new List();
+  List<String> joinUserDesignationList = new List();
   Invite invite;
   String _logentry = "", _comment;
   double rating = 0.0;
@@ -154,6 +155,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
         photoUrls.add(iJoined[i].profile_img);
         joinNameList.add(iJoined[i].name);
         joinUserList.add(iJoined[i].sg_id);
+        joinUserDesignationList.add(iJoined[i].designation);
       }
     }
   }
@@ -193,14 +195,26 @@ class InviteDetailScreenState extends State<StatefulWidget>
                           Divider(
                             color: Colors.grey.withOpacity(0.2),
                           ),
-                        displayHostLog?new Container(
-                            padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
+                          displayCommentRateView?new Container(
+                            padding: EdgeInsets.fromLTRB(15, 5, 30, 5),
                             child:
-                              new Text("Feedback on invite",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.lightGreen),
+                              new Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  new Text("Comments",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.lightGreen),
+                                  ),new SmoothStarRating(
+                                      allowHalfRating: true,
+                                      starCount: 5,
+                                      rating: getAverageRating(),
+                                      size: 30.0,
+                                      color: Colors.lightBlue.shade800,
+                                      borderColor: Colors.lightBlue.shade800,
+                                      spacing: 0.0)
+                                ],
                               )
                           ):new Container(),
                           SizedBox(
@@ -255,6 +269,22 @@ class InviteDetailScreenState extends State<StatefulWidget>
             ],
           ),
         ));
+  }
+
+  getAverageRating(){
+    double avgRating=0;
+    int rateCount=0;
+    List<InviteJoinees> inviteJoinees = invite.getJoinees();
+    for (int i = 0; i < inviteJoinees.length; i++) {
+      InviteJoinees iJ = inviteJoinees[i];
+      if (null != iJ.getRate() && iJ.getRate().toString() != "") {
+             var newRate= avgRating+double.parse(iJ.getRate());
+             avgRating=newRate;
+             rateCount++;
+      }
+    }
+    var calculatedValue = avgRating/rateCount;
+    return calculatedValue;
   }
 
   inviteDescriptionView() {
@@ -423,7 +453,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
                             ],
                           ),
                           new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               new Container(
                                   padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
@@ -542,7 +572,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
           new Container(
             width: MediaQuery.of(bContext).size.width * 0.7,
             height: 120,
-            child: PhotoScroller(photoUrls, joinNameList, joinUserList),
+            child: PhotoScroller(photoUrls, joinNameList, joinUserList,joinUserDesignationList),
           )
         ],
       ),
@@ -579,7 +609,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
             height: 10,
           ),
           new Container(
-            child: PhotoScroller(photoUrls, joinNameList, joinUserList),
+            child: PhotoScroller(photoUrls, joinNameList, joinUserList,joinUserDesignationList),
           )
         ],
       ),
@@ -701,7 +731,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
   hostLogView() {
     if (null != invite.hostlog && invite.hostlog.toString() != "") {
       return new Container(
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(5),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -726,7 +756,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
 //            ,
             new Row(
               children: <Widget>[
-                  Padding(padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
+                  Padding(padding: EdgeInsets.fromLTRB(0, 5, 5, 10),
                     child:
                     new Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -796,7 +826,7 @@ class InviteDetailScreenState extends State<StatefulWidget>
   feedBackViewChildCommentBoc(String nameOfCommenter, String comment, String rate){
     return new Container(
               margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
-              width: MediaQuery.of(bContext).size.width*0.70,
+              width: MediaQuery.of(bContext).size.width*0.80,
               child: new Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

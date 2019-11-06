@@ -214,70 +214,67 @@ class MyInvitesNState extends  State<MyInvitesN> implements InviteListCallBack{
                       fontSize: 14.0),
                 ),
               )),
-          new Icon(Icons.place,color: AppColors.PurpleVColor,),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
-              child: Text(
-                invite.venue,
-                style: TextStyle(
-                    color: AppColors.PurpleVColor,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 14.0),
-              ),
-            ),
-          )
         ]),
       ]),
       subtitle: new Container(
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.only(left: 5,right: 5),
+          padding: EdgeInsets.only(left: 0,right: 5),
           child: Row(
             children: <Widget>[
-              Expanded(
-                  flex: 1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        child: new Icon(
-                          Icons.group,
-                          color: AppColors.PurpleVColor,
-                        ),
-                      ),
-                      SizedBox(width: 5,),
-                      Container(
-                        child: Text(
-                          invite.joined + "/" + invite.allowed_member_count,
-                          style: TextStyle(
-                              color: AppColors.PurpleVColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0),
-                        ),
-                      )
-                    ],
-                  )),
-              Expanded(
-                  flex: 1,
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        child: new Icon(
-                          Icons.comment,
-                          color: AppColors.PurpleVColor,
-                        ),
-                      ))),
-              Expanded(
-                  flex: 1,
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        child: new Icon(
-                          Icons.rate_review,
-                          color: AppColors.PurpleVColor,
-                        ),
-                      )))
+//              Expanded(
+//                  flex: 1,
+//                  child: Row(
+//                    mainAxisAlignment: MainAxisAlignment.start,
+//                    children: <Widget>[
+//                      Container(
+//                        child: new Icon(
+//                          Icons.group,
+//                          color: AppColors.PurpleVColor,
+//                        ),
+//                      ),
+//                      SizedBox(width: 5,),
+//                      Container(
+//                        child: Text(
+//                          invite.joined + "/" + invite.allowed_member_count,
+//                          style: TextStyle(
+//                              color: AppColors.PurpleVColor,
+//                              fontWeight: FontWeight.bold,
+//                              fontSize: 18.0),
+//                        ),
+//                      )
+//                    ],
+//                  )),
+              new Icon(Icons.place,color: AppColors.PurpleVColor,),
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
+                child: Text(
+                  invite.venue,
+                  style: TextStyle(
+                      color: AppColors.PurpleVColor,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14.0),
+                ),
+              )
+//              Expanded(
+//                  flex: 1,
+//                  child: Align(
+//                      alignment: Alignment.center,
+//                      child: Container(
+//                        child: new Icon(
+//                          Icons.comment,
+//                          color: AppColors.PurpleVColor,
+//                        ),
+//                      ))),
+//              Expanded(
+//                  flex: 1,
+//                  child: Align(
+//                      alignment: Alignment.center,
+//                      child: Container(
+//                        child: new Icon(
+//                          Icons.rate_review,
+//                          color: AppColors.PurpleVColor,
+//                        ),
+//                      )))
             ],
           )),
     );
