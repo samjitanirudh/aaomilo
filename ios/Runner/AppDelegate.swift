@@ -10,7 +10,7 @@ import SSOAnywhereLib
   {
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
     let ssoAnywhereChannel = FlutterMethodChannel(name: "samples.flutter.dev/ssoanywhere",
-                                              binaryMessenger: controller)
+                                                  binaryMessenger: controller as! FlutterBinaryMessenger)
     GeneratedPluginRegistrant.register(with: self)
     SSOAnyWhere.shared.Setup(clientID:"Indec_QB" , clientSecret:"272sqToLimhvjkzFNFpA")
     

@@ -401,29 +401,48 @@ class UserProfileViewState extends State<UserProfileView>
   }
 
   getContactNoUI(){
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        new Icon(Icons.phone,color: AppColors.PurpleVColor,),
-        Text(_formdata["contact_no"],
-          style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: AppColors.PurpleVColor),),
-        SizedBox(width: 10,),
-        Text("CALL",
-          style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: AppColors.lightBlueVColor),)
+    if(_formdata["contact_no"]=="-"||_formdata["contact_no"]==""){
+      return new Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("NA",
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.PurpleVColor),),
+        ],
+      );
+    }else{
+      return new Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          new Icon(Icons.phone,color: AppColors.PurpleVColor,),
+          Text(_formdata["contact_no"],
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.PurpleVColor),),
+          SizedBox(width: 10,),
+          Text("CALL",
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.lightBlueVColor),)
 
-      ],
-    );
+        ],
+      );
+    }
+
   }
 
   void callContactNo(String contactNo){
-    launch("tel:$contactNo");
+    if(contactNo=="-"||contactNo==""){
+      ;//no call
+    }else {
+      launch("tel:$contactNo");
+    }
   }
 
   skillsOrHobbieSectionView(String label,String viewData) {

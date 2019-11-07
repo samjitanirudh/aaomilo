@@ -221,7 +221,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                           decoration: new InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(
                                 10.0, 20.0, 10.0, 10.0),
-                            labelText: "Enter Your Full Name",
+                            labelText: "Enter Your Full Name * ",
                             fillColor: Colors.white,
                             border: new OutlineInputBorder(
                               borderRadius:
@@ -251,12 +251,12 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                         padding: EdgeInsets.all(10),
                         child:
                         new TextFormField(
-                          validator: (String arg) {
-                            if (arg.length != 10)
-                              return 'Contact no must be 10 numbers';
-                            else
-                              return null;
-                          },
+//                          validator: (String arg) {
+//                            if (arg.length != 10)
+//                              return 'Contact no must be 10 numbers';
+//                            else
+//                              return null;
+//                          },
                           onSaved: (String val) {
                             _formdata['contact_no'] = val;
                           },
@@ -288,7 +288,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                           decoration: new InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(
                                 10.0, 20.0, 10.0, 10.0),
-                            labelText: "Email",
+                            labelText: "Email * ",
                             fillColor: Colors.white,
                             border: new OutlineInputBorder(
                               borderRadius:
@@ -302,12 +302,12 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                         padding: EdgeInsets.all(10),
                         child:
                         new TextFormField(
-                          validator: (String arg) {
-                            if (arg.length < 10)
-                              return 'About me must be more than 10 charaters';
-                            else
-                              return null;
-                          },
+//                          validator: (String arg) {
+//                            if (arg.length < 10)
+//                              return 'About me must be more than 10 charaters';
+//                            else
+//                              return null;
+//                          },
                           onSaved: (String val) {
                             _formdata['about'] = val;
                           },
@@ -330,8 +330,8 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                         padding: EdgeInsets.all(10),
                         child: new TextFormField(
                           validator: (String arg) {
-                            if (arg.length < 10)
-                              return 'Project information must be more than 10 charaters';
+                            if (arg.length < 2)
+                              return 'Enter valid input';
                             else
                               return null;
                           },
@@ -342,7 +342,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                           decoration: new InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(
                                 10.0, 20.0, 10.0, 10.0),
-                            labelText: "Enter you project name",
+                            labelText: "Enter you project name *",
                             fillColor: Colors.white,
                             border: new OutlineInputBorder(
                               borderRadius:
@@ -358,8 +358,8 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                         child:
                         new TextFormField(
                           validator: (String arg) {
-                            if (arg.length < 10)
-                              return 'designation/role must be more than 10 charaters';
+                            if (arg.length < 2)
+                              return 'Enter valid input';
                             else
                               return null;
                           },
@@ -370,7 +370,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                           decoration: new InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(
                                 10.0, 20.0, 10.0, 10.0),
-                            labelText: "Enter your Designation/Role",
+                            labelText: "Enter your Designation/Role *",
                             fillColor: Colors.white,
                             border: new OutlineInputBorder(
                               borderRadius:
@@ -539,6 +539,13 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                   _isLoading = true;
                                 });
 
+                                if(_formdata['contact_no']==""){
+                                  _formdata['contact_no']="-";
+                                }
+
+                                if(_formdata['about']==""){
+                                  _formdata['about']="-";
+                                }
 
                                 _formdata['sgid'] = UserProfile().getInstance().sg_id;
 

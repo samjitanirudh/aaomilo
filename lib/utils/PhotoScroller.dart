@@ -4,9 +4,9 @@ import 'package:flutter_meetup_login/views/UserProfileView.dart';
 import 'AppColors.dart';
 
 class PhotoScroller extends StatelessWidget {
-  PhotoScroller(this.photoUrls,this.nameList,this.userlist);
+  PhotoScroller(this.photoUrls,this.nameList,this.userlist,this.designationList);
   BuildContext bContext;
-  final List<String> photoUrls,nameList,userlist;
+  final List<String> photoUrls,nameList,designationList,userlist;
 
   Widget _buildPhoto(BuildContext context, int index) {
     var photo = photoUrls[index];
@@ -30,34 +30,41 @@ class PhotoScroller extends StatelessWidget {
             ),
           ),
           child:
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    backgroundImage:  new NetworkImage(photo),
-                    radius: 25.0,
-                  ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage:  new NetworkImage(photo),
+                            radius: 25.0,
+                          ),
+                        ],
+                      ),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text(nameList[index].toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16,color: AppColors.PurpleVColor),),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text(designationList[index].toString(),style: TextStyle(fontSize: 14,color: AppColors.PurpleVColor)),
+                            )
+                          ]
+                      ),
+
+                    ],
+                  )   ,
+                  Icon(Icons.arrow_right)
                 ],
-              ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Text(nameList[index].toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16,color: AppColors.PurpleVColor),),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Text(nameList[index].toString(),style: TextStyle(fontSize: 14,color: AppColors.PurpleVColor)),
-                )
-              ]
-            ),
-            Icon(Icons.arrow_right)
-            ],
-          )
+              )
+
         )
         ,
       )

@@ -172,30 +172,15 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
                       fontSize: 14.0),
             ),
           )),
-          new Icon(Icons.place,color: AppColors.PurpleVColor,),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
-              child: Text(
-                invite.venue,
-                style: TextStyle(
-                    color: AppColors.PurpleVColor,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 14.0),
-              ),
-            ),
-          )
         ]),
       ]),
       subtitle: new Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.only(left: 5,right: 5),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Expanded(
-                  flex: 1,
-                  child: Row(
+              Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Container(
@@ -215,27 +200,40 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
                         ),
                       )
                     ],
-                  )),
-              Expanded(
-                  flex: 1,
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        child: new Icon(
-                          Icons.comment,
-                          color: AppColors.PurpleVColor,
-                        ),
-                      ))),
-              Expanded(
-                  flex: 1,
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        child: new Icon(
-                          Icons.rate_review,
-                          color: AppColors.PurpleVColor,
-                        ),
-                      )))
+                  ),
+              SizedBox(width: 10,),
+              new Icon(Icons.place,color: AppColors.PurpleVColor,),
+              Container(
+                  padding: EdgeInsets.fromLTRB(5, 2, 0, 0),
+                  child: Text(
+                    invite.venue,
+                    style: TextStyle(
+                        color: AppColors.PurpleVColor,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14.0),
+                  ),
+                ),
+
+//              Expanded(
+//                  flex: 1,
+//                  child: Align(
+//                      alignment: Alignment.center,
+//                      child: Container(
+//                        child: new Icon(
+//                          Icons.comment,
+//                          color: AppColors.PurpleVColor,
+//                        ),
+//                      ))),
+//              Expanded(
+//                  flex: 1,
+//                  child: Align(
+//                      alignment: Alignment.center,
+//                      child: Container(
+//                        child: new Icon(
+//                          Icons.rate_review,
+//                          color: AppColors.PurpleVColor,
+//                        ),
+//                      )))
             ],
           )),
     );
