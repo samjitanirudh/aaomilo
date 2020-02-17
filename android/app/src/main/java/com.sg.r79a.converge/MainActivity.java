@@ -1,4 +1,4 @@
-package indec.meetup.flutter_meetup_login;
+package com.sg.r79a.converge;
 
 import android.os.Bundle;
 import android.util.Log;
