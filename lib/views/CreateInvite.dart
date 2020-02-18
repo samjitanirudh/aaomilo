@@ -21,7 +21,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   static final TextStyle textStyle = TextStyle(
       fontFamily: 'Montserrat', fontSize: 20.0, color: AppColors.lightBlueVColor);
   static final TextStyle textEditorStyle = TextStyle(
-      fontFamily: 'Montserrat', fontSize: 20.0, color: AppColors.lightPurple);
+      fontFamily: 'Montserrat', fontSize: 15.0, color: AppColors.lightPurple);
   var _formKey = GlobalKey<FormState>();
   var _formview;
   Map _formdata=new Map();
@@ -44,7 +44,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
 
   void initState(){
     super.initState();
-    _createInvitePresenter= new CreateInvitePreseter(this);
+    _createInvitePresenter = new CreateInvitePreseter(this);
   }
 
   void changeCategoryImageViewVisibility(bool visible,String cat){
@@ -104,7 +104,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
-      children: [new Text("Create new invite"),
+      children: [new Text("Create Invite"),
         _dataLoadingAPI?new CircularProgressIndicator():new Container()
       ],
     );
@@ -142,13 +142,14 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
 
   titleTextEdit() {
     return new Container(
+      padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           new Container(
-            margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
+            margin: EdgeInsets.fromLTRB(10, 10, 0, 10),
             child: new Row(
               children: <Widget>[
                 new Text(
@@ -163,7 +164,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
             style: textEditorStyle,
             validator:(String arg){
               if(arg.length < 3)
-                return 'Name must be more than 2 charater';
+                return 'Name must be more than 2 character';
               else
                 return null;
             },
@@ -173,13 +174,13 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
             },
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                hintText: "i.e. Explaining flutter univers",
+                hintText: "e.g. Learning curve",
                 errorStyle: TextStyle(
                   color: Colors.red,
                   wordSpacing: 5.0,
                 ),
-                border: UnderlineInputBorder(
-                    borderRadius: BorderRadius.circular(32.0))),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0))),
           ),
         ],
       ),
@@ -319,13 +320,14 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
 
   descriptionTextEdit() {
     return new Container(
+      padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           new Container(
-            margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
+            margin: EdgeInsets.fromLTRB(10, 10, 0, 10),
             child: new Row(
               children: <Widget>[
                 new Text(
@@ -352,15 +354,15 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
             },
             buildCounter: counter,
             decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                hintText: "i.e. Describe your invites...",
+                contentPadding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+                hintText: "Type brief description here..",
                 errorStyle: TextStyle(
                   color: Colors.red,
                   wordSpacing: 1.0,
                   fontSize: 10
                 ),
-                border: UnderlineInputBorder(
-                    borderRadius: BorderRadius.circular(32.0))),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(32.0), gapPadding: 30, borderSide: new BorderSide())),
           ),
         ],
       ),
@@ -384,7 +386,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
 
   Container inviteMembersDropDownContainer() {
     return new Container(
-        margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
+        padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -394,14 +396,14 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
               margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
               child: new Column(
                 children: <Widget>[
-                  new Text("Max no. of people who can join", style: textStyle)
+                  new Text("Select group size", style: textStyle)
                 ],
               ),
             ),
             FormField<String>(
                 validator: (value) {
                   if (value == null) {
-                    return "Select max no. people";
+                    return "Please select max no. people";
                   }else return null;
                 },
                 onSaved: (value) {
@@ -447,7 +449,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
         elevation: 2,
         isDense: true,
         hint: Text(
-          "Select max no. people who can join!",
+          "Select group size",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -463,14 +465,14 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
           children: [
             new Expanded(child:
               new Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 15.0, 5.0, 15.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 10.0, 5.0, 10.0),
                   child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         new Text("Date",
-                            style: new TextStyle(fontWeight: FontWeight.bold,),textAlign: TextAlign.center),
+                            style: textStyle,textAlign: TextAlign.center),
                         SizedBox(height: 5.0),
                         datetimeTextField(),
                       ]
@@ -485,7 +487,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       new Text("Time",
-                          style: new TextStyle(fontWeight: FontWeight.bold,)),
+                          style: textStyle),
                       SizedBox(height: 5.0),
                       new Container(
                         padding: const EdgeInsets.all(1.0),
@@ -529,7 +531,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
       },
       validator: (String val){
         if(val.length<5){
-          return "Select date!";
+          return "Please select date!";
         }
         else{
           return null;

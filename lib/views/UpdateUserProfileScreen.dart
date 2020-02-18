@@ -439,7 +439,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                       onPressed: () {
                                         _showSkillsDialog();
                                       },
-                                      child: Text("Select your Skills",
+                                      child: Text("Select Skills",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               color: Colors.white,
@@ -508,7 +508,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                                         _showInterestDialog();
                                       },
                                       child: Text(
-                                          "Select your category of interest",
+                                          "Select interest",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               color: Colors.white,
