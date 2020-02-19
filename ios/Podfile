@@ -4,7 +4,6 @@
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
-source 'https://github.com/annapurnarelan20/SSOPodSpecs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 project 'Runner', {
@@ -37,7 +36,7 @@ end
 
 target 'Runner' do
   use_frameworks!
-  pod 'SSOAnywhereLib', '~> 1.0.2'
+pod 'SSOAnywhereLib', :git => 'git@git.ci.pointp.saint-gobain.net:digital-dsi/Mobile/SSOAnywhere-iOS.git', :branch => 'master'
   # Prepare symlinks folder. We use symlinks to avoid having Podfile.lock
   # referring to absolute paths on developers' machines.
   system('rm -rf .symlinks')
