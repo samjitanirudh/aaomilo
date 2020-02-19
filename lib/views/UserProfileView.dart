@@ -467,7 +467,7 @@ class UserProfileViewState extends State<UserProfileView>
           padding: EdgeInsets.fromLTRB(15, 10, 5, 5),
           decoration: new BoxDecoration(
             color: Colors.white,
-            border: Border.all(width: 3.0, color: Colors.white),
+            border: Border.all(width: 1.0, color: Colors.white),
             borderRadius: BorderRadius.all(Radius.circular(15.0) //
             ),
           ),
@@ -495,14 +495,14 @@ class UserProfileViewState extends State<UserProfileView>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children:addSkillsInRow(skillCount,skill_r)
             );
-      skillCount = skillCount+3;
+      skillCount = skillCount+2;
       skillRow.add(nContainer);
     }
     return skillRow;
   }
 
   List<Widget> addSkillsInRow(int skillCount,var skillArray){
-    int sCount = skillCount+3>skillArray.length?skillArray.length:skillCount+3;
+    int sCount = skillCount+2>skillArray.length?skillArray.length:skillCount+2;
     List<Widget> rowItems = new List<Widget>();
     for(int i =skillCount; i<sCount;i++){
       rowItems.add(getRowItem(skillArray[i]));
@@ -517,10 +517,10 @@ class UserProfileViewState extends State<UserProfileView>
         decoration: new BoxDecoration(
           color: AppColors.lightPurple,
           border: Border.all(width: 3.0, color: Colors.white),
-          borderRadius: BorderRadius.all(Radius.circular(15.0) //
+          borderRadius: BorderRadius.all(Radius.circular(10.0) //
           ),
         ),
-      child: new Text(skill==null?"":skill,style: TextStyle(color: Colors.white,fontSize: 11),),
+      child: new Text(skill==null?"":skill,style: TextStyle(color: Colors.white,fontSize: 10),),
     );
 
   }
