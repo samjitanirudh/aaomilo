@@ -579,7 +579,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
         context: bContext,
         builder: (BuildContext context) {
           //Here we will build the content of the dialog
-          return AlertDialog(
+          return SingleChildScrollView(child:AlertDialog(
             title: Text("Skills"),
             content: MultiSelectChip(
               getSkillsData(),
@@ -597,7 +597,7 @@ class _UpdateProfileState extends State<UpdateUserProfileScreen>
                 onPressed: () => Navigator.of(context).pop(),
               )
             ],
-          );
+          ));
         });
   }
 
