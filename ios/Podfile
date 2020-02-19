@@ -36,7 +36,7 @@ end
 
 target 'Runner' do
   use_frameworks!
-pod 'SSOAnywhereLib', :git => 'git@git.ci.pointp.saint-gobain.net:digital-dsi/Mobile/SSOAnywhere-iOS.git', :branch => 'master'
+pod 'SSOAnywhereLib', :git => 'https://github.com/anirudhcomp/lokarlobaat.git', :branch => 'master'
   # Prepare symlinks folder. We use symlinks to avoid having Podfile.lock
   # referring to absolute paths on developers' machines.
   system('rm -rf .symlinks')
