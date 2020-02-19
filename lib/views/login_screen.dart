@@ -6,6 +6,7 @@ import 'package:flutter_meetup_login/viewmodel/ProfileDataUpdate.dart';
 import 'dart:convert';
 
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class loginScreen extends StatefulWidget {
   final FirebaseAnalytics analytics;
@@ -91,6 +92,19 @@ class _loginScreenState extends State<loginScreen> implements LoginCallbacks {
                           ? new CircularProgressIndicator()
                           :
                       loginButon(context),
+                      new Container(padding: EdgeInsets.all(50),child:
+                      InkWell(
+                        child: Text("Privacy Policy", style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 12.0,
+                          color: Colors.white,
+                        ),),
+                        onTap: () async {
+                          if (await canLaunch("https://www.saint-gobain.com/en/privacy-policy")) {
+                            await launch("https://www.saint-gobain.com/en/privacy-policy");
+                          }
+                        },
+                      ))
                     ]))));
     var view =new List<Widget> () ;
     view.add(_formview);

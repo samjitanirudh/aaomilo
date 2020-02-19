@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_meetup_login/presenter/InviteListPresenter.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_meetup_login/viewmodel/Categories.dart';
 import 'package:flutter_meetup_login/viewmodel/Invite.dart';
 import 'package:flutter_meetup_login/viewmodel/InviteListModel.dart';
 import 'package:flutter_meetup_login/viewmodel/UserProfile.dart';
+import 'package:flutter_meetup_login/views/CreateInvite.dart';
 import 'package:flutter_meetup_login/views/InviteDetailScreen.dart';
 import 'package:flutter_meetup_login/utils/AppColors.dart';
 
@@ -120,7 +122,27 @@ class InviteListState extends State<InviteList> implements InviteListCallBack {
           onRefresh: _refreshStockPrices),
     );
     else
-      return new Text("No open invites available to join..!, Create one");
+      return new Center(child:Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+      new Material(
+      elevation: 5.0,
+        borderRadius: BorderRadius.circular(7.0),
+        color: AppColors.PurpleVColor,
+        child: MaterialButton(
+          minWidth: MediaQuery.of(context).size.width * 0.6,
+          padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => CreateInvite()));
+          },
+          child: Text("Create invite",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18,
+                  color: Colors.white, fontWeight: FontWeight.bold)),
+        ),
+      )]));
+
   }
 
   Widget _buildRow(Invite invite) {

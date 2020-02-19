@@ -675,7 +675,7 @@ class _CreateInvite extends State<CreateInvite> implements ImageSelectedCallback
   @override
   void createdSuccessfull() {
     // TODO: implement createdSuccessfull
-     _showDialog(bContext,"Create Invite","Invite succesfully created, Check My Events screen!",false);
+     _showDialog(bContext,"Create Invite","Invite succesfully created, Check My Events screen by pressing back!",false);
      _formKey.currentState.reset();
      setState(() => _isLoading = false);
   }
