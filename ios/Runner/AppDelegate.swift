@@ -45,16 +45,12 @@ import SSOAnywhereLib
     
     private func getAccessToken(_username: String, _password: String , result:@escaping FlutterResult) {
         SSOAnyWhere.callingAutherizeAPI(userName: _username, password: _password) {   response in
-            switch response{
-            case .success(let json):
-                let jsonData = try? JSONSerialization.data(withJSONObject: json, options: [])
+            if response.1 == Result.success {
+                let jsonData = try? JSONSerialization.data(withJSONObject: response.0, options: [])
                 let jsonString = String(data: jsonData!, encoding: .utf8)
                 result(jsonString)
-                break
-            case .failure(let error):
-               result(FlutterError(code:"UNAVAILABLE",message:error.localizedDescription,details:nil))
-                break
-               
+            } else {
+                result(FlutterError(code:"UNAVAILABLE",message:"Please check credentials",details:nil))
             }
         }
     }
@@ -68,14 +64,12 @@ import SSOAnywhereLib
     }
     private func getRefreshToken(result: @escaping FlutterResult) {
         SSOAnyWhere.callingRefreshAutherizeAPI{   Response in
-            switch Response{
-            case .success(let json):
-                result(json)
-                break
-            case .failure(let error):
-                result(FlutterError(code:"UNAVAILABLE",message:error.localizedDescription,details:nil))
-                break
-                
+            if Response.1 == Result.success {
+                let jsonData = try? JSONSerialization.data(withJSONObject: Response.0, options: [])
+                let jsonString = String(data: jsonData!, encoding: .utf8)
+                result(jsonString)
+            } else {
+                result(FlutterError(code:"UNAVAILABLE",message:"Please check credentials",details:nil))
             }
         }
     }
